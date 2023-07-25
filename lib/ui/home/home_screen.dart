@@ -31,6 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             ElevatedButton(
               onPressed: () {
+                if (token != null) Navigator.of(context).pop();
+
                 context.go('/login');
               },
               child: const Text('Login'),

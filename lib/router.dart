@@ -14,12 +14,14 @@ class AppRouter {
   AppRouter();
 
   final dio = Dio();
+  final SharedPreferencesConfig storageConfig =
+      getIt<SharedPreferencesConfig>();
 
   GoRouter onGenerateRouter() {
     dio.options.baseUrl = 'https://pettygram-api.onrender.com';
     final UserBloc userBloc = UserBloc(dio: dio);
     final LoginBloc loginBloc =
-        LoginBloc(dio: dio, storageConfig: getIt<SharedPreferencesConfig>());
+        LoginBloc(dio: dio, storageConfig: storageConfig);
 
     final GoRouter _router = GoRouter(
       routes: [
@@ -49,7 +51,13 @@ class AppRouter {
           },
         ),
       ],
-      redirect: (context, state) {},
+      redirect: (context, state) {
+        final String? token = storageConfig.getString('accessToken');
+
+        final bool isLoggedIn = token != null;
+
+        if (isLoggedIn) return '/';
+      },
     );
 
     return _router;
