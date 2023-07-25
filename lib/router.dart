@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
 import 'package:pettygram_flutter/injector/injector.dart';
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
 import 'package:pettygram_flutter/ui/home/home_screen.dart';
@@ -13,13 +14,16 @@ import 'blocs/user/user_bloc.dart';
 class AppRouter {
   AppRouter();
 
+  final PettygramRepository pettygramRepository = PettygramRepository();
+
   final dio = Dio();
   final SharedPreferencesConfig storageConfig =
       getIt<SharedPreferencesConfig>();
 
   GoRouter onGenerateRouter() {
     dio.options.baseUrl = 'https://pettygram-api.onrender.com';
-    final UserBloc userBloc = UserBloc(dio: dio);
+    final UserBloc userBloc =
+        UserBloc(pettygramRepository: pettygramRepository);
     final LoginBloc loginBloc =
         LoginBloc(dio: dio, storageConfig: storageConfig);
 
