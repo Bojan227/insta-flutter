@@ -1,9 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:pettygram_flutter/app.dart';
 import 'package:pettygram_flutter/router.dart';
-import 'package:pettygram_flutter/ui/home/home_screen.dart';
-import 'package:pettygram_flutter/ui/login/login_screen.dart';
 
 void main() {
   runApp(MyApp());
