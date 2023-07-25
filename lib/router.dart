@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pettygram_flutter/injector/injector.dart';
+import 'package:pettygram_flutter/storage/shared_preferences.dart';
 import 'package:pettygram_flutter/ui/home/home_screen.dart';
 import 'package:pettygram_flutter/ui/login/login_screen.dart';
 
@@ -9,13 +11,15 @@ import 'blocs/login/login_bloc.dart';
 import 'blocs/user/user_bloc.dart';
 
 class AppRouter {
-  AppRouter({required this.dio});
+  AppRouter();
 
-  final Dio dio;
+  final dio = Dio();
 
   GoRouter onGenerateRouter() {
+    dio.options.baseUrl = 'https://pettygram-api.onrender.com';
     final UserBloc userBloc = UserBloc(dio: dio);
-    final LoginBloc loginBloc = LoginBloc(dio: dio);
+    final LoginBloc loginBloc =
+        LoginBloc(dio: dio, storageConfig: getIt<SharedPreferencesConfig>());
 
     final GoRouter _router = GoRouter(
       routes: [
@@ -45,6 +49,7 @@ class AppRouter {
           },
         ),
       ],
+      redirect: (context, state) {},
     );
 
     return _router;
