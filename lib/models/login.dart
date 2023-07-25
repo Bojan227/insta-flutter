@@ -11,6 +11,5 @@ class Login extends Equatable {
   late Token token;
 
   @override
-  // TODO: implement props
   List<Object?> get props => [token];
 }

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pettygram_flutter/blocs/login/login_bloc.dart';
 import 'package:pettygram_flutter/injector/injector.dart';
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
+import 'package:pettygram_flutter/widgets/main_drawer.dart';
 import 'package:pettygram_flutter/widgets/stories.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,21 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
         getIt<SharedPreferencesConfig>().getString('accessToken');
 
     return Scaffold(
-      drawer: SafeArea(
-        child: Drawer(
-            child: Column(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                if (token != null) Navigator.of(context).pop();
-
-                context.go('/login');
-              },
-              child: const Text('Login'),
-            )
-          ],
-        )),
-      ),
+      drawer: const MainDrawer(),
       appBar: AppBar(
         title: const Text('Pettygram'),
         actions: [

@@ -15,4 +15,6 @@ class SharedPreferencesConfig {
       prefs!.setString(key, value);
 
   String? getString(String key) => prefs!.getString(key);
+
+  Future<bool> removeString(String key) => prefs!.remove(key);
 }

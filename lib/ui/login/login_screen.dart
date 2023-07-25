@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pettygram_flutter/blocs/login/login_bloc.dart';
 import 'package:pettygram_flutter/models/login_body.dart';
 import 'package:pettygram_flutter/utils/dialog_builder.dart';
+import 'package:pettygram_flutter/widgets/input_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,11 +23,25 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
+      print(username);
+
       context.read<LoginBloc>().add(
             LoginRequest(
               loginBody: LoginBody(username: username, password: password),
             ),
           );
+    }
+  }
+
+  void handleInput(String value, label) {
+    if (label == 'username') {
+      setState(() {
+        username = value;
+      });
+    } else {
+      setState(() {
+        password = value;
+      });
     }
   }
 
@@ -40,38 +55,17 @@ class _LoginScreenState extends State<LoginScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  TextFormField(
-                    decoration: InputDecoration(
-                      fillColor: Colors.grey[100],
-                      contentPadding: const EdgeInsets.all(10),
-                      label: const Text('Username'),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      return null;
-                    },
-                    onSaved: (newValue) => username = newValue!,
-                  ),
+                  InputField(
+                      handleInput: (value, label) => handleInput(value, label),
+                      obscureText: false,
+                      label: 'username'),
                   const SizedBox(
                     height: 14,
                   ),
-                  TextFormField(
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      fillColor: Colors.grey,
-                      contentPadding: EdgeInsets.all(10),
-                      label: Text('Password'),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      return null;
-                    },
-                    onSaved: (newValue) => password = newValue!,
-                  ),
+                  InputField(
+                      handleInput: (value, label) => handleInput(value, label),
+                      obscureText: true,
+                      label: 'password'),
                   const SizedBox(
                     height: 20,
                   ),
