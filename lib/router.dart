@@ -20,14 +20,13 @@ class AppRouter {
   late UserBloc userBloc;
   late LoginBloc loginBloc;
 
-  final dio = Dio();
   final SharedPreferencesConfig storageConfig =
       getIt<SharedPreferencesConfig>();
 
   GoRouter onGenerateRouter() {
-    dio.options.baseUrl = 'https://pettygram-api.onrender.com';
     userBloc = UserBloc(pettygramRepository: pettygramRepository);
-    loginBloc = LoginBloc(dio: dio, storageConfig: storageConfig);
+    loginBloc = LoginBloc(
+        pettygramRepository: pettygramRepository, storageConfig: storageConfig);
 
     final GoRouter _router = GoRouter(
       routes: [

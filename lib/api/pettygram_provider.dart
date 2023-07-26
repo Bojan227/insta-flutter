@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:pettygram_flutter/app_config.dart';
+import 'package:pettygram_flutter/models/login_body.dart';
+import 'package:pettygram_flutter/models/token.dart';
 import 'package:pettygram_flutter/models/user.dart';
 
 abstract class IPettygramProvider {
@@ -26,5 +28,12 @@ class PettygramProvider implements IPettygramProvider {
     }
 
     return users;
+  }
+
+  Future<Token> loginRequest(LoginBody loginBody) async {
+    final response = await _dio.post<dynamic>('/user/login',
+        data: loginBody,
+        options: Options(contentType: Headers.jsonContentType));
+    return Token(accessToken: response.data['token']);
   }
 }
