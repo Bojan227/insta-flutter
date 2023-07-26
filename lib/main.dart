@@ -34,9 +34,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
-    appRouter.userBloc.close();
-    appRouter.loginBloc.close();
-
     super.dispose();
+    appRouter.loginBloc.close();
   }
 }

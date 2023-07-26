@@ -1,8 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
+
 import 'package:pettygram_flutter/injector/injector.dart';
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
 import 'package:pettygram_flutter/ui/home/home_screen.dart';
@@ -14,20 +13,13 @@ import 'blocs/user/user_bloc.dart';
 class AppRouter {
   AppRouter();
 
-  final PettygramRepository pettygramRepository = PettygramRepository();
-
-  // temp solution for closing blocs
-  late UserBloc userBloc;
-  late LoginBloc loginBloc;
-
   final SharedPreferencesConfig storageConfig =
       getIt<SharedPreferencesConfig>();
 
-  GoRouter onGenerateRouter() {
-    userBloc = UserBloc(pettygramRepository: pettygramRepository);
-    loginBloc = LoginBloc(
-        pettygramRepository: pettygramRepository, storageConfig: storageConfig);
+  final UserBloc userBloc = getIt<UserBloc>();
+  final LoginBloc loginBloc = getIt<LoginBloc>();
 
+  GoRouter onGenerateRouter() {
     final GoRouter _router = GoRouter(
       routes: [
         GoRoute(
@@ -35,8 +27,8 @@ class AppRouter {
           builder: (BuildContext context, GoRouterState state) {
             return MultiBlocProvider(
               providers: [
-                BlocProvider.value(
-                  value: userBloc..add(GetUsers()),
+                BlocProvider(
+                  create: (context) => userBloc,
                 ),
                 BlocProvider.value(
                   value: loginBloc,

@@ -1,5 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:pettygram_flutter/api/pettygram_provider.dart';
+import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
+import 'package:pettygram_flutter/blocs/login/login_bloc.dart';
+import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
 
 GetIt getIt = GetIt.instance;
@@ -11,4 +14,14 @@ Future setupInjector() async {
 
   final PettygramProvider pettygramProvider = PettygramProvider();
   getIt.registerSingleton<PettygramProvider>(pettygramProvider);
+
+  final PettygramRepository pettygramRepository = PettygramRepository();
+  getIt.registerSingleton<PettygramRepository>(pettygramRepository);
+
+  final UserBloc usersBloc = UserBloc(pettygramRepository: pettygramRepository);
+  getIt.registerSingleton<UserBloc>(usersBloc..add(GetUsers()));
+
+  final LoginBloc loginBloc = LoginBloc(
+      storageConfig: sharedConfig, pettygramRepository: pettygramRepository);
+  getIt.registerSingleton<LoginBloc>(loginBloc);
 }
