@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pettygram_flutter/injector/injector.dart';
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
 import 'package:pettygram_flutter/ui/home/home_screen.dart';
+import 'package:pettygram_flutter/ui/home/tabs_screen.dart';
 import 'package:pettygram_flutter/ui/login/login_screen.dart';
 
 import 'blocs/login/login_bloc.dart';
@@ -34,7 +35,7 @@ class AppRouter {
                   value: loginBloc,
                 )
               ],
-              child: const HomeScreen(),
+              child: const TabsScreen(),
             );
           },
         ),
@@ -43,7 +44,7 @@ class AppRouter {
           builder: (BuildContext context, GoRouterState state) {
             return BlocProvider.value(
               value: loginBloc,
-              child: const LoginScreen(),
+              child: LoginScreen(),
             );
           },
         ),

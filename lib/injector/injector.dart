@@ -1,18 +1,19 @@
 import 'package:get_it/get_it.dart';
 import 'package:pettygram_flutter/api/pettygram_provider.dart';
 import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
+import 'package:pettygram_flutter/app_config.dart';
 import 'package:pettygram_flutter/blocs/login/login_bloc.dart';
 import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
 
 GetIt getIt = GetIt.instance;
 
-Future setupInjector() async {
+Future setupInjector(AppConfig config) async {
   final SharedPreferencesConfig sharedConfig =
       await SharedPreferencesConfig().initSharedPreferences();
   getIt.registerSingleton<SharedPreferencesConfig>(sharedConfig);
 
-  final PettygramProvider pettygramProvider = PettygramProvider();
+  final PettygramProvider pettygramProvider = PettygramProvider(config);
   getIt.registerSingleton<PettygramProvider>(pettygramProvider);
 
   final PettygramRepository pettygramRepository = PettygramRepository();

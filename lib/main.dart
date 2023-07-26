@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:pettygram_flutter/app_config.dart';
 import 'package:pettygram_flutter/injector/injector.dart';
 import 'package:pettygram_flutter/router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await setupInjector();
-  // await getIt<SharedPreferencesConfig>().initSharedPreferences();
+  const appConfig = AppConfig(apiBaseUrl: 'https://pettygram-api.onrender.com');
+
+  await setupInjector(appConfig);
+
   runApp(const MyApp());
 }
 

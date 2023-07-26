@@ -7,7 +7,7 @@ class InputField extends StatelessWidget {
       required this.obscureText,
       required this.label});
 
-  final void Function(String value, String label) handleInput;
+  final void Function(String value) handleInput;
   final bool obscureText;
   final String label;
 
@@ -26,7 +26,7 @@ class InputField extends StatelessWidget {
         }
         return null;
       },
-      onSaved: (newValue) => handleInput(newValue!, label),
+      onSaved: (newValue) => handleInput(newValue!),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pettygram_flutter/ui/user/user_details.dart';
 import 'package:pettygram_flutter/widgets/circle_image.dart';
@@ -11,46 +12,46 @@ class StoriesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: users.length,
-      itemBuilder: (context, index) {
-        return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => UserDetails(user: users[index]),
-                    ),
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.all(2),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                          colors: [Colors.purple, Colors.orange]),
-                    ),
-                    child: CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Colors.white,
-                      child: CircleImage(imageUrl: users[index].imageUrl!),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                Text(
-                  users[index].username!,
-                  textAlign: TextAlign.center,
-                )
-              ],
-            ));
-      },
+    return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
+      child: Row(
+        children: users
+            .map(
+              (user) => GestureDetector(
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => UserDetails(user: user),
+                )),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(2),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                              colors: [Colors.purple, Colors.orange]),
+                        ),
+                        child: CircleAvatar(
+                            radius: 40,
+                            backgroundColor: Colors.white,
+                            child: CircleImage(imageUrl: user.imageUrl!)),
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        user.username!,
+                        textAlign: TextAlign.center,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )
+            .toList(),
+      ),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CircleImage extends StatelessWidget {
@@ -10,14 +11,13 @@ class CircleImage extends StatelessWidget {
     return CircleAvatar(
       radius: 35,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(35),
-        child: Image.network(
-          imageUrl,
-          fit: BoxFit.fill,
-          width: double.infinity,
-          height: double.infinity,
-        ),
-      ),
+          borderRadius: BorderRadius.circular(35),
+          child: CachedNetworkImage(
+            imageUrl: imageUrl,
+            fit: BoxFit.fill,
+            width: double.infinity,
+            height: double.infinity,
+          )),
     );
   }
 }

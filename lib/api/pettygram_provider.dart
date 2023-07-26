@@ -9,10 +9,8 @@ abstract class IPettygramProvider {
 }
 
 class PettygramProvider implements IPettygramProvider {
-  PettygramProvider() {
-    _dio.options.baseUrl =
-        const AppConfig(apiBaseUrl: 'https://pettygram-api.onrender.com')
-            .apiBaseUrl;
+  PettygramProvider(AppConfig config) {
+    _dio.options.baseUrl = config.apiBaseUrl;
   }
 
   final Dio _dio = Dio();
