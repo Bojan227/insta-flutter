@@ -22,6 +22,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
       emit(UsersLoaded(users: users));
     } catch (error) {
+      print(error);
       emit(UsersFailed(error: error.toString()));
     }
   }
