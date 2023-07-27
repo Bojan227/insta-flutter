@@ -1,11 +1,16 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:pettygram_flutter/app_config.dart';
 import 'package:pettygram_flutter/models/login_body.dart';
+import 'package:pettygram_flutter/models/post.dart';
 import 'package:pettygram_flutter/models/token.dart';
 import 'package:pettygram_flutter/models/user.dart';
 
 abstract class IPettygramProvider {
   Future<List<User>> getUsers();
+  Future<Token> loginRequest(LoginBody loginBody);
+  Future<List<Post>> getPostsByUserId(String id);
 }
 
 class PettygramProvider implements IPettygramProvider {
@@ -28,10 +33,23 @@ class PettygramProvider implements IPettygramProvider {
     return users;
   }
 
+  @override
   Future<Token> loginRequest(LoginBody loginBody) async {
     final response = await _dio.post<dynamic>('/user/login',
         data: loginBody,
         options: Options(contentType: Headers.jsonContentType));
     return Token(accessToken: response.data['token']);
+  }
+
+  @override
+  Future<List<Post>> getPostsByUserId(String id) async {
+    final response = await _dio.get<dynamic>('/posts/$id');
+
+    List<Post> posts = [];
+
+    for (var json in response.data) {
+      posts.add(Post.fromJson(json));
+    }
+    return posts;
   }
 }
