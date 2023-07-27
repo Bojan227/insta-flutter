@@ -4,9 +4,6 @@ import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
 import 'package:pettygram_flutter/widgets/skeleton_stories.dart';
 import 'package:pettygram_flutter/widgets/stories_list.dart';
 
-const imageUrl =
-    "https://res.cloudinary.com/boki2435/image/upload/v1677156997/ovftma9p4kipk5f3chcu.png";
-
 class StoriesWidget extends StatelessWidget {
   const StoriesWidget({super.key});
 
