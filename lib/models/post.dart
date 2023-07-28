@@ -26,6 +26,10 @@ class Post extends Equatable {
   String? createdAt;
   List<dynamic>? likes;
 
+  bool isLiked(String id) {
+    return likes!.any((like) => like == id);
+  }
+
   @override
   List<Object?> get props => [id, text, createdBy, imageUrl];
 }

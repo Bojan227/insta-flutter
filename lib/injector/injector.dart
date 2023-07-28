@@ -2,9 +2,11 @@ import 'package:get_it/get_it.dart';
 import 'package:pettygram_flutter/api/pettygram_provider.dart';
 import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
 import 'package:pettygram_flutter/app_config.dart';
+import 'package:pettygram_flutter/blocs/auth/user_bloc.dart';
 import 'package:pettygram_flutter/blocs/login/login_bloc.dart';
-import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
-import 'package:pettygram_flutter/blocs/user_posts/user_post_bloc.dart';
+import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
+import 'package:pettygram_flutter/blocs/user/user_post_bloc.dart';
+
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
 
 GetIt getIt = GetIt.instance;
@@ -27,7 +29,15 @@ Future setupInjector(AppConfig config) async {
       storageConfig: sharedConfig, pettygramRepository: pettygramRepository);
   getIt.registerSingleton<LoginBloc>(loginBloc);
 
-  final UserPostBloc userPostsBloc =
-      UserPostBloc(pettygramRepository: pettygramRepository);
+  final UserPostBloc userPostsBloc = UserPostBloc(
+      pettygramRepository: pettygramRepository, storage: sharedConfig);
   getIt.registerSingleton<UserPostBloc>(userPostsBloc);
+
+  final PostBloc postBloc = PostBloc(pettygramRepository: pettygramRepository);
+  getIt.registerSingleton<PostBloc>(
+    postBloc
+      ..add(
+        GetPosts(),
+      ),
+  );
 }

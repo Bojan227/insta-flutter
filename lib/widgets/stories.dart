@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
+import 'package:pettygram_flutter/blocs/auth/user_bloc.dart';
+
 import 'package:pettygram_flutter/widgets/skeleton_stories.dart';
 import 'package:pettygram_flutter/widgets/stories_list.dart';
 

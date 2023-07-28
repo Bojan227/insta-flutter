@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:pettygram_flutter/models/post.dart';
 
 class User extends Equatable {
   User({
@@ -10,6 +11,7 @@ class User extends Equatable {
     required this.imageUrl,
     required this.followers,
     required this.following,
+    required this.saved,
   });
 
   User.fromJson(Map<String, dynamic> json) {
@@ -22,6 +24,7 @@ class User extends Equatable {
     imageUrl = json['imageUrl'];
     followers = json['followers'];
     following = json['following'];
+    saved = json['saved'];
   }
 
   String? id;
@@ -32,25 +35,43 @@ class User extends Equatable {
   String? imageUrl;
   List<dynamic>? followers;
   List<dynamic>? following;
+  List<dynamic>? saved;
 
-  User copyWith(
-      {String? id,
-      String? username,
-      String? firstName,
-      String? lastName,
-      String? imageId,
-      String? imageUrl,
-      List<dynamic>? followers,
-      List<dynamic>? following}) {
+  User copyWith({
+    String? id,
+    String? username,
+    String? firstName,
+    String? lastName,
+    String? imageId,
+    String? imageUrl,
+    List<dynamic>? followers,
+    List<dynamic>? following,
+    List<dynamic>? saved,
+  }) {
     return User(
-        id: id ?? this.id,
-        username: username ?? this.username,
-        firstName: firstName ?? this.firstName,
-        lastName: lastName ?? this.lastName,
-        imageId: imageId ?? this.imageId,
-        imageUrl: imageUrl ?? this.imageUrl,
-        followers: followers ?? this.followers,
-        following: following ?? this.following);
+      id: id ?? this.id,
+      username: username ?? this.username,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      imageId: imageId ?? this.imageId,
+      imageUrl: imageUrl ?? this.imageUrl,
+      followers: followers ?? this.followers,
+      following: following ?? this.following,
+      saved: saved ?? this.saved,
+    );
+  }
+
+  bool isSaved(String postId) {
+    return saved!.any((post) {
+      final Post postCreated = Post(
+          id: post['_id'],
+          text: post['text'],
+          createdBy: {"createdBy": post['createdBy']},
+          imageUrl: post['imageUrl'],
+          createdAt: post['createdAt']);
+
+      return postCreated.id == postId;
+    });
   }
 
   @override
