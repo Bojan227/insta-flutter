@@ -1,7 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pettygram_flutter/blocs/login/login_bloc.dart';
 import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
 import 'package:pettygram_flutter/injector/injector.dart';
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
@@ -28,7 +26,7 @@ class HomeScreen extends StatelessWidget {
 
           if (state is PostFailed) {
             return Center(
-              child: Text("${state.error}"),
+              child: Text(state.error),
             );
           }
 

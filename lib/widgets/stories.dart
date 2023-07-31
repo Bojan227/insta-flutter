@@ -13,14 +13,15 @@ class StoriesWidget extends StatelessWidget {
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
         return Container(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            width: double.infinity,
-            height: 180,
-            child: state is UsersLoaded
-                ? StoriesList(users: state.users)
-                : state is UsersLoading
-                    ? const SkeletonStories()
-                    : const Text('No users'));
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          width: double.infinity,
+          height: 180,
+          child: state is UsersLoaded
+              ? StoriesList(users: state.users)
+              : state is UsersLoading
+                  ? const SkeletonStories()
+                  : const Text('No users'),
+        );
       },
     );
   }

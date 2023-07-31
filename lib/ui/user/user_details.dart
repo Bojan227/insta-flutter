@@ -113,7 +113,7 @@ class UserDetails extends StatelessWidget {
               TabBar(
                 labelPadding: EdgeInsets.only(bottom: 16, top: 12),
                 indicatorSize: TabBarIndicatorSize.tab,
-                tabs: [Icon(Icons.grid_on), Icon(Icons.save)],
+                tabs: [Icon(Icons.grid_on), Icon(Icons.bookmark)],
               ),
               Expanded(
                 child: TabBarView(
