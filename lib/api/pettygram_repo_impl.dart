@@ -46,4 +46,9 @@ class PettygramRepository implements IPettygramRepository {
   Future<User> editUser(EditBody editBody, Token token) async {
     return await _provider.editUser(editBody, token);
   }
+
+  @override
+  Future<User> getUserById(String userId) async {
+    return await _provider.getUserById(userId);
+  }
 }

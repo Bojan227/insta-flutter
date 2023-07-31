@@ -16,7 +16,7 @@ class StoriesList extends StatelessWidget {
         children: users
             .map(
               (user) => GestureDetector(
-                onTap: () => context.push('/profile', extra: user),
+                onTap: () => context.push('/profile', extra: user.id),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(

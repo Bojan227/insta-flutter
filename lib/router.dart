@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
+import 'package:pettygram_flutter/blocs/user/cubit/user_cubit.dart';
 import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
 import 'package:pettygram_flutter/blocs/users/users_bloc.dart';
 import 'package:pettygram_flutter/injector/injector.dart';
 import 'package:pettygram_flutter/models/user.dart';
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
 import 'package:pettygram_flutter/ui/create/create_screen.dart';
+import 'package:pettygram_flutter/ui/edit/edit_screen.dart';
 import 'package:pettygram_flutter/ui/tabs/tabs_screen.dart';
 import 'package:pettygram_flutter/ui/login/login_screen.dart';
 import 'package:pettygram_flutter/ui/user/user_details.dart';
@@ -24,6 +26,7 @@ class AppRouter {
   final LoginBloc loginBloc = getIt<LoginBloc>();
   final UserBloc userBloc = getIt<UserBloc>();
   final PostBloc postBloc = getIt<PostBloc>();
+  final UserCubit userCubit = getIt<UserCubit>();
 
   GoRouter onGenerateRouter() {
     final GoRouter _router = GoRouter(
@@ -52,19 +55,29 @@ class AppRouter {
             },
             routes: [
               GoRoute(
-                path: 'profile',
-                builder: (BuildContext context, GoRouterState state) {
-                  User user = state.extra as User;
+                  path: 'profile',
+                  builder: (BuildContext context, GoRouterState state) {
+                    String userId = state.extra as String;
 
-                  return BlocProvider.value(
-                    value: userBloc
-                      ..add(
-                        GetUserPosts(userId: user.id!),
+                    return MultiBlocProvider(providers: [
+                      BlocProvider.value(
+                        value: userBloc..add(GetUserPosts(userId: userId)),
                       ),
-                    child: UserDetails(user: user),
-                  );
-                },
-              ),
+                      BlocProvider.value(value: userCubit..loadUser(userId)),
+                    ], child: const UserDetails());
+                  },
+                  routes: [
+                    GoRoute(
+                      path: 'edit',
+                      builder: (BuildContext context, GoRouterState state) {
+                        User user = state.extra as User;
+                        return BlocProvider.value(
+                          value: userCubit,
+                          child: EditUserScreen(user: user),
+                        );
+                      },
+                    ),
+                  ]),
             ]),
         GoRoute(
           path: '/login',

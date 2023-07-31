@@ -36,7 +36,7 @@ class PostItem extends StatelessWidget {
                     color: Colors.black12,
                     child: GestureDetector(
                       onTap: () {
-                        context.push('/profile', extra: user);
+                        context.push('/profile', extra: user.id);
                       },
                       child: Row(
                         children: [

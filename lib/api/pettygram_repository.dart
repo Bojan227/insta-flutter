@@ -13,4 +13,5 @@ abstract class IPettygramRepository {
   Future<Post> addPost(PostBody postBody, Token token);
   Future<Map<String, dynamic>> toggleBookmark(String postId, Token token);
   Future<User> editUser(EditBody editBody, Token token);
+  Future<User> getUserById(String userId);
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class InputField extends StatelessWidget {
-  const InputField(
+  InputField(
       {super.key,
+      this.defaultValue,
       required this.handleInput,
       required this.obscureText,
       required this.label});
@@ -10,10 +11,12 @@ class InputField extends StatelessWidget {
   final void Function(String value) handleInput;
   final bool obscureText;
   final String label;
+  String? defaultValue;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: defaultValue,
       obscureText: obscureText,
       decoration: InputDecoration(
         fillColor: Colors.grey[100],

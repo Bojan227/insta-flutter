@@ -4,6 +4,7 @@ import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
 import 'package:pettygram_flutter/app_config.dart';
 import 'package:pettygram_flutter/blocs/login/login_bloc.dart';
 import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
+import 'package:pettygram_flutter/blocs/user/cubit/user_cubit.dart';
 import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
 import 'package:pettygram_flutter/blocs/users/users_bloc.dart';
 
@@ -33,6 +34,10 @@ Future setupInjector(AppConfig config) async {
   final UserBloc userBloc =
       UserBloc(pettygramRepository: pettygramRepository, storage: sharedConfig);
   getIt.registerSingleton<UserBloc>(userBloc);
+
+  final UserCubit userCubit = UserCubit(
+      pettygramRepository: pettygramRepository, storage: sharedConfig);
+  getIt.registerSingleton<UserCubit>(userCubit);
 
   final PostBloc postBloc = PostBloc(pettygramRepository: pettygramRepository);
   getIt.registerSingleton<PostBloc>(

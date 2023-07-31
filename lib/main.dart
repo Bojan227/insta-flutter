@@ -40,5 +40,6 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
     appRouter.loginBloc.close();
     appRouter.userBloc.close();
+    appRouter.userCubit.close();
   }
 }

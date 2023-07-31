@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
+import 'package:pettygram_flutter/models/edit_body.dart';
 import 'package:pettygram_flutter/models/post.dart';
 import 'package:pettygram_flutter/models/post_body.dart';
 import 'package:pettygram_flutter/models/token.dart';

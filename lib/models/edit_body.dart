@@ -10,6 +10,12 @@ class EditBody extends Equatable {
   final String lastName;
   final String username;
 
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'username': username,
+        'firstName': firstName,
+        'lastName': lastName
+      };
+
   @override
   List<Object?> get props => [firstName, lastName, username];
 }
