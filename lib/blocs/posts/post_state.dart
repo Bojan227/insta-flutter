@@ -26,3 +26,23 @@ class PostFailed extends PostState {
   @override
   List<Object> get props => [error];
 }
+
+class UserPostAdding extends PostState {}
+
+class UserPostAdded extends PostState {
+  const UserPostAdded({required this.userPost});
+
+  final Post userPost;
+
+  @override
+  List<Object> get props => [userPost];
+}
+
+class UserPostFailed extends PostState {
+  const UserPostFailed({required this.error});
+
+  final String error;
+
+  @override
+  List<Object> get props => [error];
+}

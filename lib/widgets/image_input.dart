@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 class ImageInput extends StatefulWidget {
   const ImageInput({super.key, required this.handleImageInput});
 
-  final void Function(List<int> image) handleImageInput;
+  final void Function(List<String> image) handleImageInput;
 
   @override
   State<ImageInput> createState() => _ImageInputState();
@@ -26,9 +26,11 @@ class _ImageInputState extends State<ImageInput> {
 
     if (pickedImage == null) return;
 
+    List<String> image = [];
     File imagefile = File(pickedImage.path);
     var imagebytes = imagefile.readAsBytesSync();
     String base64Image = base64.encode(imagebytes);
+    image.add(base64Image);
 
     if (pickedImage != null) {
       setState(() {
@@ -36,7 +38,7 @@ class _ImageInputState extends State<ImageInput> {
       });
     }
 
-    widget.handleImageInput(imagebytes);
+    widget.handleImageInput(image);
   }
 
   @override

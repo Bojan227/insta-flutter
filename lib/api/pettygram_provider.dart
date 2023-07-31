@@ -64,7 +64,7 @@ class PettygramProvider implements IPettygramProvider {
   Future<Post> addPost(PostBody postBody, Token token) async {
     final response = await _dio.post<dynamic>(
       '/posts/',
-      data: postBody,
+      data: postBody.toJson(),
       options: Options(
         contentType: Headers.jsonContentType,
         headers: {"Authorization": "Bearer ${token.accessToken}"},

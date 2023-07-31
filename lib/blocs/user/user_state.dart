@@ -29,26 +29,6 @@ class UserPostsFailed extends UserState {
   List<Object> get props => [error];
 }
 
-class UserPostAdding extends UserState {}
-
-class UserPostAdded extends UserState {
-  const UserPostAdded({required this.userPost});
-
-  final Post userPost;
-
-  @override
-  List<Object> get props => [userPost];
-}
-
-class UserPostFailed extends UserState {
-  const UserPostFailed({required this.error});
-
-  final String error;
-
-  @override
-  List<Object> get props => [error];
-}
-
 class UserPostSaving extends UserState {}
 
 class UserPostBookmarked extends UserState {

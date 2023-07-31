@@ -8,3 +8,12 @@ abstract class PostEvent extends Equatable {
 }
 
 class GetPosts extends PostEvent {}
+
+class AddPost extends PostEvent {
+  const AddPost({required this.userPost});
+
+  final PostBody userPost;
+
+  @override
+  List<Object> get props => [userPost];
+}

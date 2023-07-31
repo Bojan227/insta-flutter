@@ -16,15 +16,6 @@ class GetUserPosts extends UserEvent {
   List<Object> get props => [userId];
 }
 
-class AddPost extends UserEvent {
-  const AddPost({required this.userPost});
-
-  final PostBody userPost;
-
-  @override
-  List<Object> get props => [userPost];
-}
-
 class ToggleBookmark extends UserEvent {
   const ToggleBookmark({required this.postId});
 

@@ -40,8 +40,8 @@ class AppRouter {
                   BlocProvider(
                     create: (context) => usersBloc,
                   ),
-                  BlocProvider(
-                    create: (context) => postBloc,
+                  BlocProvider.value(
+                    value: postBloc,
                   ),
                   BlocProvider(
                     create: (context) => userBloc,
@@ -92,7 +92,7 @@ class AppRouter {
           path: '/create',
           builder: (BuildContext context, GoRouterState state) {
             return BlocProvider.value(
-              value: userBloc,
+              value: postBloc,
               child: CreateScreen(),
             );
           },

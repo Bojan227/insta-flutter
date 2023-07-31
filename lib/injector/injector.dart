@@ -39,7 +39,8 @@ Future setupInjector(AppConfig config) async {
       pettygramRepository: pettygramRepository, storage: sharedConfig);
   getIt.registerSingleton<UserCubit>(userCubit);
 
-  final PostBloc postBloc = PostBloc(pettygramRepository: pettygramRepository);
+  final PostBloc postBloc =
+      PostBloc(pettygramRepository: pettygramRepository, storage: sharedConfig);
   getIt.registerSingleton<PostBloc>(
     postBloc
       ..add(

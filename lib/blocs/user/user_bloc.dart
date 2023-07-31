@@ -2,9 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
-import 'package:pettygram_flutter/models/edit_body.dart';
 import 'package:pettygram_flutter/models/post.dart';
-import 'package:pettygram_flutter/models/post_body.dart';
 import 'package:pettygram_flutter/models/token.dart';
 import 'package:pettygram_flutter/models/user.dart';
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
@@ -16,7 +14,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc({required this.pettygramRepository, required this.storage})
       : super(UserPostsInitial()) {
     on<GetUserPosts>(_onGetUserPosts);
-    on<AddPost>(_onAddPost);
     on<ToggleBookmark>(_onToggleBookmark);
   }
 
@@ -36,21 +33,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       );
     } on DioException catch (error) {
       emit(UserPostsFailed(error: error.response?.data['error']));
-    }
-  }
-
-  Future<void> _onAddPost(AddPost event, Emitter<UserState> emit) async {
-    emit(UserPostAdding());
-
-    try {
-      Post userPost = await pettygramRepository.addPost(event.userPost,
-          Token(accessToken: storage.getString('accessToken')!));
-
-      emit(
-        UserPostAdded(userPost: userPost),
-      );
-    } on DioException catch (error) {
-      emit(UserPostFailed(error: error.response?.data['error']));
     }
   }
 
