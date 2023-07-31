@@ -1,11 +1,8 @@
-import 'dart:convert';
 import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:pettygram_flutter/blocs/user/user_post_bloc.dart';
 import 'package:pettygram_flutter/models/post.dart';
 import 'package:pettygram_flutter/models/user.dart';
@@ -18,15 +15,8 @@ class PostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final User user = User(
-        username: post.createdBy!['username'],
-        firstName: post.createdBy!['firstName'],
-        lastName: post.createdBy!['lastName'],
-        imageId: post.createdBy!['imageId'],
-        imageUrl: post.createdBy!['imageUrl'],
-        followers: post.createdBy!['followers'],
-        following: post.createdBy!['following'],
-        saved: post.createdBy!['saved']);
+    final User user = User.fromJson(post.createdBy!);
+
     DateTime dateTime = parseDateString(post.createdAt!);
     String formattedDate =
         "${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}";
