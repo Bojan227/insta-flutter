@@ -43,8 +43,8 @@ class AppRouter {
                   BlocProvider.value(
                     value: postBloc,
                   ),
-                  BlocProvider(
-                    create: (context) => userBloc,
+                  BlocProvider.value(
+                    value: userBloc,
                   ),
                   BlocProvider.value(
                     value: loginBloc,
@@ -63,7 +63,9 @@ class AppRouter {
                       BlocProvider.value(
                         value: userBloc..add(GetUserPosts(userId: userId)),
                       ),
-                      BlocProvider.value(value: userCubit..loadUser(userId)),
+                      BlocProvider.value(
+                        value: userCubit..loadUser(userId),
+                      ),
                     ], child: const UserDetails());
                   },
                   routes: [
@@ -82,8 +84,8 @@ class AppRouter {
         GoRoute(
           path: '/login',
           builder: (BuildContext context, GoRouterState state) {
-            return BlocProvider.value(
-              value: loginBloc,
+            return BlocProvider(
+              create: (context) => loginBloc,
               child: LoginScreen(),
             );
           },
