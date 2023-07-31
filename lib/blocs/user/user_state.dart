@@ -1,17 +1,17 @@
-part of 'user_post_bloc.dart';
+part of 'user_bloc.dart';
 
-abstract class UserPostsState extends Equatable {
-  const UserPostsState();
+abstract class UserState extends Equatable {
+  const UserState();
 
   @override
   List<Object> get props => [];
 }
 
-class UserPostsInitial extends UserPostsState {}
+class UserPostsInitial extends UserState {}
 
-class UserPostsLoading extends UserPostsState {}
+class UserPostsLoading extends UserState {}
 
-class UserPostsLoaded extends UserPostsState {
+class UserPostsLoaded extends UserState {
   const UserPostsLoaded({required this.userPosts});
 
   final List<Post> userPosts;
@@ -20,7 +20,7 @@ class UserPostsLoaded extends UserPostsState {
   List<Object> get props => [userPosts];
 }
 
-class UserPostsFailed extends UserPostsState {
+class UserPostsFailed extends UserState {
   const UserPostsFailed({required this.error});
 
   final String error;
@@ -29,9 +29,9 @@ class UserPostsFailed extends UserPostsState {
   List<Object> get props => [error];
 }
 
-class UserPostAdding extends UserPostsState {}
+class UserPostAdding extends UserState {}
 
-class UserPostAdded extends UserPostsState {
+class UserPostAdded extends UserState {
   const UserPostAdded({required this.userPost});
 
   final Post userPost;
@@ -40,7 +40,7 @@ class UserPostAdded extends UserPostsState {
   List<Object> get props => [userPost];
 }
 
-class UserPostFailed extends UserPostsState {
+class UserPostFailed extends UserState {
   const UserPostFailed({required this.error});
 
   final String error;
@@ -49,9 +49,9 @@ class UserPostFailed extends UserPostsState {
   List<Object> get props => [error];
 }
 
-class UserPostSaving extends UserPostsState {}
+class UserPostSaving extends UserState {}
 
-class UserPostBookmarked extends UserPostsState {
+class UserPostBookmarked extends UserState {
   const UserPostBookmarked({required this.user, required this.post});
 
   final Post post;
@@ -61,7 +61,7 @@ class UserPostBookmarked extends UserPostsState {
   List<Object> get props => [post, user];
 }
 
-class UserPostBookmarkFailed extends UserPostsState {
+class UserPostBookmarkFailed extends UserState {
   const UserPostBookmarkFailed({required this.error});
 
   final String error;

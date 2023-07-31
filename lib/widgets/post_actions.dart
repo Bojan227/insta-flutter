@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pettygram_flutter/blocs/user/user_post_bloc.dart';
+import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
 import 'package:pettygram_flutter/models/post.dart';
 import 'package:pettygram_flutter/models/user.dart';
 
@@ -12,7 +12,7 @@ class PostActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserPostBloc, UserPostsState>(
+    return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -41,7 +41,7 @@ class PostActions extends StatelessWidget {
                 ? const CircularProgressIndicator()
                 : IconButton(
                     onPressed: () {
-                      context.read<UserPostBloc>().add(
+                      context.read<UserBloc>().add(
                             ToggleBookmark(postId: post.id!),
                           );
                     },

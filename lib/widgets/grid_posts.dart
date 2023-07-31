@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pettygram_flutter/blocs/user/user_post_bloc.dart';
+import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
 import 'package:pettygram_flutter/models/post.dart';
 
 class GridPosts extends StatelessWidget {
@@ -11,7 +11,7 @@ class GridPosts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserPostBloc, UserPostsState>(
+    return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
         if (state is UserPostsLoading) {
           return const Center(

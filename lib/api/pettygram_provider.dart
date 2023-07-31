@@ -1,7 +1,6 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:pettygram_flutter/app_config.dart';
+import 'package:pettygram_flutter/models/edit_body.dart';
 import 'package:pettygram_flutter/models/login_body.dart';
 import 'package:pettygram_flutter/models/post.dart';
 import 'package:pettygram_flutter/models/post_body.dart';
@@ -14,6 +13,7 @@ abstract class IPettygramProvider {
   Future<List<Post>> getPostsByUserId(String id);
   Future<Post> addPost(PostBody postBody, Token token);
   Future<List<Post>> getPosts();
+  Future<User> editUser(EditBody editBody, Token token);
 
   Future<Map<String, dynamic>> toggleBookmark(String postId, Token token);
 }
@@ -111,5 +111,21 @@ class PettygramProvider implements IPettygramProvider {
         createdAt: response.data['post']['createdAt']);
 
     return {'user': user, 'post': post};
+  }
+
+  @override
+  Future<User> editUser(EditBody editBody, Token token) async {
+    final response = await _dio.put<dynamic>(
+      '/user/edit',
+      data: editBody,
+      options:
+          Options(headers: {"Authorization": "Bearer ${token.accessToken}"}),
+    );
+
+    print(response.data);
+
+    User user = User.fromJson(response.data);
+
+    return user;
   }
 }

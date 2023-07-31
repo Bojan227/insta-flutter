@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pettygram_flutter/blocs/auth/user_bloc.dart';
-
+import 'package:pettygram_flutter/blocs/users/users_bloc.dart';
 import 'package:pettygram_flutter/widgets/skeleton_stories.dart';
 import 'package:pettygram_flutter/widgets/stories_list.dart';
 
@@ -10,7 +9,7 @@ class StoriesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserBloc, UserState>(
+    return BlocBuilder<UsersBloc, UsersState>(
       builder: (context, state) {
         return Container(
           padding: const EdgeInsets.symmetric(vertical: 12),

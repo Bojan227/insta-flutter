@@ -8,11 +8,11 @@ import 'package:pettygram_flutter/models/token.dart';
 import 'package:pettygram_flutter/models/user.dart';
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
 
-part 'user_post_event.dart';
-part 'user_post_state.dart';
+part 'user_event.dart';
+part 'user_state.dart';
 
-class UserPostBloc extends Bloc<UserPostsEvent, UserPostsState> {
-  UserPostBloc({required this.pettygramRepository, required this.storage})
+class UserBloc extends Bloc<UserEvent, UserState> {
+  UserBloc({required this.pettygramRepository, required this.storage})
       : super(UserPostsInitial()) {
     on<GetUserPosts>(_onGetUserPosts);
     on<AddPost>(_onAddPost);
@@ -23,7 +23,7 @@ class UserPostBloc extends Bloc<UserPostsEvent, UserPostsState> {
   final SharedPreferencesConfig storage;
 
   Future<void> _onGetUserPosts(
-      GetUserPosts event, Emitter<UserPostsState> emit) async {
+      GetUserPosts event, Emitter<UserState> emit) async {
     emit(UserPostsLoading());
 
     try {
@@ -38,7 +38,7 @@ class UserPostBloc extends Bloc<UserPostsEvent, UserPostsState> {
     }
   }
 
-  Future<void> _onAddPost(AddPost event, Emitter<UserPostsState> emit) async {
+  Future<void> _onAddPost(AddPost event, Emitter<UserState> emit) async {
     emit(UserPostAdding());
 
     try {
@@ -54,7 +54,7 @@ class UserPostBloc extends Bloc<UserPostsEvent, UserPostsState> {
   }
 
   Future<void> _onToggleBookmark(
-      ToggleBookmark event, Emitter<UserPostsState> emit) async {
+      ToggleBookmark event, Emitter<UserState> emit) async {
     emit(UserPostSaving());
 
     try {

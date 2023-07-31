@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pettygram_flutter/blocs/user/user_post_bloc.dart';
+import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
 import 'package:pettygram_flutter/models/post_body.dart';
 import 'package:pettygram_flutter/widgets/image_input.dart';
 import 'package:pettygram_flutter/widgets/textarea.dart';
@@ -18,7 +18,7 @@ class CreateScreen extends StatelessWidget {
     if (_formKey.currentState!.validate() && images.isNotEmpty) {
       _formKey.currentState!.save();
 
-      BlocProvider.of<UserPostBloc>(context).add(
+      BlocProvider.of<UserBloc>(context).add(
         AddPost(
           userPost: PostBody(text: caption, images: images),
         ),

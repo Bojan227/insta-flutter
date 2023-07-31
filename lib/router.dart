@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pettygram_flutter/blocs/auth/user_bloc.dart';
 import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
-import 'package:pettygram_flutter/blocs/user/user_post_bloc.dart';
-
+import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
+import 'package:pettygram_flutter/blocs/users/users_bloc.dart';
 import 'package:pettygram_flutter/injector/injector.dart';
 import 'package:pettygram_flutter/models/user.dart';
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
 import 'package:pettygram_flutter/ui/create/create_screen.dart';
-import 'package:pettygram_flutter/ui/home/home_screen.dart';
 import 'package:pettygram_flutter/ui/tabs/tabs_screen.dart';
 import 'package:pettygram_flutter/ui/login/login_screen.dart';
 import 'package:pettygram_flutter/ui/user/user_details.dart';
@@ -22,9 +20,9 @@ class AppRouter {
   final SharedPreferencesConfig storageConfig =
       getIt<SharedPreferencesConfig>();
 
-  final UserBloc userBloc = getIt<UserBloc>();
+  final UsersBloc usersBloc = getIt<UsersBloc>();
   final LoginBloc loginBloc = getIt<LoginBloc>();
-  final UserPostBloc userPostBloc = getIt<UserPostBloc>();
+  final UserBloc userBloc = getIt<UserBloc>();
   final PostBloc postBloc = getIt<PostBloc>();
 
   GoRouter onGenerateRouter() {
@@ -37,13 +35,13 @@ class AppRouter {
               return MultiBlocProvider(
                 providers: [
                   BlocProvider(
-                    create: (context) => userBloc,
+                    create: (context) => usersBloc,
                   ),
                   BlocProvider(
                     create: (context) => postBloc,
                   ),
                   BlocProvider(
-                    create: (context) => userPostBloc,
+                    create: (context) => userBloc,
                   ),
                   BlocProvider.value(
                     value: loginBloc,
@@ -59,7 +57,7 @@ class AppRouter {
                   User user = state.extra as User;
 
                   return BlocProvider.value(
-                    value: userPostBloc
+                    value: userBloc
                       ..add(
                         GetUserPosts(userId: user.id!),
                       ),
@@ -81,7 +79,7 @@ class AppRouter {
           path: '/create',
           builder: (BuildContext context, GoRouterState state) {
             return BlocProvider.value(
-              value: userPostBloc,
+              value: userBloc,
               child: CreateScreen(),
             );
           },

@@ -1,13 +1,13 @@
-part of 'user_post_bloc.dart';
+part of 'user_bloc.dart';
 
-abstract class UserPostsEvent extends Equatable {
-  const UserPostsEvent();
+abstract class UserEvent extends Equatable {
+  const UserEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class GetUserPosts extends UserPostsEvent {
+class GetUserPosts extends UserEvent {
   const GetUserPosts({required this.userId});
 
   final String userId;
@@ -16,7 +16,7 @@ class GetUserPosts extends UserPostsEvent {
   List<Object> get props => [userId];
 }
 
-class AddPost extends UserPostsEvent {
+class AddPost extends UserEvent {
   const AddPost({required this.userPost});
 
   final PostBody userPost;
@@ -25,7 +25,7 @@ class AddPost extends UserPostsEvent {
   List<Object> get props => [userPost];
 }
 
-class ToggleBookmark extends UserPostsEvent {
+class ToggleBookmark extends UserEvent {
   const ToggleBookmark({required this.postId});
 
   final String postId;
