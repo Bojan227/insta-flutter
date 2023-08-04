@@ -30,3 +30,25 @@ class CommentsFailed extends CommentsState {
   @override
   List<Object> get props => [error];
 }
+
+class CommentAdding extends CommentsState {
+  const CommentAdding();
+}
+
+class CommentAdded extends CommentsState {
+  const CommentAdded({required this.commentMessage});
+
+  final String commentMessage;
+
+  @override
+  List<Object> get props => [commentMessage];
+}
+
+class CommentAddedFailed extends CommentsState {
+  const CommentAddedFailed({required this.error});
+
+  final String error;
+
+  @override
+  List<Object> get props => [error];
+}

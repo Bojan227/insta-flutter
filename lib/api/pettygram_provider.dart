@@ -10,6 +10,7 @@ import 'package:pettygram_flutter/models/token.dart';
 import 'package:pettygram_flutter/models/user.dart';
 
 import '../models/comment.dart';
+import '../models/comment_body.dart';
 
 abstract class IPettygramProvider {
   Future<List<User>> getUsers();
@@ -21,6 +22,7 @@ abstract class IPettygramProvider {
   Future<User> getUserById(String userId);
   Future<Map<String, dynamic>> toggleBookmark(String postId, Token token);
   Future<List<Comment>> getCommentsByPostId(String postId);
+  Future<String> addComment(CommentBody commentBody, Token token);
 }
 
 class PettygramProvider implements IPettygramProvider {
@@ -156,5 +158,19 @@ class PettygramProvider implements IPettygramProvider {
     }
 
     return comments;
+  }
+
+  @override
+  Future<String> addComment(CommentBody commentBody, Token token) async {
+    final res = await _dio.post<dynamic>(
+      '/comments/',
+      data: commentBody.toJson(),
+      options: Options(
+        contentType: Headers.jsonContentType,
+        headers: {"Authorization": "Bearer ${token.accessToken}"},
+      ),
+    );
+
+    return res.data['message'];
   }
 }

@@ -6,6 +6,7 @@ import 'package:pettygram_flutter/models/token.dart';
 import 'package:pettygram_flutter/models/user.dart';
 
 import '../models/comment.dart';
+import '../models/comment_body.dart';
 
 abstract class IPettygramRepository {
   Future<List<User>> getUsers();
@@ -17,4 +18,5 @@ abstract class IPettygramRepository {
   Future<User> editUser(EditBody editBody, Token token);
   Future<User> getUserById(String userId);
   Future<List<Comment>> getCommentsByPostId(String postId);
+  Future<String> addComment(CommentBody commentBody, Token token);
 }

@@ -6,9 +6,10 @@ import '../../../models/comment.dart';
 import '../../../utils/parse_date.dart';
 
 class CommentItem extends StatelessWidget {
-  const CommentItem({super.key, required this.comment});
+  CommentItem({super.key, required this.comment, this.onTap});
 
   final Comment comment;
+  void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +45,17 @@ class CommentItem extends StatelessWidget {
                     const SizedBox(
                       width: 15,
                     ),
-                    Text('${comment.likes?.length} likes')
+                    Text(
+                        '${comment.likes?.length} ${comment.likes?.length == 1 ? 'like' : 'likes'}')
                   ],
                 )
               ],
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              onTap!();
+            },
             icon: const Icon(Icons.favorite_border),
           )
         ],

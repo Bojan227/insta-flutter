@@ -51,7 +51,7 @@ Future setupInjector(AppConfig config) async {
       ),
   );
 
-  final CommentsBloc commentsBloc =
-      CommentsBloc(pettygramRepository: pettygramRepository);
+  final CommentsBloc commentsBloc = CommentsBloc(
+      pettygramRepository: pettygramRepository, storage: sharedConfig);
   getIt.registerSingleton<CommentsBloc>(commentsBloc);
 }

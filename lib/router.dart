@@ -93,7 +93,9 @@ class AppRouter {
                       ..add(
                         GetComments(postId: postId),
                       ),
-                    child: const CommentsScreen(),
+                    child: CommentsScreen(
+                      postId: postId,
+                    ),
                   );
                 },
               ),
