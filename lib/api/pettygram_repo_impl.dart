@@ -1,6 +1,7 @@
 import 'package:pettygram_flutter/api/pettygram_provider.dart';
 import 'package:pettygram_flutter/api/pettygram_repository.dart';
 import 'package:pettygram_flutter/injector/injector.dart';
+import 'package:pettygram_flutter/models/comment.dart';
 import 'package:pettygram_flutter/models/edit_body.dart';
 import 'package:pettygram_flutter/models/login_body.dart';
 import 'package:pettygram_flutter/models/post.dart';
@@ -50,5 +51,10 @@ class PettygramRepository implements IPettygramRepository {
   @override
   Future<User> getUserById(String userId) async {
     return await _provider.getUserById(userId);
+  }
+
+  @override
+  Future<List<Comment>> getCommentsByPostId(String postId) async {
+    return await _provider.getCommentsByPostId(postId);
   }
 }

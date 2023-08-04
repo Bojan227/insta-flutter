@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:pettygram_flutter/api/pettygram_provider.dart';
 import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
 import 'package:pettygram_flutter/app_config.dart';
+import 'package:pettygram_flutter/blocs/comments/comments_bloc.dart';
 import 'package:pettygram_flutter/blocs/login/login_bloc.dart';
 import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
 import 'package:pettygram_flutter/blocs/user/cubit/user_cubit.dart';
@@ -13,6 +14,7 @@ import 'package:pettygram_flutter/storage/shared_preferences.dart';
 GetIt getIt = GetIt.instance;
 
 Future setupInjector(AppConfig config) async {
+  // data/domain layer
   final SharedPreferencesConfig sharedConfig =
       await SharedPreferencesConfig().initSharedPreferences();
   getIt.registerSingleton<SharedPreferencesConfig>(sharedConfig);
@@ -23,6 +25,7 @@ Future setupInjector(AppConfig config) async {
   final PettygramRepository pettygramRepository = PettygramRepository();
   getIt.registerSingleton<PettygramRepository>(pettygramRepository);
 
+  // application layer
   final UsersBloc usersBloc =
       UsersBloc(pettygramRepository: pettygramRepository);
   getIt.registerSingleton<UsersBloc>(usersBloc..add(GetUsers()));
@@ -47,4 +50,8 @@ Future setupInjector(AppConfig config) async {
         GetPosts(),
       ),
   );
+
+  final CommentsBloc commentsBloc =
+      CommentsBloc(pettygramRepository: pettygramRepository);
+  getIt.registerSingleton<CommentsBloc>(commentsBloc);
 }

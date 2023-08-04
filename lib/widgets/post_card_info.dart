@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pettygram_flutter/models/post.dart';
 import 'package:pettygram_flutter/models/user.dart';
 import 'package:pettygram_flutter/utils/parse_date.dart';
@@ -50,7 +51,9 @@ class PostCardInfo extends StatelessWidget {
             width: 8,
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              context.push('/comments', extra: post.id);
+            },
             child: const Text(
               'View all comments',
               style: TextStyle(

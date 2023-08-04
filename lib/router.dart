@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pettygram_flutter/blocs/comments/comments_bloc.dart';
 import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
 import 'package:pettygram_flutter/blocs/user/cubit/user_cubit.dart';
 import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:pettygram_flutter/blocs/users/users_bloc.dart';
 import 'package:pettygram_flutter/injector/injector.dart';
 import 'package:pettygram_flutter/models/user.dart';
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
+import 'package:pettygram_flutter/ui/comments/comments_screen.dart';
 import 'package:pettygram_flutter/ui/create/create_screen.dart';
 import 'package:pettygram_flutter/ui/edit/edit_screen.dart';
 import 'package:pettygram_flutter/ui/tabs/tabs_screen.dart';
@@ -27,6 +29,7 @@ class AppRouter {
   final UserBloc userBloc = getIt<UserBloc>();
   final PostBloc postBloc = getIt<PostBloc>();
   final UserCubit userCubit = getIt<UserCubit>();
+  final CommentsBloc commentsBloc = getIt<CommentsBloc>();
 
   GoRouter onGenerateRouter() {
     final GoRouter _router = GoRouter(
@@ -55,31 +58,45 @@ class AppRouter {
             },
             routes: [
               GoRoute(
-                  path: 'profile',
-                  builder: (BuildContext context, GoRouterState state) {
-                    String userId = state.extra as String;
+                path: 'profile',
+                builder: (BuildContext context, GoRouterState state) {
+                  String userId = state.extra as String;
 
-                    return MultiBlocProvider(providers: [
-                      BlocProvider.value(
-                        value: userBloc..add(GetUserPosts(userId: userId)),
-                      ),
-                      BlocProvider.value(
-                        value: userCubit..loadUser(userId),
-                      ),
-                    ], child: const UserDetails());
-                  },
-                  routes: [
-                    GoRoute(
-                      path: 'edit',
-                      builder: (BuildContext context, GoRouterState state) {
-                        User user = state.extra as User;
-                        return BlocProvider.value(
-                          value: userCubit,
-                          child: EditUserScreen(user: user),
-                        );
-                      },
+                  return MultiBlocProvider(providers: [
+                    BlocProvider.value(
+                      value: userBloc..add(GetUserPosts(userId: userId)),
                     ),
-                  ]),
+                    BlocProvider.value(
+                      value: userCubit..loadUser(userId),
+                    ),
+                  ], child: const UserDetails());
+                },
+                routes: [
+                  GoRoute(
+                    path: 'edit',
+                    builder: (BuildContext context, GoRouterState state) {
+                      User user = state.extra as User;
+                      return BlocProvider.value(
+                        value: userCubit,
+                        child: EditUserScreen(user: user),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              GoRoute(
+                path: 'comments',
+                builder: (BuildContext context, GoRouterState state) {
+                  String postId = state.extra as String;
+                  return BlocProvider.value(
+                    value: commentsBloc
+                      ..add(
+                        GetComments(postId: postId),
+                      ),
+                    child: const CommentsScreen(),
+                  );
+                },
+              ),
             ]),
         GoRoute(
           path: '/login',

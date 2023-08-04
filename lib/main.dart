@@ -42,5 +42,6 @@ class _MyAppState extends State<MyApp> {
     appRouter.userBloc.close();
     appRouter.userCubit.close();
     appRouter.postBloc.close();
+    appRouter.commentsBloc.close();
   }
 }
