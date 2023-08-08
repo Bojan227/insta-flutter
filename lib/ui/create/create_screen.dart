@@ -34,7 +34,7 @@ class CreateScreen extends StatelessWidget {
     return BlocListener<PostBloc, PostState>(
       listener: (context, state) {
         if (state is UserPostAdded || state is UserPostFailed) {
-          BlocProvider.of<PostBloc>(context).add(GetPosts());
+          BlocProvider.of<PostBloc>(context).add(GetPosts(page: '0'));
           context.go('/');
         }
       },

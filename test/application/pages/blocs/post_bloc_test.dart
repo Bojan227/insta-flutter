@@ -29,7 +29,7 @@ void main() {
 
         blocTest(
           '[PostLoading, PostLoaded] on success request',
-          setUp: () => when(() => mockPettygramRepo.getPosts())
+          setUp: () => when(() => mockPettygramRepo.getPosts('0'))
               .thenAnswer((invocation) => Future.value([
                     Post(
                         text: 'text',

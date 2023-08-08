@@ -24,7 +24,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     emit(PostLoading());
 
     try {
-      List<Post> userPosts = await pettygramRepository.getPosts();
+      List<Post> userPosts = await pettygramRepository.getPosts(event.page);
 
       emit(
         PostLoaded(posts: userPosts),

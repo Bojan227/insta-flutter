@@ -33,7 +33,9 @@ migrate_working_dir/
 /build/
 /linux
 /macos
-
+lib/domain
+lib/presentation
+lib/data
 /web
 /windows
 

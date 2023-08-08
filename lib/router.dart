@@ -17,6 +17,7 @@ import 'package:pettygram_flutter/ui/login/login_screen.dart';
 import 'package:pettygram_flutter/ui/user/user_details.dart';
 
 import 'blocs/login/login_bloc.dart';
+import 'blocs/posts/cubit/cubit/infinite_post_cubit.dart';
 
 class AppRouter {
   AppRouter();
@@ -31,6 +32,8 @@ class AppRouter {
   final UserCubit userCubit = getIt<UserCubit>();
   final CommentsBloc commentsBloc = getIt<CommentsBloc>();
 
+  final InfinitePostCubit infinitePostCubit = getIt<InfinitePostCubit>();
+
   GoRouter onGenerateRouter() {
     final GoRouter _router = GoRouter(
       initialLocation: '/',
@@ -44,7 +47,7 @@ class AppRouter {
                     create: (context) => usersBloc,
                   ),
                   BlocProvider.value(
-                    value: postBloc,
+                    value: infinitePostCubit,
                   ),
                   BlocProvider.value(
                     value: userBloc,
