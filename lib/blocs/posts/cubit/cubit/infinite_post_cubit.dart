@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:pettygram_flutter/models/post.dart';
+import 'package:stream_transform/stream_transform.dart';
 
 import '../../../../api/pettygram_repo_impl.dart';
 
@@ -13,26 +14,33 @@ class InfinitePostCubit extends Cubit<InfinitePostState> {
 
   final PettygramRepository pettygramRepository;
 
-  Future<void> getPosts(String page) async {
+  Future<void> getPosts() async {
     // check if its max number of posts
     if (state.hasReachedMax) return;
 
     if (state.status == PostStatus.initial) {
-      List<Post> posts = await pettygramRepository.getPosts(page);
+      List<Post> posts = await pettygramRepository.getPosts(0);
 
       emit(
         state.copyWith(
-            status: PostStatus.success, posts: posts, hasReachedMax: false),
+            status: PostStatus.success,
+            posts: posts,
+            hasReachedMax: false,
+            currentPage: state.currentPage + 1),
       );
     } else {
-      List<Post> posts = await pettygramRepository.getPosts(page);
+      print(state.currentPage);
+      List<Post> posts = await pettygramRepository.getPosts(state.currentPage);
 
-      emit(posts.isEmpty
-          ? state.copyWith(hasReachedMax: true)
-          : state.copyWith(
-              status: PostStatus.success,
-              posts: List.of(state.posts)..addAll(posts),
-              hasReachedMax: false));
+      emit(
+        posts.isEmpty
+            ? state.copyWith(hasReachedMax: true)
+            : state.copyWith(
+                status: PostStatus.success,
+                posts: List.of(state.posts)..addAll(posts),
+                hasReachedMax: false,
+                currentPage: state.currentPage + 1),
+      );
     }
   }
 }

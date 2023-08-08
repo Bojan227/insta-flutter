@@ -48,13 +48,13 @@ Future setupInjector(AppConfig config) async {
   getIt.registerSingleton<PostBloc>(
     postBloc
       ..add(
-        GetPosts(page: '0'),
+        GetPosts(),
       ),
   );
 
   final InfinitePostCubit infinitePostcubit =
       InfinitePostCubit(pettygramRepository: pettygramRepository);
-  getIt.registerSingleton<InfinitePostCubit>(infinitePostcubit..getPosts('0'));
+  getIt.registerSingleton<InfinitePostCubit>(infinitePostcubit..getPosts());
 
   final CommentsBloc commentsBloc = CommentsBloc(
       pettygramRepository: pettygramRepository, storage: sharedConfig);

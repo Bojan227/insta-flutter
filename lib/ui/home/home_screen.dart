@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pettygram_flutter/blocs/posts/cubit/cubit/infinite_post_cubit.dart';
+
 import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
 import 'package:pettygram_flutter/injector/injector.dart';
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
@@ -30,40 +30,36 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Column(children: [
       const StoriesWidget(),
-      BlocBuilder<InfinitePostCubit, InfinitePostState>(
-          builder: (context, state) {
-        switch (state.status) {
-          case PostStatus.failure:
-            return const Center(child: Text('failed to fetch posts'));
-          case PostStatus.success:
-            if (state.posts.isEmpty) {
-              return const Center(child: Text('no posts'));
-            }
-            return Expanded(
-              child: ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  return index >= state.posts.length
-                      ? const BottomLoader()
-                      : PostItem(post: state.posts[index]);
-                },
-                itemCount: state.posts.length,
-                controller: _scrollController,
-              ),
-            );
-          case PostStatus.initial:
-            return const Center(child: CircularProgressIndicator());
+      BlocBuilder<PostBloc, PostState>(builder: (context, state) {
+        if (state.status == PostStatus.failure) {
+          return const Center(child: Text('failed to fetch posts'));
         }
-        return Expanded(
-          child: ListView.builder(
-            controller: _scrollController,
-            itemBuilder: (context, index) => PostItem(post: state.posts[index]),
-          ),
-        );
-      }
+        if (state.status == PostStatus.success) {
+          if (state.posts.isEmpty) {
+            return const Center(child: Text('no posts'));
+          }
 
-          // return Container();
-          // },
-          ),
+          return Expanded(
+            child: ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                return index >= state.posts.length
+                    ? const BottomLoader()
+                    : PostItem(post: state.posts[index]);
+              },
+              itemCount: state.hasReachedMax
+                  ? state.posts.length
+                  : state.posts.length + 1,
+              controller: _scrollController,
+            ),
+          );
+        }
+
+        if (state.status == PostStatus.initial) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        return Container();
+      }),
     ]);
   }
 
@@ -76,8 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onScroll() {
-    print('scrolled');
-    if (_isBottom) context.read<InfinitePostCubit>().getPosts('1');
+    if (_isBottom) context.read<PostBloc>().add(GetPosts());
   }
 
   bool get _isBottom {

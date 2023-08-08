@@ -15,7 +15,7 @@ abstract class IPettygramProvider {
   Future<Token> loginRequest(LoginBody loginBody);
   Future<List<Post>> getPostsByUserId(String id);
   Future<Post> addPost(PostBody postBody, Token token);
-  Future<List<Post>> getPosts(String page);
+  Future<List<Post>> getPosts(int page);
   Future<User> editUser(EditBody editBody, Token token);
   Future<User> getUserById(String userId);
   Future<Map<String, dynamic>> toggleBookmark(String postId, Token token);
@@ -80,7 +80,7 @@ class PettygramProvider implements IPettygramProvider {
   }
 
   @override
-  Future<List<Post>> getPosts(String page) async {
+  Future<List<Post>> getPosts(int page) async {
     final response = await _dio.get<dynamic>('/posts/?page=$page');
 
     List<Post> posts = [];

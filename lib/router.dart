@@ -47,7 +47,7 @@ class AppRouter {
                     create: (context) => usersBloc,
                   ),
                   BlocProvider.value(
-                    value: infinitePostCubit,
+                    value: postBloc,
                   ),
                   BlocProvider.value(
                     value: userBloc,

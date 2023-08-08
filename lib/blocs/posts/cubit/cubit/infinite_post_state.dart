@@ -4,6 +4,7 @@ enum PostStatus { initial, success, failure }
 
 class InfinitePostState extends Equatable {
   const InfinitePostState({
+    this.currentPage = 0,
     this.status = PostStatus.initial,
     this.posts = const <Post>[],
     this.hasReachedMax = false,
@@ -12,16 +13,18 @@ class InfinitePostState extends Equatable {
   final PostStatus status;
   final List<Post> posts;
   final bool hasReachedMax;
+  final int currentPage;
 
-  InfinitePostState copyWith({
-    PostStatus? status,
-    List<Post>? posts,
-    bool? hasReachedMax,
-  }) {
+  InfinitePostState copyWith(
+      {PostStatus? status,
+      List<Post>? posts,
+      bool? hasReachedMax,
+      int? currentPage}) {
     return InfinitePostState(
       status: status ?? this.status,
       posts: posts ?? this.posts,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+      currentPage: currentPage ?? this.currentPage,
     );
   }
 
