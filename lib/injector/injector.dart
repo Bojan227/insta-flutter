@@ -47,7 +47,7 @@ Future setupInjector(AppConfig config) async {
   getIt.registerSingleton<PostBloc>(
     postBloc
       ..add(
-        GetPosts(),
+        const GetPosts(),
       ),
   );
 

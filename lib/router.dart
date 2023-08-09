@@ -40,8 +40,8 @@ class AppRouter {
             builder: (BuildContext context, GoRouterState state) {
               return MultiBlocProvider(
                 providers: [
-                  BlocProvider(
-                    create: (context) => usersBloc,
+                  BlocProvider.value(
+                    value: usersBloc,
                   ),
                   BlocProvider.value(
                     value: postBloc,
@@ -76,8 +76,18 @@ class AppRouter {
                     path: 'edit',
                     builder: (BuildContext context, GoRouterState state) {
                       User user = state.extra as User;
-                      return BlocProvider.value(
-                        value: userCubit,
+                      return MultiBlocProvider(
+                        providers: [
+                          BlocProvider.value(
+                            value: usersBloc,
+                          ),
+                          BlocProvider.value(
+                            value: userCubit,
+                          ),
+                          BlocProvider.value(
+                            value: postBloc,
+                          ),
+                        ],
                         child: EditUserScreen(user: user),
                       );
                     },

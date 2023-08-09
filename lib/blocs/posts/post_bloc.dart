@@ -33,6 +33,20 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     if (state.hasReachedMax) return;
 
     try {
+      if (event.page != null) {
+        print('get posts');
+        List<Post> posts = await pettygramRepository.getPosts(0);
+        emit(
+          state.copyWith(
+              status: PostStatus.success,
+              posts: posts,
+              hasReachedMax: false,
+              currentPage: state.currentPage + 1),
+        );
+
+        return;
+      }
+
       if (state.status == PostStatus.initial) {
         List<Post> posts = await pettygramRepository.getPosts(0);
 
