@@ -78,17 +78,17 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }
 
   Future<void> _onAddPost(AddPost event, Emitter<PostState> emit) async {
-    emit(state.copyWith(addPostStatus: AddPostStatus.loading));
+    emit(state.copyWith(addPostStatus: PostStatus.loading));
 
     try {
       Post userPost = await pettygramRepository.addPost(event.userPost,
           Token(accessToken: storage.getString('accessToken')!));
 
       emit(state.copyWith(
-          addPostStatus: AddPostStatus.success,
+          addPostStatus: PostStatus.success,
           posts: [userPost, ...state.posts]));
     } on DioException catch (error) {
-      emit(state.copyWith(addPostStatus: AddPostStatus.failure));
+      emit(state.copyWith(addPostStatus: PostStatus.failure));
     }
   }
 }

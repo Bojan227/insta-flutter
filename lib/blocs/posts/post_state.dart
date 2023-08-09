@@ -1,14 +1,12 @@
 part of '../posts/post_bloc.dart';
 
-enum PostStatus { initial, success, failure }
-
-enum AddPostStatus { initial, loading, success, failure }
+enum PostStatus { initial, loading, success, failure }
 
 class PostState extends Equatable {
   const PostState({
     this.currentPage = 0,
     this.status = PostStatus.initial,
-    this.addPostStatus = AddPostStatus.initial,
+    this.addPostStatus = PostStatus.initial,
     this.posts = const <Post>[],
     this.hasReachedMax = false,
   });
@@ -17,11 +15,11 @@ class PostState extends Equatable {
   final List<Post> posts;
   final bool hasReachedMax;
   final int currentPage;
-  final AddPostStatus addPostStatus;
+  final PostStatus addPostStatus;
 
   PostState copyWith(
       {PostStatus? status,
-      AddPostStatus? addPostStatus,
+      PostStatus? addPostStatus,
       List<Post>? posts,
       bool? hasReachedMax,
       int? currentPage}) {

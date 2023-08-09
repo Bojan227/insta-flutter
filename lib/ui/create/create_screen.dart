@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -32,8 +30,8 @@ class CreateScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<PostBloc, PostState>(
       listener: (context, state) {
-        if (state.addPostStatus == AddPostStatus.success ||
-            state.addPostStatus == AddPostStatus.failure) {
+        if (state.addPostStatus == PostStatus.success ||
+            state.addPostStatus == PostStatus.failure) {
           context.go('/');
         }
       },

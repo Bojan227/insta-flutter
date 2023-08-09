@@ -130,6 +130,10 @@ class AppRouter {
         ),
       ],
       redirect: (context, state) {
+        if (state.error is TypeError) {
+          context.go('/login');
+        }
+
         final String? token = storageConfig.getString('accessToken');
 
         final bool isLoginPath = state.path == '/login';
