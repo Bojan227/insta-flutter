@@ -34,8 +34,8 @@ class PettygramRepository implements IPettygramRepository {
   }
 
   @override
-  Future<List<Post>> getPosts() async {
-    return await _provider.getPosts();
+  Future<List<Post>> getPosts(int page) async {
+    return await _provider.getPosts(page);
   }
 
   @override

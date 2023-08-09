@@ -1,48 +1,39 @@
 part of '../posts/post_bloc.dart';
 
-abstract class PostState extends Equatable {
-  const PostState();
+enum PostStatus { initial, success, failure }
 
-  @override
-  List<Object> get props => [];
-}
+enum AddPostStatus { initial, loading, success, failure }
 
-class PostInitial extends PostState {}
+class PostState extends Equatable {
+  const PostState({
+    this.currentPage = 0,
+    this.status = PostStatus.initial,
+    this.addPostStatus = AddPostStatus.initial,
+    this.posts = const <Post>[],
+    this.hasReachedMax = false,
+  });
 
-class PostLoading extends PostState {}
-
-class PostLoaded extends PostState {
-  const PostLoaded({required this.posts});
-
+  final PostStatus status;
   final List<Post> posts;
-  @override
-  List<Object> get props => [posts];
-}
+  final bool hasReachedMax;
+  final int currentPage;
+  final AddPostStatus addPostStatus;
 
-class PostFailed extends PostState {
-  const PostFailed({required this.error});
-
-  final String error;
-  @override
-  List<Object> get props => [error];
-}
-
-class UserPostAdding extends PostState {}
-
-class UserPostAdded extends PostState {
-  const UserPostAdded({required this.userPost});
-
-  final Post userPost;
-
-  @override
-  List<Object> get props => [userPost];
-}
-
-class UserPostFailed extends PostState {
-  const UserPostFailed({required this.error});
-
-  final String error;
+  PostState copyWith(
+      {PostStatus? status,
+      AddPostStatus? addPostStatus,
+      List<Post>? posts,
+      bool? hasReachedMax,
+      int? currentPage}) {
+    return PostState(
+      status: status ?? this.status,
+      addPostStatus: addPostStatus ?? this.addPostStatus,
+      posts: posts ?? this.posts,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+      currentPage: currentPage ?? this.currentPage,
+    );
+  }
 
   @override
-  List<Object> get props => [error];
+  List<Object> get props => [status, posts, hasReachedMax];
 }

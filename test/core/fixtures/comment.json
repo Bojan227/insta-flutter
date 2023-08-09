@@ -1,0 +1,16 @@
+{
+  "data": [
+    {
+      "_id": "63fc9f59497159fe4ec5e295",
+      "comment": "fbvgdg",
+      "post": "63fb3528c5e3d05faaeaee27",
+      "createdBy": {
+        "_id": "63fc9f28497159fe4ec5e254",
+        "username": "erlan",
+        "imageUrl": "https://res.cloudinary.com/boki2435/image/upload/v1677500199/x8rv0sxsqaobelkadjus.jpg"
+      },
+      "createdAt": "Mon Feb 27 2023 12:17:29 GMT+0000 (Coordinated Universal Time)",
+      "likes": ["63f76286810a293888d18152"]
+    }
+  ]
+}

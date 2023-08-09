@@ -5,7 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
 import 'package:pettygram_flutter/models/token.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/comment.dart';
 import '../../models/comment_body.dart';
