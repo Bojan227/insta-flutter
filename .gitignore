@@ -38,6 +38,7 @@ lib/presentation
 lib/data
 /web
 /windows
+/test
 
 # Symbolication related
 app.*.symbols

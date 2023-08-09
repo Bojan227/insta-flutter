@@ -4,7 +4,6 @@ import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
 import 'package:pettygram_flutter/app_config.dart';
 import 'package:pettygram_flutter/blocs/comments/comments_bloc.dart';
 import 'package:pettygram_flutter/blocs/login/login_bloc.dart';
-import 'package:pettygram_flutter/blocs/posts/cubit/cubit/infinite_post_cubit.dart';
 import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
 import 'package:pettygram_flutter/blocs/user/cubit/user_cubit.dart';
 import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
@@ -51,10 +50,6 @@ Future setupInjector(AppConfig config) async {
         GetPosts(),
       ),
   );
-
-  final InfinitePostCubit infinitePostcubit =
-      InfinitePostCubit(pettygramRepository: pettygramRepository);
-  getIt.registerSingleton<InfinitePostCubit>(infinitePostcubit..getPosts());
 
   final CommentsBloc commentsBloc = CommentsBloc(
       pettygramRepository: pettygramRepository, storage: sharedConfig);
