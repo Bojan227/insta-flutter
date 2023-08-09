@@ -41,3 +41,23 @@ class UserEditFailed extends UserStateCubit {
   @override
   List<Object> get props => [error];
 }
+
+class UserPictureUpdateInProgress extends UserStateCubit {}
+
+class UserPictureUpdateSuccess extends UserStateCubit {
+  const UserPictureUpdateSuccess({required this.user});
+
+  final User user;
+
+  @override
+  List<Object> get props => [user];
+}
+
+class UserPictureUpdateFailed extends UserStateCubit {
+  const UserPictureUpdateFailed({required this.error});
+
+  final String error;
+
+  @override
+  List<Object> get props => [error];
+}

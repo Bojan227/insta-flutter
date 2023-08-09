@@ -21,6 +21,7 @@ abstract class IPettygramProvider {
   Future<Map<String, dynamic>> toggleBookmark(String postId, Token token);
   Future<List<Comment>> getCommentsByPostId(String postId);
   Future<String> addComment(CommentBody commentBody, Token token);
+  Future<User> updateProfilePicture(List<String> image, Token token);
 }
 
 class PettygramProvider implements IPettygramProvider {
@@ -170,5 +171,19 @@ class PettygramProvider implements IPettygramProvider {
     );
 
     return res.data['message'];
+  }
+
+  @override
+  Future<User> updateProfilePicture(List<String> image, Token token) async {
+    final res = await _dio.put<dynamic>(
+      '/user/photo',
+      data: {"newImage": image},
+      options: Options(
+        contentType: Headers.jsonContentType,
+        headers: {"Authorization": "Bearer ${token.accessToken}"},
+      ),
+    );
+
+    return User.fromJson(res.data['updatedUser']);
   }
 }

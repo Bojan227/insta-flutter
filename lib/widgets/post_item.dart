@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pettygram_flutter/models/post.dart';
 import 'package:pettygram_flutter/models/user.dart';
+import 'package:pettygram_flutter/widgets/circle_image.dart';
 import 'package:pettygram_flutter/widgets/post_actions.dart';
 import 'package:pettygram_flutter/widgets/post_card_info.dart';
 
@@ -40,9 +41,7 @@ class PostItem extends StatelessWidget {
                       },
                       child: Row(
                         children: [
-                          CircleAvatar(
-                            child: CachedNetworkImage(imageUrl: user.imageUrl!),
-                          ),
+                          CircleImage(imageUrl: user.imageUrl!),
                           const SizedBox(
                             width: 12,
                           ),

@@ -30,7 +30,6 @@ class UserCubit extends Cubit<UserStateCubit> {
         ),
       );
     } on DioException catch (error) {
-      print(error.response);
       emit(UserFailed());
     }
   }
@@ -50,8 +49,27 @@ class UserCubit extends Cubit<UserStateCubit> {
         ),
       );
     } on DioException catch (error) {
-      print(error.response);
       emit(UserEditFailed(error: error.response?.data['error']));
+    }
+  }
+
+  Future<void> uploadProfilePicture(List<String> image) async {
+    emit(UserPictureUpdateInProgress());
+
+    try {
+      User user = await pettygramRepository.updateProfilePicture(
+        image,
+        Token(accessToken: storage.getString('accessToken')!),
+      );
+
+      emit(
+        UserPictureUpdateSuccess(
+          user: user,
+        ),
+      );
+    } on DioException catch (error) {
+      print(error.response);
+      emit(UserPictureUpdateFailed(error: error.response?.data['error']));
     }
   }
 }
