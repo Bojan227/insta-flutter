@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
-import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
 import 'package:pettygram_flutter/models/post_body.dart';
 import 'package:pettygram_flutter/widgets/image_input.dart';
 import 'package:pettygram_flutter/widgets/textarea.dart';
@@ -35,7 +34,6 @@ class CreateScreen extends StatelessWidget {
       listener: (context, state) {
         if (state.addPostStatus == AddPostStatus.success ||
             state.addPostStatus == AddPostStatus.failure) {
-          // BlocProvider.of<PostBloc>(context).add(GetPosts());
           context.go('/');
         }
       },

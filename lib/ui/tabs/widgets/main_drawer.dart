@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../injector/injector.dart';
-import '../storage/shared_preferences.dart';
+import '../../../injector/injector.dart';
+import '../../../storage/shared_preferences.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({super.key});

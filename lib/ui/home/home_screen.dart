@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
 import 'package:pettygram_flutter/injector/injector.dart';
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
-import 'package:pettygram_flutter/widgets/post_item.dart';
-import 'package:pettygram_flutter/widgets/stories.dart';
+import 'package:pettygram_flutter/ui/home/widgets/post_item.dart';
+import 'package:pettygram_flutter/ui/home/widgets/stories.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

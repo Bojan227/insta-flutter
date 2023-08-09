@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pettygram_flutter/ui/home/home_screen.dart';
-import 'package:pettygram_flutter/widgets/main_drawer.dart';
+import 'package:pettygram_flutter/ui/tabs/widgets/main_drawer.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pettygram_flutter/blocs/users/users_bloc.dart';
-import 'package:pettygram_flutter/widgets/skeleton_stories.dart';
-import 'package:pettygram_flutter/widgets/stories_list.dart';
+import 'package:pettygram_flutter/ui/home/widgets/skeleton_stories.dart';
+import 'package:pettygram_flutter/ui/home/widgets/stories_list.dart';
 
 class StoriesWidget extends StatelessWidget {
   const StoriesWidget({super.key});
