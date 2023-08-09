@@ -5,7 +5,7 @@ import 'package:pettygram_flutter/blocs/user/cubit/user_cubit.dart';
 import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
 
 import 'package:pettygram_flutter/widgets/circle_image.dart';
-import 'package:pettygram_flutter/widgets/grid_posts.dart';
+import 'package:pettygram_flutter/ui/user/widgets/grid_posts.dart';
 import 'package:pettygram_flutter/widgets/info_box.dart';
 
 class UserDetails extends StatelessWidget {

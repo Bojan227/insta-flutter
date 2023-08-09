@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pettygram_flutter/widgets/circle_image.dart';
-import '../models/user.dart';
+import '../../../models/user.dart';
 
 class StoriesList extends StatelessWidget {
   const StoriesList({super.key, required this.users});
