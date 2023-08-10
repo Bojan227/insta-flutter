@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<PostBloc>().add(GetPosts());
+    if (_isBottom) context.read<PostBloc>().add(const GetPosts());
   }
 
   bool get _isBottom {

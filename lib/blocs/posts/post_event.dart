@@ -10,7 +10,7 @@ abstract class PostEvent extends Equatable {
 class GetPosts extends PostEvent {
   final int? page;
 
-  const GetPosts({this.page = 0});
+  const GetPosts({this.page});
 
   @override
   List<Object> get props => [page!];

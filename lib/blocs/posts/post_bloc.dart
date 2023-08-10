@@ -33,32 +33,31 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     if (state.hasReachedMax) return;
 
     try {
+      print(event.page);
+
       if (event.page != null) {
         print('get posts');
         List<Post> posts = await pettygramRepository.getPosts(0);
         emit(
           state.copyWith(
-              status: PostStatus.success,
-              posts: posts,
-              hasReachedMax: false,
-              currentPage: state.currentPage + 1),
+            status: PostStatus.success,
+            posts: posts,
+            hasReachedMax: false,
+          ),
         );
 
         return;
-      }
-
-      if (state.status == PostStatus.initial) {
+      } else if (state.status == PostStatus.initial) {
         List<Post> posts = await pettygramRepository.getPosts(0);
 
         emit(
           state.copyWith(
-              status: PostStatus.success,
-              posts: posts,
-              hasReachedMax: false,
-              currentPage: state.currentPage + 1),
+            status: PostStatus.success,
+            posts: posts,
+            hasReachedMax: false,
+          ),
         );
       } else {
-        print(state.currentPage);
         List<Post> posts =
             await pettygramRepository.getPosts(state.currentPage);
 
@@ -72,7 +71,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
                   currentPage: state.currentPage + 1),
         );
       }
-    } on DioException catch (error) {
+    } on DioException catch (_) {
       emit(state.copyWith(status: PostStatus.failure));
     }
   }
@@ -87,7 +86,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       emit(state.copyWith(
           addPostStatus: PostStatus.success,
           posts: [userPost, ...state.posts]));
-    } on DioException catch (error) {
+    } on DioException catch (_) {
       emit(state.copyWith(addPostStatus: PostStatus.failure));
     }
   }
