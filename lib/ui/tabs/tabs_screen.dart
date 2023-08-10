@@ -20,7 +20,7 @@ class _TabsScreenState extends State<TabsScreen> {
   }
 
   List<Widget> screens = [
-    HomeScreen(),
+    const HomeScreen(),
     const Placeholder(),
     const Placeholder(),
     const Placeholder(),

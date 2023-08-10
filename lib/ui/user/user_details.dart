@@ -8,6 +8,9 @@ import 'package:pettygram_flutter/widgets/circle_image.dart';
 import 'package:pettygram_flutter/ui/user/widgets/grid_posts.dart';
 import 'package:pettygram_flutter/widgets/info_box.dart';
 
+import '../../blocs/posts/post_bloc.dart';
+import '../../blocs/users/users_bloc.dart';
+
 class UserDetails extends StatelessWidget {
   const UserDetails({super.key});
 
@@ -15,6 +18,15 @@ class UserDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: GestureDetector(
+          child: const Icon(Icons.arrow_back),
+          onTap: () {
+            context.read<PostBloc>().add(const GetPosts(page: 0));
+            context.read<UsersBloc>().add(GetUsers());
+
+            context.pop();
+          },
+        ),
         title: BlocBuilder<UserCubit, UserStateCubit>(
           builder: (context, state) {
             return Text(state is UserLoaded ? state.user.username! : 'Loading');

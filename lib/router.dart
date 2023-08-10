@@ -67,6 +67,12 @@ class AppRouter {
                       value: userBloc..add(GetUserPosts(userId: userId)),
                     ),
                     BlocProvider.value(
+                      value: postBloc,
+                    ),
+                    BlocProvider.value(
+                      value: usersBloc,
+                    ),
+                    BlocProvider.value(
                       value: userCubit..loadUser(userId),
                     ),
                   ], child: const UserDetails());

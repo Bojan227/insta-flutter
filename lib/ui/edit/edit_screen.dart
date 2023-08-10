@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
 import 'package:pettygram_flutter/blocs/user/cubit/user_cubit.dart';
-import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
-import 'package:pettygram_flutter/blocs/users/users_bloc.dart';
 import 'package:pettygram_flutter/models/edit_body.dart';
 import 'package:pettygram_flutter/models/user.dart';
 import 'package:pettygram_flutter/ui/edit/widgets/profile_image_input.dart';
-import 'package:pettygram_flutter/widgets/circle_image.dart';
-import 'package:pettygram_flutter/widgets/image_input.dart';
+
 import 'package:pettygram_flutter/widgets/input_field.dart';
 
 class EditUserScreen extends StatelessWidget {
@@ -60,11 +56,6 @@ class EditUserScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is UserEditSuccess) {
             Navigator.of(context).pop();
-          }
-
-          if (state is UserPictureUpdateSuccess) {
-            BlocProvider.of<PostBloc>(context).add(const GetPosts(page: 0));
-            BlocProvider.of<UsersBloc>(context).add(GetUsers());
           }
         },
         builder: (context, state) {
