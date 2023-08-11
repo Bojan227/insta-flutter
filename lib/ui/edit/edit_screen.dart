@@ -57,6 +57,14 @@ class EditUserScreen extends StatelessWidget {
           if (state is UserEditSuccess) {
             Navigator.of(context).pop();
           }
+
+          if (state is UserPictureUpdateSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Picture Updated!'),
+              ),
+            );
+          }
         },
         builder: (context, state) {
           return SingleChildScrollView(

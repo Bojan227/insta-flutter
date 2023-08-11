@@ -1,11 +1,18 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pettygram_flutter/blocs/comments/comments_bloc.dart';
+import 'package:pettygram_flutter/blocs/comments/cubit/cubit/comment_cubit.dart';
 import 'package:pettygram_flutter/models/comment.dart';
 import 'package:pettygram_flutter/ui/comments/widgets/comment_item.dart';
 
 class CommentsList extends StatelessWidget {
   const CommentsList({super.key});
+
+  void handleToggleCommentLike(BuildContext context, String postId) {
+    context.read<CommentCubit>().toggleCommentLike(postId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +32,12 @@ class CommentsList extends StatelessWidget {
               : Column(
                   children: state.comments
                       .map(
-                        (comment) => CommentItem(comment: comment),
+                        (comment) => CommentItem(
+                          comment: comment,
+                          onTap: () {
+                            handleToggleCommentLike(context, comment.post!);
+                          },
+                        ),
                       )
                       .toList(),
                 );

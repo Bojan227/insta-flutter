@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pettygram_flutter/blocs/comments/comments_bloc.dart';
+import 'package:pettygram_flutter/blocs/comments/cubit/cubit/comment_cubit.dart';
 import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
 import 'package:pettygram_flutter/blocs/user/cubit/user_cubit.dart';
 import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
@@ -30,6 +31,7 @@ class AppRouter {
   final PostBloc postBloc = getIt<PostBloc>();
   final UserCubit userCubit = getIt<UserCubit>();
   final CommentsBloc commentsBloc = getIt<CommentsBloc>();
+  final CommentCubit commentCubit = getIt<CommentCubit>();
 
   GoRouter onGenerateRouter() {
     final GoRouter _router = GoRouter(
@@ -104,11 +106,18 @@ class AppRouter {
                 path: 'comments',
                 builder: (BuildContext context, GoRouterState state) {
                   String postId = state.extra as String;
-                  return BlocProvider.value(
-                    value: commentsBloc
-                      ..add(
-                        GetComments(postId: postId),
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider.value(
+                        value: commentsBloc
+                          ..add(
+                            GetComments(postId: postId),
+                          ),
                       ),
+                      BlocProvider.value(
+                        value: commentCubit,
+                      ),
+                    ],
                     child: CommentsScreen(
                       postId: postId,
                     ),

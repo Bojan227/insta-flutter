@@ -26,6 +26,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       routerConfig: appRouter.onGenerateRouter(),
       title: 'Pettygram',
       theme: ThemeData().copyWith(
@@ -44,5 +45,6 @@ class _MyAppState extends State<MyApp> {
     appRouter.postBloc.close();
     appRouter.usersBloc.close();
     appRouter.commentsBloc.close();
+    appRouter.commentCubit.close();
   }
 }

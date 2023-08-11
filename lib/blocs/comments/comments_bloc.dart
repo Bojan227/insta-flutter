@@ -6,9 +6,11 @@ import 'package:equatable/equatable.dart';
 import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
 import 'package:pettygram_flutter/models/token.dart';
 
+import '../../injector/injector.dart';
 import '../../models/comment.dart';
 import '../../models/comment_body.dart';
 import '../../storage/shared_preferences.dart';
+import 'cubit/cubit/comment_cubit.dart';
 
 part 'comments_event.dart';
 part 'comments_state.dart';
@@ -27,11 +29,15 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
       GetComments event, Emitter<CommentsState> emit) async {
     emit(const CommentsLoading());
 
+    final CommentCubit commentCubit = getIt<CommentCubit>();
+
     try {
       final List<Comment> comments =
           await pettygramRepository.getCommentsByPostId(event.postId);
 
       emit(CommentsLoaded(comments: comments));
+      commentCubit.emit(const CommentState(
+          commentStatus: CommentStatus.initial, message: 'initial'));
     } on DioException catch (error) {
       emit(CommentsFailed(error: error.response?.data['error']));
     }

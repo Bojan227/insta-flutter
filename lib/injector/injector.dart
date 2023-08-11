@@ -3,6 +3,7 @@ import 'package:pettygram_flutter/api/pettygram_provider.dart';
 import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
 import 'package:pettygram_flutter/app_config.dart';
 import 'package:pettygram_flutter/blocs/comments/comments_bloc.dart';
+import 'package:pettygram_flutter/blocs/comments/cubit/cubit/comment_cubit.dart';
 import 'package:pettygram_flutter/blocs/login/login_bloc.dart';
 import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
 import 'package:pettygram_flutter/blocs/user/cubit/user_cubit.dart';
@@ -54,4 +55,8 @@ Future setupInjector(AppConfig config) async {
   final CommentsBloc commentsBloc = CommentsBloc(
       pettygramRepository: pettygramRepository, storage: sharedConfig);
   getIt.registerSingleton<CommentsBloc>(commentsBloc);
+
+  final CommentCubit commentCubit =
+      CommentCubit(pettygramRepo: pettygramRepository, storage: sharedConfig);
+  getIt.registerSingleton<CommentCubit>(commentCubit);
 }

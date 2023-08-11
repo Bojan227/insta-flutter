@@ -32,9 +32,11 @@ class AddCommentWidget extends StatelessWidget {
       child: BlocConsumer<CommentsBloc, CommentsState>(
         listener: (context, state) {
           if (state is CommentAdded) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(state.commentMessage),
-            ));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.commentMessage),
+              ),
+            );
 
             context.read<CommentsBloc>().add(
                   GetComments(postId: post),
@@ -43,9 +45,11 @@ class AddCommentWidget extends StatelessWidget {
           }
 
           if (state is CommentsFailed) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(state.error),
-            ));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error),
+              ),
+            );
           }
         },
         builder: (context, state) {

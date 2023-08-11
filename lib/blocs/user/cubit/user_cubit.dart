@@ -68,7 +68,6 @@ class UserCubit extends Cubit<UserStateCubit> {
         ),
       );
     } on DioException catch (error) {
-      print(error.response);
       emit(UserPictureUpdateFailed(error: error.response?.data['error']));
     }
   }

@@ -27,6 +27,18 @@ class Comment extends Equatable {
     createdAt = json['createdAt'];
   }
 
+  bool isLiked() {
+    return likes!.contains('63f76286810a293888d18152');
+  }
+
+  void updateLikes() {
+    if (likes!.contains('63f76286810a293888d18152')) {
+      likes!.remove('63f76286810a293888d18152');
+    } else {
+      likes!.add('63f76286810a293888d18152');
+    }
+  }
+
   @override
   List<Object?> get props => [id, comment, post, createdBy, likes, createdAt];
 }

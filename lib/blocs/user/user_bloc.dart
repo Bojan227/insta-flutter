@@ -54,7 +54,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         ),
       );
     } on DioException catch (error) {
-      print(error.response);
       emit(UserPostBookmarkFailed(error: error.response?.data['error']));
     }
   }

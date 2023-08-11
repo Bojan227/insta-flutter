@@ -68,4 +68,9 @@ class PettygramRepository implements IPettygramRepository {
   Future<User> updateProfilePicture(List<String> image, Token token) async {
     return await _provider.updateProfilePicture(image, token);
   }
+
+  @override
+  Future<String> toggleCommentLike(String postId, Token token) async {
+    return await _provider.toggleCommentLike(postId, token);
+  }
 }

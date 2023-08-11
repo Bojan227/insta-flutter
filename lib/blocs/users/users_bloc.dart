@@ -17,13 +17,11 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
   Future<void> _onGetUsers(GetUsers event, Emitter<UsersState> emit) async {
     emit(UsersLoading());
 
-    print('get users');
     try {
       final List<User> users = await pettygramRepository.getUsers();
 
       emit(UsersLoaded(users: users));
     } catch (error) {
-      print(error);
       emit(UsersFailed(error: error.toString()));
     }
   }
