@@ -22,7 +22,7 @@ abstract class IPettygramProvider {
   Future<List<Comment>> getCommentsByPostId(String postId);
   Future<String> addComment(CommentBody commentBody, Token token);
   Future<User> updateProfilePicture(List<String> image, Token token);
-  Future<String> toggleCommentLike(String postId, Token token);
+  Future<Comment> toggleCommentLike(String postId, Token token);
 }
 
 class PettygramProvider implements IPettygramProvider {
@@ -189,16 +189,18 @@ class PettygramProvider implements IPettygramProvider {
   }
 
   @override
-  Future<String> toggleCommentLike(String postId, Token token) async {
+  Future<Comment> toggleCommentLike(String commentId, Token token) async {
     final res = await _dio.put(
       '/comments/',
-      data: {"postId": postId},
+      data: {"commentId": commentId},
       options: Options(
         contentType: Headers.jsonContentType,
         headers: {"Authorization": "Bearer ${token.accessToken}"},
       ),
     );
 
-    return res.data['msg'];
+    final Comment comment = Comment.fromJson(res.data['comment']);
+
+    return comment;
   }
 }

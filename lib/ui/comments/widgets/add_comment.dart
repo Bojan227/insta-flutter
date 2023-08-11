@@ -31,10 +31,10 @@ class AddCommentWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       child: BlocConsumer<CommentsBloc, CommentsState>(
         listener: (context, state) {
-          if (state is CommentAdded) {
+          if (state.newCommentStatus == CommentStatus.success) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.commentMessage),
+              const SnackBar(
+                content: Text("Comment Added"),
               ),
             );
 
@@ -44,10 +44,10 @@ class AddCommentWidget extends StatelessWidget {
             _formKey.currentState!.reset();
           }
 
-          if (state is CommentsFailed) {
+          if (state.newCommentStatus == CommentStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.error),
+              const SnackBar(
+                content: Text('Comment fail to be added'),
               ),
             );
           }
@@ -78,8 +78,9 @@ class AddCommentWidget extends StatelessWidget {
                     onPressed: () {
                       onSubmit(context);
                     },
-                    child:
-                        Text(state is CommentAdding ? "Loading...." : 'Post'),
+                    child: Text(state.newCommentStatus == CommentStatus.loading
+                        ? "Loading...."
+                        : 'Post'),
                   )
                 ],
               ),

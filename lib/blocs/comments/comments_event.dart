@@ -24,3 +24,12 @@ class AddComment extends CommentsEvent {
   @override
   List<Object> get props => [commentBody];
 }
+
+class ToggleCommentLike extends CommentsEvent {
+  const ToggleCommentLike({required this.commentId});
+
+  final String commentId;
+
+  @override
+  List<Object> get props => [commentId];
+}

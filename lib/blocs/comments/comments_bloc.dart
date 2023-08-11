@@ -6,20 +6,25 @@ import 'package:equatable/equatable.dart';
 import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
 import 'package:pettygram_flutter/models/token.dart';
 
-import '../../injector/injector.dart';
 import '../../models/comment.dart';
 import '../../models/comment_body.dart';
 import '../../storage/shared_preferences.dart';
-import 'cubit/cubit/comment_cubit.dart';
 
 part 'comments_event.dart';
 part 'comments_state.dart';
 
 class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
   CommentsBloc({required this.pettygramRepository, required this.storage})
-      : super(CommentsInitial()) {
+      : super(
+          const CommentsState(
+            comments: [],
+            status: CommentStatus.initial,
+            newCommentStatus: CommentStatus.initial,
+          ),
+        ) {
     on<GetComments>(_onGetComments);
     on<AddComment>(_onAddComment);
+    on<ToggleCommentLike>(_onToggleCommentLike);
   }
 
   final PettygramRepository pettygramRepository;
@@ -27,34 +32,58 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
 
   Future<void> _onGetComments(
       GetComments event, Emitter<CommentsState> emit) async {
-    emit(const CommentsLoading());
-
-    final CommentCubit commentCubit = getIt<CommentCubit>();
+    emit(state.copyWith(
+        status: CommentStatus.loading,
+        newCommentStatus: CommentStatus.initial,
+        updateState: CommentStatus.initial));
 
     try {
       final List<Comment> comments =
           await pettygramRepository.getCommentsByPostId(event.postId);
 
-      emit(CommentsLoaded(comments: comments));
-      commentCubit.emit(const CommentState(
-          commentStatus: CommentStatus.initial, message: 'initial'));
-    } on DioException catch (error) {
-      emit(CommentsFailed(error: error.response?.data['error']));
+      emit(state.copyWith(status: CommentStatus.success, comments: comments));
+    } on DioException catch (_) {
+      emit(state.copyWith(status: CommentStatus.failure));
     }
   }
 
   FutureOr<void> _onAddComment(
       AddComment event, Emitter<CommentsState> emit) async {
-    emit(const CommentAdding());
+    emit(state.copyWith(newCommentStatus: CommentStatus.loading));
 
     try {
       final commentSuccessMessage = await pettygramRepository.addComment(
           event.commentBody,
           Token(accessToken: storage.getString('accessToken')!));
 
-      emit(CommentAdded(commentMessage: commentSuccessMessage));
-    } on DioException catch (error) {
-      emit(CommentsFailed(error: error.response?.data['error']));
+      emit(state.copyWith(
+          newCommentStatus: CommentStatus.success,
+          status: CommentStatus.initial));
+    } on DioException catch (_) {
+      emit(state.copyWith(newCommentStatus: CommentStatus.failure));
+    }
+  }
+
+  Future<void> _onToggleCommentLike(
+      ToggleCommentLike event, Emitter<CommentsState> emit) async {
+    try {
+      final comment = await pettygramRepository.toggleCommentLike(
+          event.commentId,
+          Token(accessToken: storage.getString('accessToken')!));
+
+      final index = state.comments
+          .indexWhere((commentObj) => commentObj.id == comment.id);
+
+      state.comments[index] = comment;
+
+      print('emit');
+
+      emit(state.copyWith(status: CommentStatus.initial));
+
+      emit(state.copyWith(
+          status: CommentStatus.success, comments: state.comments));
+    } on DioException catch (_) {
+      emit(state.copyWith(updateState: CommentStatus.failure));
     }
   }
 }

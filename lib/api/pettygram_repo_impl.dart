@@ -70,7 +70,7 @@ class PettygramRepository implements IPettygramRepository {
   }
 
   @override
-  Future<String> toggleCommentLike(String postId, Token token) async {
-    return await _provider.toggleCommentLike(postId, token);
+  Future<Comment> toggleCommentLike(String commentId, Token token) async {
+    return await _provider.toggleCommentLike(commentId, token);
   }
 }

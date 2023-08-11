@@ -20,5 +20,5 @@ abstract class IPettygramRepository {
   Future<List<Comment>> getCommentsByPostId(String postId);
   Future<String> addComment(CommentBody commentBody, Token token);
   Future<User> updateProfilePicture(List<String> image, Token token);
-  Future<String> toggleCommentLike(String postId, Token token);
+  Future<Comment> toggleCommentLike(String commentId, Token token);
 }
