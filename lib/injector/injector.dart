@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:pettygram_flutter/api/pettygram_provider.dart';
 import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
 import 'package:pettygram_flutter/app_config.dart';
+import 'package:pettygram_flutter/blocs/bookmarks/bookmarks_bloc.dart';
 import 'package:pettygram_flutter/blocs/comments/comments_bloc.dart';
 import 'package:pettygram_flutter/blocs/login/login_bloc.dart';
 import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
@@ -54,4 +55,8 @@ Future setupInjector(AppConfig config) async {
   final CommentsBloc commentsBloc = CommentsBloc(
       pettygramRepository: pettygramRepository, storage: sharedConfig);
   getIt.registerLazySingleton<CommentsBloc>(() => commentsBloc);
+
+  final BookmarksBloc bookmarksBloc = BookmarksBloc(
+      pettygramRepository: pettygramRepository, storage: sharedConfig);
+  getIt.registerLazySingleton<BookmarksBloc>(() => bookmarksBloc);
 }

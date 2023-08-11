@@ -23,6 +23,7 @@ abstract class IPettygramProvider {
   Future<String> addComment(CommentBody commentBody, Token token);
   Future<User> updateProfilePicture(List<String> image, Token token);
   Future<Comment> toggleCommentLike(String postId, Token token);
+  Future<List<Post>> getBookmarkedPostsByUser(Token token);
 }
 
 class PettygramProvider implements IPettygramProvider {
@@ -202,5 +203,23 @@ class PettygramProvider implements IPettygramProvider {
     final Comment comment = Comment.fromJson(res.data['comment']);
 
     return comment;
+  }
+
+  @override
+  Future<List<Post>> getBookmarkedPostsByUser(Token token) async {
+    final response = await _dio.get<dynamic>(
+      '/saved/',
+      options: Options(
+        contentType: Headers.jsonContentType,
+        headers: {"Authorization": "Bearer ${token.accessToken}"},
+      ),
+    );
+
+    List<Post> posts = [];
+
+    for (var json in response.data) {
+      posts.add(Post.fromJson(json));
+    }
+    return posts;
   }
 }

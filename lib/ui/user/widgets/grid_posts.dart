@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
-import 'package:pettygram_flutter/models/post.dart';
+import 'package:pettygram_flutter/ui/user/widgets/grid_builder.dart';
 
 class GridPosts extends StatelessWidget {
   const GridPosts({
@@ -32,21 +32,7 @@ class GridPosts extends StatelessWidget {
             );
           }
 
-          return GridView.builder(
-            itemCount: state.userPosts.length,
-            shrinkWrap: true,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 1,
-                mainAxisSpacing: 1,
-                childAspectRatio: 1),
-            itemBuilder: (context, index) => CachedNetworkImage(
-              width: double.infinity,
-              height: double.infinity,
-              fit: BoxFit.cover,
-              imageUrl: state.userPosts[index].imageUrl![0],
-            ),
-          );
+          return GridBuilder(posts: state.userPosts);
         }
 
         return Container();

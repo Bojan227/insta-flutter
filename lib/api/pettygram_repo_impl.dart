@@ -73,4 +73,9 @@ class PettygramRepository implements IPettygramRepository {
   Future<Comment> toggleCommentLike(String commentId, Token token) async {
     return await _provider.toggleCommentLike(commentId, token);
   }
+
+  @override
+  Future<List<Post>> getBookmarkedPostsByUser(Token token) async {
+    return await _provider.getBookmarkedPostsByUser(token);
+  }
 }

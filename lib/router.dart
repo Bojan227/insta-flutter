@@ -16,6 +16,7 @@ import 'package:pettygram_flutter/ui/tabs/tabs_screen.dart';
 import 'package:pettygram_flutter/ui/login/login_screen.dart';
 import 'package:pettygram_flutter/ui/user/user_details.dart';
 
+import 'blocs/bookmarks/bookmarks_bloc.dart';
 import 'blocs/login/login_bloc.dart';
 
 class AppRouter {
@@ -30,6 +31,7 @@ class AppRouter {
   final PostBloc postBloc = getIt<PostBloc>();
   final UserCubit userCubit = getIt<UserCubit>();
   final CommentsBloc commentsBloc = getIt<CommentsBloc>();
+  final BookmarksBloc bookmarksBloc = getIt<BookmarksBloc>();
 
   GoRouter onGenerateRouter() {
     final GoRouter _router = GoRouter(
@@ -62,20 +64,24 @@ class AppRouter {
                 builder: (BuildContext context, GoRouterState state) {
                   String userId = state.extra as String;
 
-                  return MultiBlocProvider(providers: [
-                    BlocProvider.value(
-                      value: userBloc..add(GetUserPosts(userId: userId)),
-                    ),
-                    BlocProvider.value(
-                      value: postBloc,
-                    ),
-                    BlocProvider.value(
-                      value: usersBloc,
-                    ),
-                    BlocProvider.value(
-                      value: userCubit..loadUser(userId),
-                    ),
-                  ], child: const UserDetails());
+                  return MultiBlocProvider(
+                      providers: [
+                        BlocProvider.value(
+                          value: userBloc..add(GetUserPosts(userId: userId)),
+                        ),
+                        BlocProvider.value(
+                          value: postBloc,
+                        ),
+                        BlocProvider.value(
+                          value: usersBloc,
+                        ),
+                        BlocProvider.value(
+                          value: userCubit..loadUser(userId),
+                        ),
+                      ],
+                      child: UserDetails(
+                        bookmarksBloc: bookmarksBloc,
+                      ));
                 },
                 routes: [
                   GoRoute(
