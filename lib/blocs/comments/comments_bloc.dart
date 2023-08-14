@@ -88,7 +88,7 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
   Future<void> _onDeleteComment(
       DeleteComment event, Emitter<CommentsState> emit) async {
     try {
-      final successMessage = await pettygramRepository.deleteComment(
+      await pettygramRepository.deleteComment(
         event.commentId,
         Token(accessToken: storage.getString('accessToken')!),
       );
