@@ -24,9 +24,25 @@ class CommentsList extends StatelessWidget {
               : Column(
                   children: state.comments
                       .map(
-                        (comment) => CommentItem(
+                        (comment) => Dismissible(
+                          direction: DismissDirection.endToStart,
+                          background: Container(color: Colors.red),
                           key: Key(comment.id!),
-                          comment: comment,
+                          onDismissed: (direction) {
+                            context
+                                .read<CommentsBloc>()
+                                .add(DeleteComment(commentId: comment.id!));
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Comment deleted'),
+                              ),
+                            );
+                          },
+                          child: CommentItem(
+                            key: Key(comment.id!),
+                            comment: comment,
+                          ),
                         ),
                       )
                       .toList(),

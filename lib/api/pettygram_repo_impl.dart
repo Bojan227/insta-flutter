@@ -78,4 +78,9 @@ class PettygramRepository implements IPettygramRepository {
   Future<List<Post>> getBookmarkedPostsByUser(Token token) async {
     return await _provider.getBookmarkedPostsByUser(token);
   }
+
+  @override
+  Future<String> deleteComment(String commentId, Token token) async {
+    return await _provider.deleteComment(commentId, token);
+  }
 }

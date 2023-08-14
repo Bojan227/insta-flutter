@@ -24,6 +24,7 @@ abstract class IPettygramProvider {
   Future<User> updateProfilePicture(List<String> image, Token token);
   Future<Comment> toggleCommentLike(String postId, Token token);
   Future<List<Post>> getBookmarkedPostsByUser(Token token);
+  Future<String> deleteComment(String commentId, Token token);
 }
 
 class PettygramProvider implements IPettygramProvider {
@@ -221,5 +222,19 @@ class PettygramProvider implements IPettygramProvider {
       posts.add(Post.fromJson(json));
     }
     return posts;
+  }
+
+  @override
+  Future<String> deleteComment(String commentId, Token token) async {
+    final res = await _dio.delete(
+      '/comments/',
+      data: {"commentId": commentId},
+      options: Options(
+        contentType: Headers.jsonContentType,
+        headers: {"Authorization": "Bearer ${token.accessToken}"},
+      ),
+    );
+
+    return res.data['msg'];
   }
 }
