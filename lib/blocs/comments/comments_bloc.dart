@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
 import 'package:pettygram_flutter/models/token.dart';
 
@@ -25,6 +26,7 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
     on<GetComments>(_onGetComments);
     on<AddComment>(_onAddComment);
     on<ToggleCommentLike>(_onToggleCommentLike);
+    on<DeleteComment>(_onDeleteComment);
   }
 
   final PettygramRepository pettygramRepository;
@@ -73,15 +75,30 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
 
       final index = state.comments
           .indexWhere((commentObj) => commentObj.id == comment.id);
-
       state.comments[index] = comment;
 
-      print('emit');
-
       emit(state.copyWith(status: CommentStatus.initial));
-
       emit(state.copyWith(
           status: CommentStatus.success, comments: state.comments));
+    } on DioException catch (_) {
+      emit(state.copyWith(updateState: CommentStatus.failure));
+    }
+  }
+
+  Future<void> _onDeleteComment(
+      DeleteComment event, Emitter<CommentsState> emit) async {
+    try {
+      final successMessage = await pettygramRepository.deleteComment(
+        event.commentId,
+        Token(accessToken: storage.getString('accessToken')!),
+      );
+
+      final comments = state.comments
+          .where((comment) => comment.id != event.commentId)
+          .toList();
+
+      emit(state.copyWith(status: CommentStatus.initial));
+      emit(state.copyWith(status: CommentStatus.success, comments: comments));
     } on DioException catch (_) {
       emit(state.copyWith(updateState: CommentStatus.failure));
     }

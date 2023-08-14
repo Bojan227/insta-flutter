@@ -33,3 +33,12 @@ class ToggleCommentLike extends CommentsEvent {
   @override
   List<Object> get props => [commentId];
 }
+
+class DeleteComment extends CommentsEvent {
+  const DeleteComment({required this.commentId});
+
+  final String commentId;
+
+  @override
+  List<Object> get props => [commentId];
+}
