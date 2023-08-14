@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
 import 'package:pettygram_flutter/models/token.dart';
 
