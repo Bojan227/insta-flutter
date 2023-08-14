@@ -18,13 +18,14 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
   CommentsBloc({required this.pettygramRepository, required this.storage})
       : super(
           const CommentsState(
-            comments: [],
-            status: CommentStatus.initial,
-            newCommentStatus: CommentStatus.initial,
-          ),
+              comments: [],
+              status: CommentStatus.initial,
+              newCommentStatus: CommentStatus.initial,
+              editStatus: CommentStatus.initial),
         ) {
     on<GetComments>(_onGetComments);
     on<AddComment>(_onAddComment);
+    on<EditComment>(_onEditComment);
     on<ToggleCommentLike>(_onToggleCommentLike);
     on<DeleteComment>(_onDeleteComment);
   }
@@ -37,7 +38,7 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
     emit(state.copyWith(
         status: CommentStatus.loading,
         newCommentStatus: CommentStatus.initial,
-        updateState: CommentStatus.initial));
+        editStatus: CommentStatus.initial));
 
     try {
       final List<Comment> comments =
@@ -81,7 +82,7 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
       emit(state.copyWith(
           status: CommentStatus.success, comments: state.comments));
     } on DioException catch (_) {
-      emit(state.copyWith(updateState: CommentStatus.failure));
+      emit(state.copyWith(status: CommentStatus.failure));
     }
   }
 
@@ -100,7 +101,35 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
       emit(state.copyWith(status: CommentStatus.initial));
       emit(state.copyWith(status: CommentStatus.success, comments: comments));
     } on DioException catch (_) {
-      emit(state.copyWith(updateState: CommentStatus.failure));
+      emit(state.copyWith(status: CommentStatus.failure));
+    }
+  }
+
+  Future<void> _onEditComment(
+      EditComment event, Emitter<CommentsState> emit) async {
+    emit(state.copyWith(editStatus: CommentStatus.loading));
+
+    try {
+      final Comment newComment = await pettygramRepository.editComment(
+        event.commentId,
+        event.comment,
+        Token(accessToken: storage.getString('accessToken')!),
+      );
+
+      final index = state.comments
+          .indexWhere((commentObj) => commentObj.id == event.commentId);
+
+      state.comments[index] = newComment;
+
+      emit(state.copyWith(status: CommentStatus.initial));
+      emit(
+        state.copyWith(
+            status: CommentStatus.success,
+            comments: state.comments,
+            editStatus: CommentStatus.success),
+      );
+    } on DioException catch (_) {
+      emit(state.copyWith(editStatus: CommentStatus.failure));
     }
   }
 }

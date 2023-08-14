@@ -83,4 +83,10 @@ class PettygramRepository implements IPettygramRepository {
   Future<String> deleteComment(String commentId, Token token) async {
     return await _provider.deleteComment(commentId, token);
   }
+
+  @override
+  Future<Comment> editComment(
+      String commentId, String comment, Token token) async {
+    return await _provider.editComment(commentId, comment, token);
+  }
 }

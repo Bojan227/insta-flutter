@@ -42,3 +42,13 @@ class DeleteComment extends CommentsEvent {
   @override
   List<Object> get props => [commentId];
 }
+
+class EditComment extends CommentsEvent {
+  const EditComment({required this.commentId, required this.comment});
+
+  final String commentId;
+  final String comment;
+
+  @override
+  List<Object> get props => [commentId, comment];
+}

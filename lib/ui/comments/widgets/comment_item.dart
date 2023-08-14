@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pettygram_flutter/blocs/comments/comments_bloc.dart';
+import 'package:pettygram_flutter/ui/comments/widgets/edit_comment.dart';
 import 'package:pettygram_flutter/widgets/circle_image.dart';
 
 import '../../../models/comment.dart';
@@ -34,7 +35,12 @@ class CommentItem extends StatelessWidget {
                     const SizedBox(
                       width: 14,
                     ),
-                    Expanded(child: Text('${comment.comment}'))
+                    Expanded(
+                      child: EditCommentWidget(
+                        comment: comment.comment!,
+                        commentId: comment.id!,
+                      ),
+                    )
                   ],
                 ),
                 const SizedBox(
@@ -47,7 +53,8 @@ class CommentItem extends StatelessWidget {
                       width: 15,
                     ),
                     Text(
-                        '${comment.likes?.length} ${comment.likes?.length == 1 ? 'like' : 'likes'}')
+                      '${comment.likes?.length} ${comment.likes?.length == 1 ? 'like' : 'likes'}',
+                    )
                   ],
                 )
               ],

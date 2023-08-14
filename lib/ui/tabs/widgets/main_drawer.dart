@@ -16,12 +16,10 @@ class MainDrawer extends StatelessWidget {
         elevation: 3,
         child: Container(
           decoration: const BoxDecoration(
-              gradient: LinearGradient(colors: [
-            Color(0xffF58529),
-            Color(0xffDD2A7B),
-            Color(0xff8134AF),
-            Color(0xff515BD4)
-          ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
+              gradient: LinearGradient(
+                  colors: [Colors.white54, Colors.white],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight)),
           child: ListView(
             children: [
               DrawerHeader(

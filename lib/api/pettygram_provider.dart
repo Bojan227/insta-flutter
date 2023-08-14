@@ -25,6 +25,7 @@ abstract class IPettygramProvider {
   Future<Comment> toggleCommentLike(String postId, Token token);
   Future<List<Post>> getBookmarkedPostsByUser(Token token);
   Future<String> deleteComment(String commentId, Token token);
+  Future<Comment> editComment(String commentId, String comment, Token token);
 }
 
 class PettygramProvider implements IPettygramProvider {
@@ -236,5 +237,20 @@ class PettygramProvider implements IPettygramProvider {
     );
 
     return res.data['msg'];
+  }
+
+  @override
+  Future<Comment> editComment(
+      String commentId, String comment, Token token) async {
+    final res = await _dio.put('/comments/edit',
+        data: {"commentId": commentId, "comment": comment},
+        options: Options(
+          contentType: Headers.jsonContentType,
+          headers: {"Authorization": "Bearer ${token.accessToken}"},
+        ));
+
+    final Comment newComment = Comment.fromJson(res.data['newComment']);
+
+    return newComment;
   }
 }

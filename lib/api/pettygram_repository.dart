@@ -23,4 +23,5 @@ abstract class IPettygramRepository {
   Future<Comment> toggleCommentLike(String commentId, Token token);
   Future<List<Post>> getBookmarkedPostsByUser(Token token);
   Future<String> deleteComment(String commentId, Token token);
+  Future<Comment> editComment(String commentId, String comment, Token token);
 }
