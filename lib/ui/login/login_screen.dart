@@ -65,8 +65,11 @@ class LoginScreen extends StatelessWidget {
                       onPressed: () {
                         onSubmit(context);
                       },
-                      child:
-                          Text(state is LoginLoading ? 'Loading..' : 'Login'),
+                      child: Text(
+                        state is LoginLoading ? 'Loading..' : 'Login',
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSecondary),
+                      ),
                     );
                   },
                 ),
