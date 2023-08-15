@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pettygram_flutter/app_config.dart';
+import 'package:pettygram_flutter/blocs/theme/cubit/theme_cubit.dart';
 import 'package:pettygram_flutter/injector/injector.dart';
 import 'package:pettygram_flutter/router.dart';
+import 'package:pettygram_flutter/theme/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,7 +13,10 @@ Future<void> main() async {
 
   await setupInjector(appConfig);
 
-  runApp(const MyApp());
+  runApp(BlocProvider(
+    create: (context) => ThemeCubit(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -27,12 +33,13 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
+      themeMode: context.watch<ThemeCubit>().state.currentMode == Mode.light
+          ? ThemeMode.light
+          : ThemeMode.dark,
       routerConfig: appRouter.onGenerateRouter(),
       title: 'Pettygram',
-      theme: ThemeData().copyWith(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
     );
   }
 

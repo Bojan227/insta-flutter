@@ -19,6 +19,10 @@ class InputField extends StatelessWidget {
       initialValue: defaultValue,
       obscureText: obscureText,
       decoration: InputDecoration(
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+              color: Theme.of(context).colorScheme.onSecondary, width: 2.0),
+        ),
         fillColor: Colors.grey[100],
         contentPadding: const EdgeInsets.all(10),
         label: Text(label),

@@ -38,7 +38,9 @@ class PostActions extends StatelessWidget {
               ],
             ),
             state is UserPostSaving
-                ? const CircularProgressIndicator()
+                ? CircularProgressIndicator(
+                    backgroundColor: Colors.blue[100]!,
+                  )
                 : IconButton(
                     onPressed: () {
                       context.read<UserBloc>().add(

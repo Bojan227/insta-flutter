@@ -122,14 +122,20 @@ class UserDetails extends StatelessWidget {
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 10),
                                   decoration: BoxDecoration(
-                                    color: Colors.grey[300],
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                     borderRadius: const BorderRadius.all(
                                       Radius.elliptical(10, 10),
                                     ),
                                   ),
-                                  child: const Text(
+                                  child: Text(
                                     'Edit Profile',
                                     textAlign: TextAlign.center,
+                                    style: const TextStyle().copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondary),
                                   ),
                                 ),
                               )),
@@ -149,10 +155,12 @@ class UserDetails extends StatelessWidget {
           },
           body: Column(
             children: [
-              const TabBar(
-                labelPadding: EdgeInsets.only(bottom: 16, top: 12),
+              TabBar(
+                indicatorColor: Theme.of(context).colorScheme.onSecondary,
+                labelColor: Theme.of(context).colorScheme.onSecondary,
+                labelPadding: const EdgeInsets.only(bottom: 16, top: 12),
                 indicatorSize: TabBarIndicatorSize.tab,
-                tabs: [Icon(Icons.grid_on), Icon(Icons.bookmark)],
+                tabs: const [Icon(Icons.grid_on), Icon(Icons.bookmark)],
               ),
               Expanded(
                 child: TabBarView(

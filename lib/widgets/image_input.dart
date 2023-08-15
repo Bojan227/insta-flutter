@@ -45,8 +45,7 @@ class _ImageInputState extends State<ImageInput> {
       width: double.infinity,
       decoration: BoxDecoration(
         border: Border.all(
-          width: 1,
-        ),
+            width: 1, color: Theme.of(context).colorScheme.onSecondary),
       ),
       child: takenImage != null
           ? Image.file(
@@ -57,8 +56,15 @@ class _ImageInputState extends State<ImageInput> {
             )
           : TextButton.icon(
               onPressed: _takePicture,
-              icon: const Icon(Icons.camera),
-              label: const Text('Take Picture'),
+              icon: Icon(
+                Icons.camera,
+                color: Theme.of(context).colorScheme.onSecondary,
+              ),
+              label: Text(
+                'Take Picture',
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+              ),
             ),
     );
   }

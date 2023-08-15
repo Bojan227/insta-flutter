@@ -12,6 +12,7 @@ class StoriesWidget extends StatelessWidget {
     return BlocBuilder<UsersBloc, UsersState>(
       builder: (context, state) {
         return Container(
+          color: Theme.of(context).colorScheme.background,
           padding: const EdgeInsets.symmetric(vertical: 12),
           width: double.infinity,
           height: 180,

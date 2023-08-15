@@ -48,7 +48,9 @@ class CreateScreen extends StatelessWidget {
                   },
                   child: Text(
                     "POST",
-                    style: const TextStyle().copyWith(fontSize: 20),
+                    style: const TextStyle().copyWith(
+                        fontSize: 20,
+                        color: Theme.of(context).colorScheme.onSecondary),
                   ))
             ],
             leading: IconButton(

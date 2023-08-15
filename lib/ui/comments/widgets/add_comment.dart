@@ -78,9 +78,13 @@ class AddCommentWidget extends StatelessWidget {
                     onPressed: () {
                       onSubmit(context);
                     },
-                    child: Text(state.newCommentStatus == CommentStatus.loading
-                        ? "Loading...."
-                        : 'Post'),
+                    child: Text(
+                      state.newCommentStatus == CommentStatus.loading
+                          ? "Loading...."
+                          : 'Post',
+                      style: const TextStyle().copyWith(
+                          color: Theme.of(context).colorScheme.onSecondary),
+                    ),
                   )
                 ],
               ),

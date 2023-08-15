@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pettygram_flutter/blocs/theme/cubit/theme_cubit.dart';
 import 'package:pettygram_flutter/ui/home/home_screen.dart';
 import 'package:pettygram_flutter/ui/tabs/widgets/main_drawer.dart';
 
@@ -37,6 +39,7 @@ class _TabsScreenState extends State<TabsScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text('Pettygram'),
           actions: [
             IconButton(
@@ -44,8 +47,13 @@ class _TabsScreenState extends State<TabsScreen> {
               icon: const Icon(Icons.favorite_border),
             ),
             IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.send),
+              onPressed: () {
+                context.read<ThemeCubit>().toggleTheme();
+              },
+              icon: Icon(
+                  context.read<ThemeCubit>().state.currentMode == Mode.light
+                      ? Icons.dark_mode_rounded
+                      : Icons.sunny),
             )
           ],
         ),
