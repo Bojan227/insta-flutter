@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
 import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
 import 'package:pettygram_flutter/models/post.dart';
 import 'package:pettygram_flutter/models/user.dart';
@@ -20,9 +21,13 @@ class PostActions extends StatelessWidget {
             Row(
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<PostBloc>().add(
+                          ToggleLike(postId: post.id!),
+                        );
+                  },
                   icon: Icon(
-                    post.isLiked("63fc9f28497159fe4ec5e254")
+                    post.isLiked("63f76286810a293888d18152")
                         ? Icons.favorite
                         : Icons.favorite_border,
                     color: Colors.red,

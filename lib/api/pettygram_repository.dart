@@ -13,6 +13,7 @@ abstract class IPettygramRepository {
   Future<Token> loginRequest(LoginBody loginBody);
   Future<List<Post>> getPosts(int page);
   Future<List<Post>> getPostsByUserId(String id);
+  Future<Post> toggleLike(String postId, Token token);
   Future<Post> addPost(PostBody postBody, Token token);
   Future<Map<String, dynamic>> toggleBookmark(String postId, Token token);
   Future<User> editUser(EditBody editBody, Token token);

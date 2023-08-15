@@ -24,3 +24,12 @@ class AddPost extends PostEvent {
   @override
   List<Object> get props => [userPost];
 }
+
+class ToggleLike extends PostEvent {
+  const ToggleLike({required this.postId});
+
+  final String postId;
+
+  @override
+  List<Object> get props => [postId];
+}

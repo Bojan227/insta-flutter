@@ -15,6 +15,7 @@ abstract class IPettygramProvider {
   Future<Token> loginRequest(LoginBody loginBody);
   Future<List<Post>> getPostsByUserId(String id);
   Future<Post> addPost(PostBody postBody, Token token);
+  Future<Post> toggleLike(String postId, Token token);
   Future<List<Post>> getPosts(int page);
   Future<User> editUser(EditBody editBody, Token token);
   Future<User> getUserById(String userId);
@@ -242,15 +243,33 @@ class PettygramProvider implements IPettygramProvider {
   @override
   Future<Comment> editComment(
       String commentId, String comment, Token token) async {
-    final res = await _dio.put('/comments/edit',
-        data: {"commentId": commentId, "comment": comment},
-        options: Options(
-          contentType: Headers.jsonContentType,
-          headers: {"Authorization": "Bearer ${token.accessToken}"},
-        ));
+    final res = await _dio.put(
+      '/comments/edit',
+      data: {"commentId": commentId, "comment": comment},
+      options: Options(
+        contentType: Headers.jsonContentType,
+        headers: {"Authorization": "Bearer ${token.accessToken}"},
+      ),
+    );
 
     final Comment newComment = Comment.fromJson(res.data['newComment']);
 
     return newComment;
+  }
+
+  @override
+  Future<Post> toggleLike(String postId, Token token) async {
+    final res = await _dio.put(
+      '/posts/',
+      data: {"postId": postId},
+      options: Options(
+        contentType: Headers.jsonContentType,
+        headers: {"Authorization": "Bearer ${token.accessToken}"},
+      ),
+    );
+
+    final Post post = Post.fromJson(res.data);
+
+    return post;
   }
 }

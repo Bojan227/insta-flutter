@@ -24,6 +24,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       : super(const PostState()) {
     on<GetPosts>(_onGetPosts, transformer: throttleDroppable(throttleDuration));
     on<AddPost>(_onAddPost);
+    on<ToggleLike>(_onToggleLike);
   }
 
   final PettygramRepository pettygramRepository;
@@ -85,6 +86,24 @@ class PostBloc extends Bloc<PostEvent, PostState> {
           posts: [userPost, ...state.posts]));
     } on DioException catch (_) {
       emit(state.copyWith(addPostStatus: PostStatus.failure));
+    }
+  }
+
+  Future<void> _onToggleLike(ToggleLike event, Emitter<PostState> emit) async {
+    try {
+      Post updatedPost = await pettygramRepository.toggleLike(
+          event.postId, Token(accessToken: storage.getString('accessToken')!));
+
+      final index =
+          state.posts.indexWhere((commentObj) => commentObj.id == event.postId);
+
+      state.posts[index] = updatedPost;
+
+      emit(state.copyWith(status: PostStatus.initial));
+
+      emit(state.copyWith(status: PostStatus.success, posts: state.posts));
+    } on DioException catch (_) {
+      emit(state.copyWith(status: PostStatus.failure));
     }
   }
 }
