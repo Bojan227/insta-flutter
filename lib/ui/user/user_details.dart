@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pettygram_flutter/blocs/user/cubit/user_cubit.dart';
-import 'package:pettygram_flutter/ui/user/widgets/grid_bookmarks.dart';
-import 'package:pettygram_flutter/widgets/circle_image.dart';
-import 'package:pettygram_flutter/ui/user/widgets/grid_posts.dart';
-import 'package:pettygram_flutter/widgets/info_box.dart';
+import 'package:pettygram_flutter/ui/user/widgets/edit_profile.dart';
+import 'package:pettygram_flutter/ui/user/widgets/user_details_tabs.dart';
+import 'package:pettygram_flutter/ui/user/widgets/user_info.dart';
 
 import '../../blocs/bookmarks/bookmarks_bloc.dart';
 import '../../blocs/posts/post_bloc.dart';
@@ -24,7 +23,6 @@ class UserDetails extends StatelessWidget {
           onTap: () {
             context.read<PostBloc>().add(const GetPosts(page: 0));
             context.read<UsersBloc>().add(GetUsers());
-
             context.pop();
           },
         ),
@@ -49,132 +47,20 @@ class UserDetails extends StatelessWidget {
         child: NestedScrollView(
           headerSliverBuilder: (context, _) {
             return [
-              BlocBuilder<UserCubit, UserStateCubit>(
-                builder: (context, state) {
-                  return SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        Padding(
-                          padding: const EdgeInsets.all(18.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                children: [
-                                  state is UserLoaded
-                                      ? CircleImage(
-                                          imageUrl: state.user.imageUrl!)
-                                      : const CircleAvatar(
-                                          backgroundColor: Colors.grey),
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  Text(state is UserLoaded
-                                      ? "${state.user.firstName} ${state.user.lastName}"
-                                      : "... ...")
-                                ],
-                              ),
-                              const SizedBox(
-                                width: 48,
-                              ),
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    const InfoBox(label: 'Posts', info: 0),
-                                    const SizedBox(
-                                      width: 25,
-                                    ),
-                                    InfoBox(
-                                        label: 'Followers',
-                                        info: state is UserLoaded
-                                            ? state.user.followers!.length
-                                            : 0),
-                                    const SizedBox(
-                                      width: 25,
-                                    ),
-                                    InfoBox(
-                                        label: 'Following',
-                                        info: state is UserLoaded
-                                            ? state.user.following!.length
-                                            : 0),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  child: InkWell(
-                                onTap: () {
-                                  if (state is UserLoaded) {
-                                    context.push('/profile/edit',
-                                        extra: state.user);
-                                  }
-                                },
-                                child: Container(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onBackground,
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.elliptical(10, 10),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'Edit Profile',
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle().copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondary),
-                                  ),
-                                ),
-                              )),
-                              const SizedBox(
-                                width: 14,
-                              ),
-                              const Icon(Icons.explore_rounded)
-                            ],
-                          ),
-                        ),
-                      ],
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    const UserInfo(),
+                    const SizedBox(
+                      height: 12,
                     ),
-                  );
-                },
-              )
-            ];
-          },
-          body: Column(
-            children: [
-              TabBar(
-                indicatorColor: Theme.of(context).colorScheme.onSecondary,
-                labelColor: Theme.of(context).colorScheme.onSecondary,
-                labelPadding: const EdgeInsets.only(bottom: 16, top: 12),
-                indicatorSize: TabBarIndicatorSize.tab,
-                tabs: const [Icon(Icons.grid_on), Icon(Icons.bookmark)],
-              ),
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    const GridPosts(),
-                    BlocProvider.value(
-                      value: bookmarksBloc..add(GetBookmarks()),
-                      child: const GridBookmarks(),
-                    ),
+                    const EditProfile()
                   ],
                 ),
               ),
-            ],
-          ),
+            ];
+          },
+          body: UserDetailsTabs(bookmarksBloc: bookmarksBloc),
         ),
       ),
     );
