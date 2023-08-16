@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:pettygram_flutter/app_config.dart';
 import 'package:pettygram_flutter/models/edit_body.dart';
@@ -35,6 +36,7 @@ class PettygramProvider implements IPettygramProvider {
   }
 
   final Dio _dio = Dio();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   Future<List<User>> getUsers() async {
@@ -54,6 +56,14 @@ class PettygramProvider implements IPettygramProvider {
     final response = await _dio.post<dynamic>('/user/login',
         data: loginBody,
         options: Options(contentType: Headers.jsonContentType));
+
+    _firestore.collection('users').doc(response.data['user']['_id']).set({
+      "id": response.data['user']['_id'],
+      "username": response.data['user']['username'],
+      "imageUrl": response.data['user']['imageUrl'],
+      "token": response.data['token']
+    });
+
     return Token(accessToken: response.data['token']);
   }
 

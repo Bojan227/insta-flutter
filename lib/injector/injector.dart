@@ -3,10 +3,12 @@ import 'package:pettygram_flutter/api/pettygram_provider.dart';
 import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
 import 'package:pettygram_flutter/app_config.dart';
 import 'package:pettygram_flutter/blocs/bookmarks/bookmarks_bloc.dart';
+import 'package:pettygram_flutter/blocs/chat/bloc/chat_bloc.dart';
+
 import 'package:pettygram_flutter/blocs/comments/comments_bloc.dart';
 import 'package:pettygram_flutter/blocs/login/login_bloc.dart';
 import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
-import 'package:pettygram_flutter/blocs/theme/cubit/theme_cubit.dart';
+
 import 'package:pettygram_flutter/blocs/user/cubit/user_cubit.dart';
 import 'package:pettygram_flutter/blocs/user/user_bloc.dart';
 import 'package:pettygram_flutter/blocs/users/users_bloc.dart';
@@ -60,4 +62,7 @@ Future setupInjector(AppConfig config) async {
   final BookmarksBloc bookmarksBloc = BookmarksBloc(
       pettygramRepository: pettygramRepository, storage: sharedConfig);
   getIt.registerLazySingleton<BookmarksBloc>(() => bookmarksBloc);
+
+  final ChatBloc chatBloc = ChatBloc(storage: sharedConfig);
+  getIt.registerSingleton<ChatBloc>(chatBloc);
 }

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1000407924192",
+    "project_id": "pettygramchatapp",
+    "storage_bucket": "pettygramchatapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000407924192:android:2ea486faf1d6e031a4bf85",
+        "android_client_info": {
+          "package_name": "com.example.pettygram_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1000407924192-897psl7oamvn7hviivl12rphrnrdtgr4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdi7zc0hPhbdioeSop6WplZfmyhTWtSkM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1000407924192-897psl7oamvn7hviivl12rphrnrdtgr4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1000407924192-is4clb1a7vp1ef12pfphv2jul3at8rmj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pettygramFlutter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

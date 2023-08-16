@@ -54,6 +54,12 @@ class _TabsScreenState extends State<TabsScreen> {
                   context.read<ThemeCubit>().state.currentMode == Mode.light
                       ? Icons.dark_mode_rounded
                       : Icons.sunny),
+            ),
+            IconButton(
+              onPressed: () {
+                context.go('/chat');
+              },
+              icon: const Icon(Icons.send),
             )
           ],
         ),
