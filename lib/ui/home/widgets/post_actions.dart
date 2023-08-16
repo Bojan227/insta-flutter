@@ -26,11 +26,21 @@ class PostActions extends StatelessWidget {
                           ToggleLike(postId: post.id!),
                         );
                   },
-                  icon: Icon(
-                    post.isLiked("63f76286810a293888d18152")
-                        ? Icons.favorite
-                        : Icons.favorite_border,
-                    color: Colors.red,
+                  icon: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 3000),
+                    transitionBuilder: (child, animation) {
+                      return RotationTransition(
+                        turns: Tween(begin: 0.5, end: 1.0).animate(animation),
+                        child: child,
+                      );
+                    },
+                    child: Icon(
+                      key: ValueKey(post.isLiked("63f76286810a293888d18152")),
+                      post.isLiked("63f76286810a293888d18152")
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      color: Colors.red,
+                    ),
                   ),
                 ),
                 const SizedBox(
