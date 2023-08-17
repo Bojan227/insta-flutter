@@ -1,16 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pettygram_flutter/blocs/chat/bloc/chat_bloc.dart';
+import 'package:pettygram_flutter/ui/chat/widget/chat_message.dart';
 import 'package:pettygram_flutter/widgets/input_field.dart';
 
-import '../../../models/message.dart';
-
 class ChatPage extends StatelessWidget {
-  ChatPage({super.key, required this.username, required this.userId});
+  ChatPage({super.key, required this.username, required this.receiverId});
 
   final String username;
-  final String userId;
+  final String receiverId;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String newMessage = '';
@@ -20,16 +18,14 @@ class ChatPage extends StatelessWidget {
       _formKey.currentState!.save();
 
       BlocProvider.of<ChatBloc>(context).add(
-        SendMessage(receiverId: userId, newMessage: newMessage),
+        SendMessage(receiverId: receiverId, newMessage: newMessage),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    List<String> ids = ['63f76bdcb090e8f5b7015c41', '63f76286810a293888d18152'];
-    ids.sort();
-    String chatRoomId = ids.join("_");
+    ScrollController scrollController = ScrollController();
 
     return Scaffold(
       appBar: AppBar(
@@ -37,73 +33,22 @@ class ChatPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('chat_rooms')
-                  .doc(chatRoomId)
-                  .collection('messages')
-                  .orderBy('timestamp', descending: false)
-                  .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                }
-
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                }
-
-                List<Message> messages =
-                    snapshot.data!.docs.map((DocumentSnapshot doc) {
-                  Map<String, dynamic> data =
-                      doc.data() as Map<String, dynamic>;
-                  return Message(
-                      senderId: data['senderId'],
-                      senderUsername: data['senderUsername'],
-                      receiverId: data['receiverId'],
-                      message: data['message'],
-                      timestamp: data['timestamp']);
-                }).toList();
-
-                return SingleChildScrollView(
-                  child: Column(
-                    children: messages
-                        .map((message) => Container(
-                              padding: const EdgeInsets.all(12),
-                              alignment: message.senderId == userId
-                                  ? Alignment.centerRight
-                                  : Alignment.centerLeft,
-                              child: Container(
-                                width: 255,
-                                height: 80,
-                                padding: const EdgeInsets.all(18),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(24),
-                                    color: message.senderId == userId
-                                        ? Colors.amberAccent
-                                        : Colors.greenAccent),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      message.senderUsername,
-                                      textAlign: TextAlign.left,
-                                    ),
-                                    Text(
-                                      message.message,
-                                      textAlign: TextAlign.left,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ))
-                        .toList(),
-                  ),
-                );
-              },
-            ),
-          ),
+          Expanded(child: BlocBuilder<ChatBloc, ChatState>(
+            builder: (context, state) {
+              return SingleChildScrollView(
+                reverse: true,
+                controller: scrollController,
+                child: Column(
+                  children: state.messages
+                      .map(
+                        (message) => ChatMessage(
+                            message: message, receiverId: receiverId),
+                      )
+                      .toList(),
+                ),
+              );
+            },
+          )),
           Row(
             children: [
               Form(
@@ -118,6 +63,11 @@ class ChatPage extends StatelessWidget {
               IconButton(
                 onPressed: () {
                   onSubmit(context);
+                  scrollController.animateTo(
+                    0.0,
+                    curve: Curves.easeOut,
+                    duration: const Duration(milliseconds: 1000),
+                  );
                 },
                 icon: const Icon(Icons.send),
               )

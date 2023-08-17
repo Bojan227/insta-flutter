@@ -18,11 +18,14 @@ class SendMessage extends ChatEvent {
 }
 
 class GetMessages extends ChatEvent {
-  const GetMessages({required this.userId, required this.otherId});
+  const GetMessages({required this.receiverId});
 
-  final String userId;
-  final String otherId;
+  final String receiverId;
 
   @override
-  List<Object> get props => [userId, otherId];
+  List<Object> get props => [receiverId];
+}
+
+class GetOnlineUsers extends ChatEvent {
+  const GetOnlineUsers();
 }

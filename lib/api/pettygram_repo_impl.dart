@@ -19,7 +19,7 @@ class PettygramRepository implements IPettygramRepository {
   }
 
   @override
-  Future<Token> loginRequest(LoginBody loginBody) async {
+  Future<Map<String, dynamic>> loginRequest(LoginBody loginBody) async {
     return await _provider.loginRequest(loginBody);
   }
 

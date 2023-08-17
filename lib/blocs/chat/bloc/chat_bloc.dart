@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:pettygram_flutter/api/chat_repo_impl.dart';
 
+import '../../../models/firebase_user.dart';
 import '../../../models/message.dart';
 import '../../../storage/shared_preferences.dart';
 
@@ -12,58 +15,74 @@ part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final SharedPreferencesConfig storage;
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final ChatRepository chatRepository;
 
-  ChatBloc({required this.storage}) : super(const ChatState(messages: [])) {
+  ChatBloc({required this.storage, required this.chatRepository})
+      : super(
+          const ChatState(
+              messages: [], sendMessageStatus: SendStatus.initial, users: []),
+        ) {
     on<SendMessage>(_onSendMessage);
     on<GetMessages>(_onGetMessages);
+    on<GetOnlineUsers>(_onGetUsers);
   }
 
   Future<void> _onSendMessage(SendMessage event, Emitter emit) async {
-    final token = storage.getString('accessToken');
-
-    final QuerySnapshot<Object?> currentUser =
-        await users.where('token', isEqualTo: token).limit(1).get();
     final Timestamp timestamp = Timestamp.now();
+    emit(state.copyWith(sendMessageStatus: SendStatus.loading));
 
-    if (currentUser.size > 0) {
-      QueryDocumentSnapshot<Object?> documentSnapshot = currentUser.docs[0];
-      var data = documentSnapshot.data() as Map<String, dynamic>;
+    try {
+      final Map<String, dynamic> currentUser =
+          jsonDecode(storage.getString('accessUser')!);
 
       final Message message = Message(
-          senderId: data['id'],
-          senderUsername: data['username'],
+          senderId: currentUser['id'],
+          senderUsername: currentUser['username'],
           receiverId: event.receiverId,
           message: event.newMessage,
           timestamp: timestamp);
 
-      List<String> ids = [data['id'], event.receiverId];
+      List<String> ids = [currentUser['id'], event.receiverId];
       ids.sort();
       String chatRoomId = ids.join("_");
 
-      await _firestore
-          .collection('chat_rooms')
-          .doc(chatRoomId)
-          .collection('messages')
-          .add(message.toMap());
+      await chatRepository.sendMessage(chatRoomId, message);
 
-      // ... print other fields
-    } else {
-      print("No user found with the given token.");
+      emit(state.copyWith(sendMessageStatus: SendStatus.success));
+    } catch (error) {
+      emit(state.copyWith(sendMessageStatus: SendStatus.failure));
     }
   }
 
-  Stream<QuerySnapshot> _onGetMessages(GetMessages event, Emitter emit) {
-    List<String> ids = [event.userId, event.otherId];
+  Future<void> _onGetMessages(GetMessages event, Emitter emit) async {
+    final Map<String, dynamic> currentUser =
+        jsonDecode(storage.getString('accessUser')!);
+
+    List<String> ids = [currentUser['id'], event.receiverId];
     ids.sort();
     String chatRoomId = ids.join("_");
 
-    return _firestore
-        .collection('chat_rooms')
-        .doc(chatRoomId)
-        .collection('messages')
-        .orderBy('timestamp', descending: false)
-        .snapshots();
+    await emit.forEach(
+      chatRepository.getMessages(chatRoomId),
+      onData: (List<Message> messages) => ChatState(
+          messages: messages,
+          sendMessageStatus: SendStatus.initial,
+          users: state.users),
+    );
+  }
+
+  Future<void> _onGetUsers(GetOnlineUsers event, Emitter emit) async {
+    final Map<String, dynamic> currentUser =
+        jsonDecode(storage.getString('accessUser')!);
+
+    await emit.forEach(
+      chatRepository.getUsers(),
+      onData: (List<FirebaseUser> users) => ChatState(
+          messages: state.messages,
+          sendMessageStatus: SendStatus.initial,
+          users: users.where((user) => user.id != currentUser['id']).toList()),
+    );
+
+    print('success');
   }
 }

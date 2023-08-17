@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
+import 'package:pettygram_flutter/api/chat_provider.dart';
+import 'package:pettygram_flutter/api/chat_repo_impl.dart';
 import 'package:pettygram_flutter/api/pettygram_provider.dart';
 import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
 import 'package:pettygram_flutter/app_config.dart';
@@ -63,6 +66,17 @@ Future setupInjector(AppConfig config) async {
       pettygramRepository: pettygramRepository, storage: sharedConfig);
   getIt.registerLazySingleton<BookmarksBloc>(() => bookmarksBloc);
 
-  final ChatBloc chatBloc = ChatBloc(storage: sharedConfig);
-  getIt.registerSingleton<ChatBloc>(chatBloc);
+// chat injectors
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  getIt.registerSingleton<FirebaseFirestore>(firestore);
+
+  final ChatProvider chatProvider = ChatProvider(firestore: firestore);
+  getIt.registerSingleton<ChatProvider>(chatProvider);
+
+  final ChatRepository chatRepository = ChatRepository(provider: chatProvider);
+  getIt.registerSingleton<ChatRepository>(chatRepository);
+
+  final ChatBloc chatBloc =
+      ChatBloc(storage: sharedConfig, chatRepository: chatRepository);
+  getIt.registerLazySingleton<ChatBloc>(() => chatBloc);
 }

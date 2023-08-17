@@ -57,7 +57,7 @@ class _TabsScreenState extends State<TabsScreen> {
             ),
             IconButton(
               onPressed: () {
-                context.go('/chat');
+                context.push('/chat');
               },
               icon: const Icon(Icons.send),
             )

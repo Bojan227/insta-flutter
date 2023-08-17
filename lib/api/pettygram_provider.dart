@@ -10,10 +10,11 @@ import 'package:pettygram_flutter/models/user.dart';
 
 import '../models/comment.dart';
 import '../models/comment_body.dart';
+import '../models/firebase_user.dart';
 
 abstract class IPettygramProvider {
   Future<List<User>> getUsers();
-  Future<Token> loginRequest(LoginBody loginBody);
+  Future<Map<String, dynamic>> loginRequest(LoginBody loginBody);
   Future<List<Post>> getPostsByUserId(String id);
   Future<Post> addPost(PostBody postBody, Token token);
   Future<Post> toggleLike(String postId, Token token);
@@ -52,19 +53,26 @@ class PettygramProvider implements IPettygramProvider {
   }
 
   @override
-  Future<Token> loginRequest(LoginBody loginBody) async {
+  Future<Map<String, dynamic>> loginRequest(LoginBody loginBody) async {
     final response = await _dio.post<dynamic>('/user/login',
         data: loginBody,
         options: Options(contentType: Headers.jsonContentType));
 
-    _firestore.collection('users').doc(response.data['user']['_id']).set({
-      "id": response.data['user']['_id'],
-      "username": response.data['user']['username'],
-      "imageUrl": response.data['user']['imageUrl'],
-      "token": response.data['token']
-    });
+    final FirebaseUser firebaseUser = FirebaseUser(
+        id: response.data["user"]['_id'],
+        username: response.data["user"]['username'],
+        imageUrl: response.data["user"]['imageUrl'],
+        token: response.data['token']);
 
-    return Token(accessToken: response.data['token']);
+    _firestore
+        .collection('users')
+        .doc(response.data['user']['_id'])
+        .set(firebaseUser.toMap());
+
+    return {
+      'token': Token(accessToken: response.data['token']),
+      "user": firebaseUser
+    };
   }
 
   @override

@@ -61,6 +61,9 @@ class User extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() =>
+      <String, dynamic>{'id': id, "username": username, "imageUrl": imageUrl};
+
   bool isSaved(String postId) {
     return saved!.any((post) {
       final Post postCreated = Post(

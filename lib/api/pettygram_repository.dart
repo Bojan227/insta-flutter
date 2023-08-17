@@ -10,7 +10,7 @@ import '../models/comment_body.dart';
 
 abstract class IPettygramRepository {
   Future<List<User>> getUsers();
-  Future<Token> loginRequest(LoginBody loginBody);
+  Future<Map<String, dynamic>> loginRequest(LoginBody loginBody);
   Future<List<Post>> getPosts(int page);
   Future<List<Post>> getPostsByUserId(String id);
   Future<Post> toggleLike(String postId, Token token);

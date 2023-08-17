@@ -10,6 +10,7 @@ import 'package:pettygram_flutter/injector/injector.dart';
 import 'package:pettygram_flutter/models/user.dart';
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
 import 'package:pettygram_flutter/ui/chat/chat_screen.dart';
+import 'package:pettygram_flutter/ui/chat/widget/chat_page.dart';
 import 'package:pettygram_flutter/ui/comments/comments_screen.dart';
 import 'package:pettygram_flutter/ui/create/create_screen.dart';
 import 'package:pettygram_flutter/ui/edit/edit_screen.dart';
@@ -17,6 +18,7 @@ import 'package:pettygram_flutter/ui/tabs/tabs_screen.dart';
 import 'package:pettygram_flutter/ui/login/login_screen.dart';
 import 'package:pettygram_flutter/ui/user/user_details.dart';
 
+import 'api/chat_repo_impl.dart';
 import 'blocs/bookmarks/bookmarks_bloc.dart';
 import 'blocs/chat/bloc/chat_bloc.dart';
 import 'blocs/login/login_bloc.dart';
@@ -35,6 +37,7 @@ class AppRouter {
   final CommentsBloc commentsBloc = getIt<CommentsBloc>();
   final BookmarksBloc bookmarksBloc = getIt<BookmarksBloc>();
   final ChatBloc chatBloc = getIt<ChatBloc>();
+  final ChatRepository chatRepository = getIt<ChatRepository>();
 
   GoRouter onGenerateRouter() {
     final GoRouter _router = GoRouter(
@@ -148,14 +151,32 @@ class AppRouter {
           },
         ),
         GoRoute(
-          path: '/chat',
-          builder: (BuildContext context, GoRouterState state) {
-            return BlocProvider.value(
-              value: chatBloc,
-              child: ChatScreen(),
-            );
-          },
-        ),
+            path: '/chat',
+            builder: (BuildContext context, GoRouterState state) {
+              return BlocProvider.value(
+                value: chatBloc..add(const GetOnlineUsers()),
+                child: const ChatScreen(),
+              );
+            },
+            routes: [
+              GoRoute(
+                path: 'messages',
+                builder: (BuildContext context, GoRouterState state) {
+                  Map<String, dynamic> extra =
+                      state.extra as Map<String, dynamic>;
+
+                  return BlocProvider.value(
+                    value: chatBloc
+                      ..add(
+                        GetMessages(receiverId: extra['receiverId']),
+                      ),
+                    child: ChatPage(
+                        username: extra['username'],
+                        receiverId: extra['receiverId']),
+                  );
+                },
+              ),
+            ]),
       ],
       redirect: (context, state) {
         if (state.error is TypeError) {
