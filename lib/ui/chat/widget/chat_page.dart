@@ -49,29 +49,32 @@ class ChatPage extends StatelessWidget {
               );
             },
           )),
-          Row(
-            children: [
-              Form(
-                key: _formKey,
-                child: Expanded(
-                  child: InputField(
-                      handleInput: (value) => newMessage = value,
-                      obscureText: false,
-                      label: 'Message'),
+          Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Row(
+              children: [
+                Form(
+                  key: _formKey,
+                  child: Expanded(
+                    child: InputField(
+                        handleInput: (value) => newMessage = value,
+                        obscureText: false,
+                        label: 'Message'),
+                  ),
                 ),
-              ),
-              IconButton(
-                onPressed: () {
-                  onSubmit(context);
-                  scrollController.animateTo(
-                    0.0,
-                    curve: Curves.easeOut,
-                    duration: const Duration(milliseconds: 1000),
-                  );
-                },
-                icon: const Icon(Icons.send),
-              )
-            ],
+                IconButton(
+                  onPressed: () {
+                    onSubmit(context);
+                    scrollController.animateTo(
+                      0.0,
+                      curve: Curves.easeOut,
+                      duration: const Duration(milliseconds: 1000),
+                    );
+                  },
+                  icon: const Icon(Icons.send),
+                )
+              ],
+            ),
           ),
         ],
       ),

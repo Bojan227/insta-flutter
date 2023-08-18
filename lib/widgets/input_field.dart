@@ -19,13 +19,15 @@ class InputField extends StatelessWidget {
       initialValue: defaultValue,
       obscureText: obscureText,
       decoration: InputDecoration(
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.onSecondary, width: 2.0),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(18)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(18),
+            borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.onSecondary, width: 1)),
         fillColor: Colors.grey[100],
-        contentPadding: const EdgeInsets.all(10),
-        label: Text(label),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
+        hintText: label,
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {

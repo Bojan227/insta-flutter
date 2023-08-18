@@ -28,19 +28,22 @@ class CommentItem extends StatelessWidget {
           ),
           Expanded(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${comment.createdBy!['username']}'),
+                    Text(
+                      '${comment.createdBy!['username']}',
+                      textAlign: TextAlign.start,
+                    ),
                     const SizedBox(
                       width: 14,
                     ),
-                    Expanded(
-                      child: EditCommentWidget(
-                        comment: comment.comment!,
-                        commentId: comment.id!,
-                      ),
-                    )
+                    EditCommentWidget(
+                      comment: comment.comment!,
+                      commentId: comment.id!,
+                    ),
                   ],
                 ),
                 const SizedBox(
