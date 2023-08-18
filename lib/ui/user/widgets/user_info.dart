@@ -31,7 +31,7 @@ class UserInfo extends StatelessWidget {
                 ],
               ),
               const SizedBox(
-                width: 48,
+                width: 32,
               ),
               Expanded(
                 child: Row(
@@ -55,7 +55,7 @@ class UserInfo extends StatelessWidget {
                             : 0),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         );
