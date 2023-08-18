@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pettygram_flutter/blocs/chat/bloc/chat_bloc.dart';
+import 'package:pettygram_flutter/models/message.dart';
+import 'package:pettygram_flutter/ui/chat/widget/chat_image.dart';
 import 'package:pettygram_flutter/ui/chat/widget/chat_message.dart';
 import 'package:pettygram_flutter/widgets/input_field.dart';
+import 'dart:convert';
+import 'dart:io';
 
 class ChatPage extends StatelessWidget {
   ChatPage({super.key, required this.username, required this.receiverId});
@@ -18,8 +23,26 @@ class ChatPage extends StatelessWidget {
       _formKey.currentState!.save();
 
       BlocProvider.of<ChatBloc>(context).add(
-        SendMessage(receiverId: receiverId, newMessage: newMessage),
+        SendMessage(
+            receiverId: receiverId, newMessage: newMessage, type: 'message'),
       );
+    }
+  }
+
+  void takePicture(BuildContext context) async {
+    final imagePicker = ImagePicker();
+
+    final pickedImage =
+        await imagePicker.pickImage(source: ImageSource.camera, maxWidth: 600);
+
+    if (pickedImage == null) return;
+
+    File imagefile = File(pickedImage.path);
+
+    if (context.mounted) {
+      print('mounted');
+      BlocProvider.of<ChatBloc>(context)
+          .add(UploadImage(image: imagefile, receiverId: receiverId));
     }
   }
 
@@ -41,8 +64,11 @@ class ChatPage extends StatelessWidget {
                 child: Column(
                   children: state.messages
                       .map(
-                        (message) => ChatMessage(
-                            message: message, receiverId: receiverId),
+                        (message) => message.type == 'media'
+                            ? ChatImage(
+                                message: message, receiverId: receiverId)
+                            : ChatMessage(
+                                message: message, receiverId: receiverId),
                       )
                       .toList(),
                 ),
@@ -53,6 +79,15 @@ class ChatPage extends StatelessWidget {
             padding: const EdgeInsets.all(14.0),
             child: Row(
               children: [
+                IconButton(
+                  onPressed: () {
+                    takePicture(context);
+                  },
+                  icon: const Icon(Icons.camera_alt),
+                ),
+                const SizedBox(
+                  width: 4,
+                ),
                 Form(
                   key: _formKey,
                   child: Expanded(

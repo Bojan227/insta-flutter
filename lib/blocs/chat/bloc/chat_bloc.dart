@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,6 +26,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<SendMessage>(_onSendMessage);
     on<GetMessages>(_onGetMessages);
     on<GetOnlineUsers>(_onGetUsers);
+    on<UploadImage>(_onUploadImage);
   }
 
   Future<void> _onSendMessage(SendMessage event, Emitter emit) async {
@@ -40,7 +42,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           senderUsername: currentUser['username'],
           receiverId: event.receiverId,
           message: event.newMessage,
-          timestamp: timestamp);
+          timestamp: timestamp,
+          type: event.type);
 
       List<String> ids = [currentUser['id'], event.receiverId];
       ids.sort();
@@ -50,6 +53,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
       emit(state.copyWith(sendMessageStatus: SendStatus.success));
     } catch (error) {
+      print(error);
       emit(state.copyWith(sendMessageStatus: SendStatus.failure));
     }
   }
@@ -82,7 +86,20 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           sendMessageStatus: SendStatus.initial,
           users: users.where((user) => user.id != currentUser['id']).toList()),
     );
+  }
 
-    print('success');
+  Future<void> _onUploadImage(UploadImage event, Emitter emit) async {
+    try {
+      final String imageUrl = await chatRepository.uploadImage(event.image);
+
+      await _onSendMessage(
+          SendMessage(
+              receiverId: event.receiverId,
+              newMessage: imageUrl,
+              type: 'media'),
+          emit);
+    } catch (error) {
+      emit(state.copyWith(sendMessageStatus: SendStatus.failure));
+    }
   }
 }

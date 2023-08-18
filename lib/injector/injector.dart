@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pettygram_flutter/api/chat_provider.dart';
 import 'package:pettygram_flutter/api/chat_repo_impl.dart';
@@ -70,7 +71,11 @@ Future setupInjector(AppConfig config) async {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   getIt.registerSingleton<FirebaseFirestore>(firestore);
 
-  final ChatProvider chatProvider = ChatProvider(firestore: firestore);
+  final storage = FirebaseStorage.instance;
+  getIt.registerSingleton<FirebaseStorage>(storage);
+
+  final ChatProvider chatProvider =
+      ChatProvider(firestore: firestore, firestorage: storage);
   getIt.registerSingleton<ChatProvider>(chatProvider);
 
   final ChatRepository chatRepository = ChatRepository(provider: chatProvider);

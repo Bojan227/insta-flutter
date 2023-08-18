@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:pettygram_flutter/api/chat_repository.dart';
 import 'package:pettygram_flutter/models/firebase_user.dart';
 
@@ -22,5 +24,10 @@ class ChatRepository implements IChatRepository {
   @override
   Stream<List<FirebaseUser>> getUsers() async* {
     yield* provider.getUsers();
+  }
+
+  @override
+  Future<String> uploadImage(File image) async {
+    return await provider.uploadImage(image);
   }
 }

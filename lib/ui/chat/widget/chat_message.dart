@@ -1,5 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
 import '../../../models/message.dart';
 
 class ChatMessage extends StatelessWidget {
@@ -18,18 +18,19 @@ class ChatMessage extends StatelessWidget {
           : Alignment.centerLeft,
       child: Container(
         width: 255,
-        height: 80,
+        height: 70,
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            color: message.senderId == receiverId
-                ? Colors.amberAccent
-                : Colors.greenAccent),
-        child: Column(
+            borderRadius: BorderRadius.circular(18), color: Colors.grey[100]),
+        child: Row(
           children: [
-            Text(
-              message.senderUsername,
-              textAlign: TextAlign.left,
+            message.senderId != receiverId
+                ? const CircleAvatar(
+                    child: Text('w'),
+                  )
+                : Container(),
+            const SizedBox(
+              width: 12,
             ),
             Text(
               message.message,

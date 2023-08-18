@@ -13,7 +13,6 @@ class ChatListItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onBackground,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Row(
@@ -25,9 +24,22 @@ class ChatListItem extends StatelessWidget {
             width: 24,
           ),
           Expanded(
-              child: Text(
-            user.username,
-            style: const TextStyle(fontSize: 24),
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                user.username,
+                style: TextStyle(
+                    fontSize: 24,
+                    color: Theme.of(context).colorScheme.onSecondary),
+              ),
+              Text(
+                'Active now',
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(context).colorScheme.onSecondary),
+              ),
+            ],
           ))
         ],
       ),
