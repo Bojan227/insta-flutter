@@ -80,7 +80,7 @@ class _TabsScreenState extends State<TabsScreen> {
               BottomNavigationBarItem(
                   icon: Icon(Icons.favorite), label: "Notifications"),
               BottomNavigationBarItem(
-                icon: Icon(Icons.circle),
+                icon: Icon(Icons.person),
                 label: 'Profile',
               )
             ]),
