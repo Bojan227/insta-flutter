@@ -8,12 +8,12 @@ class FirebaseUser extends Equatable {
       {required this.id,
       required this.username,
       required this.imageUrl,
-      required this.token});
+      this.token});
 
   final String id;
   final String username;
   final String imageUrl;
-  final String token;
+  final String? token;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -25,11 +25,13 @@ class FirebaseUser extends Equatable {
   }
 
   factory FirebaseUser.fromMap(Map<String, dynamic> map) {
+    final String token = map['token'] ?? '';
+
     return FirebaseUser(
       id: map['id'] as String,
       username: map['username'] as String,
       imageUrl: map['imageUrl'] as String,
-      token: map['token'] as String,
+      token: token,
     );
   }
 

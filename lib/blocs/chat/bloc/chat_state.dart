@@ -1,7 +1,5 @@
 part of 'chat_bloc.dart';
 
-enum SendStatus { initial, loading, success, failure }
-
 class ChatState extends Equatable {
   const ChatState(
       {required this.messages,
@@ -11,11 +9,11 @@ class ChatState extends Equatable {
   final List<Message> messages;
   final List<FirebaseUser> users;
 
-  final SendStatus sendMessageStatus;
+  final Status sendMessageStatus;
 
   ChatState copyWith(
       {List<Message>? messages,
-      SendStatus? sendMessageStatus,
+      Status? sendMessageStatus,
       List<FirebaseUser>? users}) {
     return ChatState(
         messages: messages ?? this.messages,

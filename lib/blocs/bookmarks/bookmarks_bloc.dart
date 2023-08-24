@@ -6,6 +6,7 @@ import 'package:pettygram_flutter/models/token.dart';
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
 
 import '../../models/post.dart';
+import '../../utils/enums.dart';
 
 part 'bookmarks_event.dart';
 part 'bookmarks_state.dart';
@@ -13,9 +14,7 @@ part 'bookmarks_state.dart';
 class BookmarksBloc extends Bloc<BookmarksEvent, BookmarksState> {
   BookmarksBloc({required this.storage, required this.pettygramRepository})
       : super(const BookmarksState(
-            bookmarkedPosts: [],
-            status: BookmarkStatus.initial,
-            errorMessage: "")) {
+            bookmarkedPosts: [], status: Status.initial, errorMessage: "")) {
     on<GetBookmarks>(_onGetBookmarks);
   }
 
@@ -23,7 +22,7 @@ class BookmarksBloc extends Bloc<BookmarksEvent, BookmarksState> {
   final SharedPreferencesConfig storage;
 
   Future<void> _onGetBookmarks(GetBookmarks event, Emitter emit) async {
-    emit(state.copyWith(status: BookmarkStatus.loading));
+    emit(state.copyWith(status: Status.loading));
 
     try {
       final bookmarkedPosts =
@@ -32,11 +31,10 @@ class BookmarksBloc extends Bloc<BookmarksEvent, BookmarksState> {
       );
 
       emit(state.copyWith(
-          status: BookmarkStatus.success, bookmarkedPosts: bookmarkedPosts));
+          status: Status.success, bookmarkedPosts: bookmarkedPosts));
     } on DioException catch (error) {
       emit(state.copyWith(
-          status: BookmarkStatus.failure,
-          errorMessage: error.response?.data['error']));
+          status: Status.failure, errorMessage: error.response?.data['error']));
     }
   }
 }

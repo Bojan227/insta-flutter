@@ -3,6 +3,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pettygram_flutter/api/chat_provider.dart';
 import 'package:pettygram_flutter/api/chat_repo_impl.dart';
+import 'package:pettygram_flutter/api/notifications_provider.dart';
+import 'package:pettygram_flutter/api/notifictaions_repo_impl.dart';
 import 'package:pettygram_flutter/api/pettygram_provider.dart';
 import 'package:pettygram_flutter/api/pettygram_repo_impl.dart';
 import 'package:pettygram_flutter/app_config.dart';
@@ -11,6 +13,7 @@ import 'package:pettygram_flutter/blocs/chat/bloc/chat_bloc.dart';
 
 import 'package:pettygram_flutter/blocs/comments/comments_bloc.dart';
 import 'package:pettygram_flutter/blocs/login/login_bloc.dart';
+import 'package:pettygram_flutter/blocs/notifications/bloc/notifications_bloc.dart';
 import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
 
 import 'package:pettygram_flutter/blocs/user/cubit/user_cubit.dart';
@@ -84,4 +87,17 @@ Future setupInjector(AppConfig config) async {
   final ChatBloc chatBloc =
       ChatBloc(storage: sharedConfig, chatRepository: chatRepository);
   getIt.registerLazySingleton<ChatBloc>(() => chatBloc);
+
+  // notifications
+  final NotificationsProvider notificationsProvider =
+      NotificationsProvider(firestore: firestore);
+  getIt.registerSingleton<NotificationsProvider>(notificationsProvider);
+
+  final NotificationsRepository notificationsRepository =
+      NotificationsRepository(provider: notificationsProvider);
+  getIt.registerSingleton<NotificationsRepository>(notificationsRepository);
+
+  final NotificationsBloc notificationsBloc = NotificationsBloc(
+      notificationsRepository: notificationsRepository, storage: sharedConfig);
+  getIt.registerSingleton<NotificationsBloc>(notificationsBloc);
 }

@@ -8,6 +8,8 @@ import 'package:pettygram_flutter/models/post_body.dart';
 import 'package:pettygram_flutter/models/token.dart';
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
 import 'package:stream_transform/stream_transform.dart';
+
+import '../../utils/enums.dart';
 part 'post_event.dart';
 part 'post_state.dart';
 
@@ -38,19 +40,19 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         List<Post> posts = await pettygramRepository.getPosts(0);
         emit(
           state.copyWith(
-              status: PostStatus.success,
+              status: Status.success,
               posts: posts,
               hasReachedMax: false,
               currentPage: 0),
         );
 
         return;
-      } else if (state.status == PostStatus.initial) {
+      } else if (state.status == Status.initial) {
         List<Post> posts = await pettygramRepository.getPosts(0);
 
         emit(
           state.copyWith(
-            status: PostStatus.success,
+            status: Status.success,
             posts: posts,
             hasReachedMax: false,
           ),
@@ -63,29 +65,28 @@ class PostBloc extends Bloc<PostEvent, PostState> {
           posts.isEmpty
               ? state.copyWith(hasReachedMax: true)
               : state.copyWith(
-                  status: PostStatus.success,
+                  status: Status.success,
                   posts: List.of(state.posts)..addAll(posts),
                   hasReachedMax: false,
                   currentPage: state.currentPage + 1),
         );
       }
     } on DioException catch (_) {
-      emit(state.copyWith(status: PostStatus.failure));
+      emit(state.copyWith(status: Status.failure));
     }
   }
 
   Future<void> _onAddPost(AddPost event, Emitter<PostState> emit) async {
-    emit(state.copyWith(addPostStatus: PostStatus.loading));
+    emit(state.copyWith(addPostStatus: Status.loading));
 
     try {
       Post userPost = await pettygramRepository.addPost(event.userPost,
           Token(accessToken: storage.getString('accessToken')!));
 
       emit(state.copyWith(
-          addPostStatus: PostStatus.success,
-          posts: [userPost, ...state.posts]));
+          addPostStatus: Status.success, posts: [userPost, ...state.posts]));
     } on DioException catch (_) {
-      emit(state.copyWith(addPostStatus: PostStatus.failure));
+      emit(state.copyWith(addPostStatus: Status.failure));
     }
   }
 
@@ -99,11 +100,11 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
       state.posts[index] = updatedPost;
 
-      emit(state.copyWith(status: PostStatus.initial));
+      emit(state.copyWith(status: Status.initial));
 
-      emit(state.copyWith(status: PostStatus.success, posts: state.posts));
+      emit(state.copyWith(status: Status.success, posts: state.posts));
     } on DioException catch (_) {
-      emit(state.copyWith(status: PostStatus.failure));
+      emit(state.copyWith(status: Status.failure));
     }
   }
 }

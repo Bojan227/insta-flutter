@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pettygram_flutter/blocs/comments/comments_bloc.dart';
 import 'package:pettygram_flutter/ui/comments/widgets/comment_item.dart';
 
+import '../../../utils/enums.dart';
+
 class CommentsList extends StatelessWidget {
   const CommentsList({super.key});
 
@@ -10,13 +12,13 @@ class CommentsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CommentsBloc, CommentsState>(
       builder: (context, state) {
-        if (state.status == CommentStatus.loading) {
+        if (state.status == Status.loading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
 
-        if (state.status == CommentStatus.success) {
+        if (state.status == Status.success) {
           return state.comments.isEmpty
               ? const Center(
                   child: Text('Add comment!'),
@@ -49,7 +51,7 @@ class CommentsList extends StatelessWidget {
                 );
         }
 
-        if (state.status == CommentStatus.failure) {
+        if (state.status == Status.failure) {
           return const Center(
             child: Text('Failed to fetch'),
           );

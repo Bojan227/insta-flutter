@@ -7,6 +7,8 @@ import 'package:pettygram_flutter/storage/shared_preferences.dart';
 import 'package:pettygram_flutter/ui/home/widgets/post_item.dart';
 import 'package:pettygram_flutter/ui/home/widgets/stories.dart';
 
+import '../../utils/enums.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -31,10 +33,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(children: [
       const StoriesWidget(),
       BlocBuilder<PostBloc, PostState>(builder: (context, state) {
-        if (state.status == PostStatus.failure) {
+        if (state.status == Status.failure) {
           return const Center(child: Text('failed to fetch posts'));
         }
-        if (state.status == PostStatus.success) {
+        if (state.status == Status.success) {
           if (state.posts.isEmpty) {
             return const Center(child: Text('no posts'));
           }
@@ -54,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }
 
-        if (state.status == PostStatus.initial) {
+        if (state.status == Status.initial) {
           return const Center(child: CircularProgressIndicator());
         }
 

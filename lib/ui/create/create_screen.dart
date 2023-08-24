@@ -6,6 +6,8 @@ import 'package:pettygram_flutter/models/post_body.dart';
 import 'package:pettygram_flutter/widgets/image_input.dart';
 import 'package:pettygram_flutter/widgets/textarea.dart';
 
+import '../../utils/enums.dart';
+
 class CreateScreen extends StatelessWidget {
   CreateScreen({super.key});
 
@@ -30,8 +32,8 @@ class CreateScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<PostBloc, PostState>(
       listener: (context, state) {
-        if (state.addPostStatus == PostStatus.success ||
-            state.addPostStatus == PostStatus.failure) {
+        if (state.addPostStatus == Status.success ||
+            state.addPostStatus == Status.failure) {
           context.go('/');
         }
       },

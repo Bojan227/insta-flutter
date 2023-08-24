@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:pettygram_flutter/blocs/comments/comments_bloc.dart';
 import 'package:pettygram_flutter/models/comment_body.dart';
+import 'package:pettygram_flutter/utils/enums.dart';
 import 'package:pettygram_flutter/widgets/input_field.dart';
 
 class AddCommentWidget extends StatelessWidget {
@@ -31,7 +32,7 @@ class AddCommentWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       child: BlocConsumer<CommentsBloc, CommentsState>(
         listener: (context, state) {
-          if (state.newCommentStatus == CommentStatus.success) {
+          if (state.newCommentStatus == Status.success) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text("Comment Added"),
@@ -44,7 +45,7 @@ class AddCommentWidget extends StatelessWidget {
             _formKey.currentState!.reset();
           }
 
-          if (state.newCommentStatus == CommentStatus.failure) {
+          if (state.newCommentStatus == Status.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Comment fail to be added'),
@@ -79,7 +80,7 @@ class AddCommentWidget extends StatelessWidget {
                       onSubmit(context);
                     },
                     child: Text(
-                      state.newCommentStatus == CommentStatus.loading
+                      state.newCommentStatus == Status.loading
                           ? "Loading...."
                           : 'Post',
                       style: const TextStyle().copyWith(

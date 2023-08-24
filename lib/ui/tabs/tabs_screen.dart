@@ -3,7 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pettygram_flutter/blocs/theme/cubit/theme_cubit.dart';
 import 'package:pettygram_flutter/ui/home/home_screen.dart';
+import 'package:pettygram_flutter/ui/notifications/widgets/notifications_drawer.dart';
+import 'package:pettygram_flutter/ui/tabs/widgets/bottom_nav_bar.dart';
 import 'package:pettygram_flutter/ui/tabs/widgets/main_drawer.dart';
+import 'package:pettygram_flutter/ui/tabs/widgets/notifications_icon.dart';
+
+import '../../utils/enums.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -20,6 +25,8 @@ class _TabsScreenState extends State<TabsScreen> {
       selectedIndex = index;
     });
   }
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   List<Widget> screens = [
     const HomeScreen(),
@@ -38,14 +45,12 @@ class _TabsScreenState extends State<TabsScreen> {
         context.go('/create');
       },
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text('Pettygram'),
           actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.favorite_border),
-            ),
+            NotificationsIcon(scaffoldKey: _scaffoldKey),
             IconButton(
               onPressed: () {
                 context.read<ThemeCubit>().toggleTheme();
@@ -63,27 +68,10 @@ class _TabsScreenState extends State<TabsScreen> {
             )
           ],
         ),
+        endDrawer: const NotificationsDrawer(),
         drawer: const MainDrawer(),
-        bottomNavigationBar: BottomNavigationBar(
-            currentIndex: selectedIndex,
-            onTap: (value) => handleTabSwitch(value),
-            selectedItemColor: Theme.of(context).colorScheme.onSecondary,
-            unselectedItemColor: Colors.grey[400],
-            showSelectedLabels: false,
-            items: const [
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.home_filled), label: 'Home'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.search), label: "Search"),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.add_a_photo_rounded), label: "Add"),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.favorite), label: "Notifications"),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile',
-              )
-            ]),
+        bottomNavigationBar: BottomNavBar(
+            selectedIndex: selectedIndex, handleTabSwitch: handleTabSwitch),
         body: screens[selectedIndex],
       ),
     );

@@ -1,12 +1,10 @@
 part of 'comments_bloc.dart';
 
-enum CommentStatus { initial, loading, success, failure }
-
 class CommentsState extends Equatable {
   final List<Comment> comments;
-  final CommentStatus status;
-  final CommentStatus newCommentStatus;
-  final CommentStatus editStatus;
+  final Status status;
+  final Status newCommentStatus;
+  final Status editStatus;
 
   const CommentsState(
       {required this.comments,
@@ -15,10 +13,10 @@ class CommentsState extends Equatable {
       required this.editStatus});
 
   CommentsState copyWith(
-      {CommentStatus? status,
+      {Status? status,
       List<Comment>? comments,
-      CommentStatus? newCommentStatus,
-      CommentStatus? editStatus}) {
+      Status? newCommentStatus,
+      Status? editStatus}) {
     return CommentsState(
       comments: comments ?? this.comments,
       status: status ?? this.status,

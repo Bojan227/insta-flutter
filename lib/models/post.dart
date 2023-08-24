@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
+
+import '../storage/shared_preferences.dart';
 
 class Post extends Equatable {
   Post(
@@ -26,8 +30,15 @@ class Post extends Equatable {
   String? createdAt;
   List<dynamic>? likes;
 
-  bool isLiked(String id) {
-    return likes!.any((like) => like == id);
+  bool isLiked(SharedPreferencesConfig storage) {
+    final bool isKeyPresent = storage.isKeyPresent('accessUser');
+
+    if (!isKeyPresent) return false;
+
+    final Map<String, dynamic> currentUser =
+        jsonDecode(storage.getString('accessUser')!);
+
+    return likes!.any((like) => like == currentUser['id']);
   }
 
   @override

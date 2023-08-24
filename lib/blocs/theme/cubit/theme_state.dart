@@ -1,7 +1,5 @@
 part of 'theme_cubit.dart';
 
-enum Mode { light, dark }
-
 class ThemeState extends Equatable {
   const ThemeState({required this.currentMode});
 

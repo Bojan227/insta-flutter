@@ -1,9 +1,7 @@
 part of 'bookmarks_bloc.dart';
 
-enum BookmarkStatus { initial, loading, success, failure }
-
 class BookmarksState extends Equatable {
-  final BookmarkStatus status;
+  final Status status;
   final List<Post> bookmarkedPosts;
   final String errorMessage;
 
@@ -13,9 +11,7 @@ class BookmarksState extends Equatable {
       required this.errorMessage});
 
   BookmarksState copyWith(
-      {BookmarkStatus? status,
-      List<Post>? bookmarkedPosts,
-      String? errorMessage}) {
+      {Status? status, List<Post>? bookmarkedPosts, String? errorMessage}) {
     return BookmarksState(
         status: status ?? this.status,
         bookmarkedPosts: bookmarkedPosts ?? this.bookmarkedPosts,

@@ -22,6 +22,7 @@ import 'api/chat_repo_impl.dart';
 import 'blocs/bookmarks/bookmarks_bloc.dart';
 import 'blocs/chat/bloc/chat_bloc.dart';
 import 'blocs/login/login_bloc.dart';
+import 'blocs/notifications/bloc/notifications_bloc.dart';
 
 class AppRouter {
   AppRouter();
@@ -37,6 +38,8 @@ class AppRouter {
   final CommentsBloc commentsBloc = getIt<CommentsBloc>();
   final BookmarksBloc bookmarksBloc = getIt<BookmarksBloc>();
   final ChatBloc chatBloc = getIt<ChatBloc>();
+  final NotificationsBloc notificationsBloc = getIt<NotificationsBloc>();
+
   final ChatRepository chatRepository = getIt<ChatRepository>();
 
   GoRouter onGenerateRouter() {
@@ -59,7 +62,9 @@ class AppRouter {
                   ),
                   BlocProvider.value(
                     value: loginBloc,
-                  )
+                  ),
+                  BlocProvider.value(
+                      value: notificationsBloc..add(const GetNotifications()))
                 ],
                 child: const TabsScreen(),
               );

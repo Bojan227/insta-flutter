@@ -17,4 +17,6 @@ class SharedPreferencesConfig {
   String? getString(String key) => prefs!.getString(key);
 
   Future<bool> removeString(String key) => prefs!.remove(key);
+
+  bool isKeyPresent(String key) => prefs!.containsKey(key);
 }

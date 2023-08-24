@@ -10,6 +10,7 @@ import 'package:pettygram_flutter/api/chat_repo_impl.dart';
 import '../../../models/firebase_user.dart';
 import '../../../models/message.dart';
 import '../../../storage/shared_preferences.dart';
+import '../../../utils/enums.dart';
 
 part 'chat_event.dart';
 part 'chat_state.dart';
@@ -21,7 +22,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatBloc({required this.storage, required this.chatRepository})
       : super(
           const ChatState(
-              messages: [], sendMessageStatus: SendStatus.initial, users: []),
+              messages: [], sendMessageStatus: Status.initial, users: []),
         ) {
     on<SendMessage>(_onSendMessage);
     on<GetMessages>(_onGetMessages);
@@ -31,7 +32,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   Future<void> _onSendMessage(SendMessage event, Emitter emit) async {
     final Timestamp timestamp = Timestamp.now();
-    emit(state.copyWith(sendMessageStatus: SendStatus.loading));
+    emit(state.copyWith(sendMessageStatus: Status.loading));
 
     try {
       final Map<String, dynamic> currentUser =
@@ -51,10 +52,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
       await chatRepository.sendMessage(chatRoomId, message);
 
-      emit(state.copyWith(sendMessageStatus: SendStatus.success));
+      emit(state.copyWith(sendMessageStatus: Status.success));
     } catch (error) {
       print(error);
-      emit(state.copyWith(sendMessageStatus: SendStatus.failure));
+      emit(state.copyWith(sendMessageStatus: Status.failure));
     }
   }
 
@@ -70,7 +71,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       chatRepository.getMessages(chatRoomId),
       onData: (List<Message> messages) => ChatState(
           messages: messages,
-          sendMessageStatus: SendStatus.initial,
+          sendMessageStatus: Status.initial,
           users: state.users),
     );
   }
@@ -83,7 +84,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       chatRepository.getUsers(),
       onData: (List<FirebaseUser> users) => ChatState(
           messages: state.messages,
-          sendMessageStatus: SendStatus.initial,
+          sendMessageStatus: Status.initial,
           users: users.where((user) => user.id != currentUser['id']).toList()),
     );
   }
@@ -99,7 +100,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               type: 'media'),
           emit);
     } catch (error) {
-      emit(state.copyWith(sendMessageStatus: SendStatus.failure));
+      emit(state.copyWith(sendMessageStatus: Status.failure));
     }
   }
 }
