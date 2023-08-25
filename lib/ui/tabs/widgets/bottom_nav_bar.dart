@@ -11,14 +11,17 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final customTheme = Theme.of(context).extension<CustomTheme>();
+    final customTheme = Theme.of(context).extension<CustomTheme>()!;
 
     return BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: customTheme.background,
         currentIndex: selectedIndex,
         onTap: (value) => handleTabSwitch(value),
-        selectedItemColor: customTheme?.onSecondary,
+        selectedItemColor: customTheme.onSecondary,
         unselectedItemColor: Colors.grey[400],
         showSelectedLabels: false,
+        showUnselectedLabels: false,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
