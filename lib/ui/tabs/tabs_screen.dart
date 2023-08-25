@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pettygram_flutter/blocs/theme/cubit/theme_cubit.dart';
+import 'package:pettygram_flutter/ui/explore/explore_screen.dart';
 import 'package:pettygram_flutter/ui/home/home_screen.dart';
 import 'package:pettygram_flutter/ui/notifications/widgets/notifications_drawer.dart';
 import 'package:pettygram_flutter/ui/tabs/widgets/bottom_nav_bar.dart';
@@ -31,7 +32,7 @@ class _TabsScreenState extends State<TabsScreen> {
 
   List<Widget> screens = [
     const HomeScreen(),
-    const Placeholder(),
+    const ExploreScreen(),
     const Placeholder(),
     const Placeholder(),
     const Placeholder(),
