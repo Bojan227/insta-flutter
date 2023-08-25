@@ -5,6 +5,7 @@ import 'package:pettygram_flutter/ui/comments/widgets/edit_comment.dart';
 import 'package:pettygram_flutter/widgets/circle_image.dart';
 
 import '../../../models/comment.dart';
+import '../../../theme/custom_theme.dart';
 import '../../../utils/parse_date.dart';
 
 class CommentItem extends StatelessWidget {
@@ -15,6 +16,8 @@ class CommentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>()!;
+
     DateTime dateTime = parseDateString(comment.createdAt!);
     String formattedDate = "${dateTime.year}-${dateTime.month}-${dateTime.day}";
 
@@ -36,6 +39,7 @@ class CommentItem extends StatelessWidget {
                     Text(
                       '${comment.createdBy!['username']}',
                       textAlign: TextAlign.start,
+                      style: TextStyle(color: customTheme.onSecondary),
                     ),
                     const SizedBox(
                       width: 14,
@@ -51,13 +55,14 @@ class CommentItem extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Text(formattedDate),
+                    Text(formattedDate,
+                        style: TextStyle(color: customTheme.onSecondary)),
                     const SizedBox(
                       width: 15,
                     ),
                     Text(
-                      '${comment.likes?.length} ${comment.likes?.length == 1 ? 'like' : 'likes'}',
-                    )
+                        '${comment.likes?.length} ${comment.likes?.length == 1 ? 'like' : 'likes'}',
+                        style: TextStyle(color: customTheme.onSecondary))
                   ],
                 )
               ],

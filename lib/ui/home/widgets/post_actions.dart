@@ -10,6 +10,7 @@ import 'package:pettygram_flutter/utils/enums.dart';
 
 import '../../../injector/injector.dart';
 import '../../../storage/shared_preferences.dart';
+import '../../../theme/custom_theme.dart';
 
 class PostActions extends StatelessWidget {
   PostActions({super.key, required this.post, required this.user});
@@ -22,6 +23,8 @@ class PostActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>()!;
+
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
         return Row(
@@ -60,6 +63,7 @@ class PostActions extends StatelessWidget {
                   width: 8,
                 ),
                 IconButton(
+                  color: customTheme.onSecondary,
                   onPressed: () {},
                   icon: const Icon(Icons.send),
                 ),
@@ -70,6 +74,7 @@ class PostActions extends StatelessWidget {
                     backgroundColor: Colors.blue[100]!,
                   )
                 : IconButton(
+                    color: customTheme.onSecondary,
                     onPressed: () {
                       context.read<UserBloc>().add(
                             ToggleBookmark(postId: post.id!),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pettygram_flutter/widgets/circle_image.dart';
 import '../../../models/user.dart';
+import '../../../theme/custom_theme.dart';
 
 class StoriesList extends StatelessWidget {
   const StoriesList({super.key, required this.users});
@@ -10,6 +11,8 @@ class StoriesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customeTheme = Theme.of(context).extension<CustomTheme>();
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -42,6 +45,8 @@ class StoriesList extends StatelessWidget {
                       Text(
                         user.username!,
                         textAlign: TextAlign.center,
+                        style: const TextStyle()
+                            .copyWith(color: customeTheme?.onSecondary),
                       )
                     ],
                   ),

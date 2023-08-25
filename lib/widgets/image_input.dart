@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../theme/custom_theme.dart';
+
 class ImageInput extends StatefulWidget {
   const ImageInput({super.key, required this.handleImageInput});
 
@@ -40,12 +42,13 @@ class _ImageInputState extends State<ImageInput> {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>();
+
     return Container(
       height: 250,
       width: double.infinity,
       decoration: BoxDecoration(
-        border: Border.all(
-            width: 1, color: Theme.of(context).colorScheme.onSecondary),
+        border: Border.all(width: 1, color: customTheme!.onSecondary),
       ),
       child: takenImage != null
           ? Image.file(
@@ -58,12 +61,11 @@ class _ImageInputState extends State<ImageInput> {
               onPressed: _takePicture,
               icon: Icon(
                 Icons.camera,
-                color: Theme.of(context).colorScheme.onSecondary,
+                color: customTheme.onSecondary,
               ),
               label: Text(
                 'Take Picture',
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+                style: TextStyle(color: customTheme.onSecondary),
               ),
             ),
     );

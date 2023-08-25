@@ -9,6 +9,8 @@ import 'package:pettygram_flutter/widgets/input_field.dart';
 import 'dart:convert';
 import 'dart:io';
 
+import '../../../theme/custom_theme.dart';
+
 class ChatPage extends StatelessWidget {
   ChatPage({super.key, required this.username, required this.receiverId});
 
@@ -40,7 +42,6 @@ class ChatPage extends StatelessWidget {
     File imagefile = File(pickedImage.path);
 
     if (context.mounted) {
-      print('mounted');
       BlocProvider.of<ChatBloc>(context)
           .add(UploadImage(image: imagefile, receiverId: receiverId));
     }
@@ -49,9 +50,12 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScrollController scrollController = ScrollController();
+    final customTheme = Theme.of(context).extension<CustomTheme>()!;
 
     return Scaffold(
+      backgroundColor: customTheme.background,
       appBar: AppBar(
+        backgroundColor: customTheme.onBackground,
         title: Text(username),
       ),
       body: Column(
@@ -80,6 +84,7 @@ class ChatPage extends StatelessWidget {
             child: Row(
               children: [
                 IconButton(
+                  color: customTheme.onSecondary,
                   onPressed: () {
                     takePicture(context);
                   },
@@ -98,6 +103,7 @@ class ChatPage extends StatelessWidget {
                   ),
                 ),
                 IconButton(
+                  color: customTheme.onSecondary,
                   onPressed: () {
                     onSubmit(context);
                     scrollController.animateTo(

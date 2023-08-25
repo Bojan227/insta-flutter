@@ -8,6 +8,7 @@ import 'package:pettygram_flutter/ui/tabs/widgets/bottom_nav_bar.dart';
 import 'package:pettygram_flutter/ui/tabs/widgets/main_drawer.dart';
 import 'package:pettygram_flutter/ui/tabs/widgets/notifications_icon.dart';
 
+import '../../theme/custom_theme.dart';
 import '../../utils/enums.dart';
 
 class TabsScreen extends StatefulWidget {
@@ -38,6 +39,8 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>()!;
+
     return Dismissible(
       key: const ValueKey("dismiss_key"),
       direction: DismissDirection.startToEnd,
@@ -45,10 +48,15 @@ class _TabsScreenState extends State<TabsScreen> {
         context.go('/create');
       },
       child: Scaffold(
+        backgroundColor: customTheme.background,
         key: _scaffoldKey,
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          title: const Text('Pettygram'),
+          iconTheme: IconThemeData(color: customTheme.onSecondary),
+          backgroundColor: customTheme.primary,
+          title: Text(
+            'Pettygram',
+            style: TextStyle(color: customTheme.onSecondary),
+          ),
           actions: [
             NotificationsIcon(scaffoldKey: _scaffoldKey),
             IconButton(
@@ -56,15 +64,18 @@ class _TabsScreenState extends State<TabsScreen> {
                 context.read<ThemeCubit>().toggleTheme();
               },
               icon: Icon(
-                  context.read<ThemeCubit>().state.currentMode == Mode.light
-                      ? Icons.dark_mode_rounded
-                      : Icons.sunny),
+                context.read<ThemeCubit>().state.currentMode == Mode.light
+                    ? Icons.dark_mode_rounded
+                    : Icons.sunny,
+              ),
             ),
             IconButton(
               onPressed: () {
                 context.push('/chat');
               },
-              icon: const Icon(Icons.send),
+              icon: const Icon(
+                Icons.send,
+              ),
             )
           ],
         ),

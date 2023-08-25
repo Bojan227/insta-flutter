@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../theme/custom_theme.dart';
+
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar(
       {super.key, required this.selectedIndex, required this.handleTabSwitch});
@@ -9,10 +11,12 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>();
+
     return BottomNavigationBar(
         currentIndex: selectedIndex,
         onTap: (value) => handleTabSwitch(value),
-        selectedItemColor: Theme.of(context).colorScheme.onSecondary,
+        selectedItemColor: customTheme?.onSecondary,
         unselectedItemColor: Colors.grey[400],
         showSelectedLabels: false,
         items: const [

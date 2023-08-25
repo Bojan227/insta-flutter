@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pettygram_flutter/models/firebase_user.dart';
 import 'package:pettygram_flutter/widgets/circle_image.dart';
 
+import '../../../theme/custom_theme.dart';
+
 class ChatListItem extends StatelessWidget {
   const ChatListItem({super.key, required this.user});
 
@@ -9,6 +11,8 @@ class ChatListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>()!;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
       width: double.infinity,
@@ -29,15 +33,11 @@ class ChatListItem extends StatelessWidget {
             children: [
               Text(
                 user.username,
-                style: TextStyle(
-                    fontSize: 24,
-                    color: Theme.of(context).colorScheme.onSecondary),
+                style: TextStyle(fontSize: 24, color: customTheme.onSecondary),
               ),
               Text(
                 'Active now',
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Theme.of(context).colorScheme.onSecondary),
+                style: TextStyle(fontSize: 14, color: customTheme.onSecondary),
               ),
             ],
           ))

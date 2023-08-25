@@ -6,6 +6,8 @@ import 'package:pettygram_flutter/models/post.dart';
 import 'package:pettygram_flutter/models/user.dart';
 import 'package:pettygram_flutter/utils/parse_date.dart';
 
+import '../../../theme/custom_theme.dart';
+
 class PostCardInfo extends StatelessWidget {
   const PostCardInfo({super.key, required this.post, required this.user});
 
@@ -14,6 +16,7 @@ class PostCardInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>()!;
     DateTime dateTime = parseDateString(post.createdAt!);
     String formattedDate =
         "${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}";
@@ -24,9 +27,9 @@ class PostCardInfo extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "${post.likes!.length} ${post.likes!.length == 1 ? "like" : "likes"}",
-            textAlign: TextAlign.start,
-          ),
+              "${post.likes!.length} ${post.likes!.length == 1 ? "like" : "likes"}",
+              textAlign: TextAlign.start,
+              style: TextStyle(color: customTheme.onSecondary)),
           const SizedBox(
             height: 10,
           ),
@@ -35,6 +38,7 @@ class PostCardInfo extends StatelessWidget {
             children: [
               Text(
                 "${user.username}",
+                style: TextStyle(color: customTheme.onSecondary),
               ),
               const SizedBox(
                 width: 8,
@@ -43,6 +47,9 @@ class PostCardInfo extends StatelessWidget {
                 post.text!.substring(
                   0,
                   min(post.text!.length, 10),
+                ),
+                style: TextStyle(
+                  color: customTheme.onSecondary,
                 ),
               ),
             ],

@@ -6,6 +6,7 @@ import 'package:pettygram_flutter/models/post.dart';
 import 'package:pettygram_flutter/models/post_body.dart';
 import 'package:pettygram_flutter/models/token.dart';
 import 'package:pettygram_flutter/storage/shared_preferences.dart';
+import 'package:pettygram_flutter/utils/enums.dart';
 import 'package:test/test.dart';
 
 class MockPettygramRepo extends Mock implements PettygramRepository {}
@@ -17,6 +18,12 @@ void main() {
     group(
       'should emit',
       () {
+        final Post post = Post(
+            text: 'text',
+            createdBy: const {"test": 'test'},
+            imageUrl: const ['image-test'],
+            createdAt: 'monday');
+
         final MockPettygramRepo mockPettygramRepo = MockPettygramRepo();
         final MockStorage mockStorage = MockStorage();
 
@@ -28,58 +35,38 @@ void main() {
         );
 
         blocTest(
-          '[PostLoading, PostLoaded] on success request',
-          setUp: () => when(() => mockPettygramRepo.getPosts('0'))
-              .thenAnswer((invocation) => Future.value([
-                    Post(
-                        text: 'text',
-                        createdBy: const {"test": 'test'},
-                        imageUrl: const ['image-test'],
-                        createdAt: 'monday')
-                  ])),
+          '[PostLoading, PostLoaded] on when status is initial',
+          setUp: () => when(() => mockPettygramRepo.getPosts(0))
+              .thenAnswer((invocation) => Future.value([post])),
           build: () => PostBloc(
               pettygramRepository: mockPettygramRepo, storage: mockStorage),
-          act: (bloc) => bloc.add(GetPosts()),
-          expect: () => <PostState>[
-            PostLoading(),
-            PostLoaded(
-              posts: [
-                Post(
-                    text: 'text',
-                    createdBy: const {"test": 'test'},
-                    imageUrl: const ['image-test'],
-                    createdAt: 'monday')
-              ],
+          act: (bloc) => bloc.add(const GetPosts()),
+          expect: () => [
+            PostState(
+              hasReachedMax: false,
+              status: Status.success,
+              posts: [post],
             )
           ],
         );
 
-        blocTest(
+        blocTest<PostBloc, PostState>(
           '[UserPostAdding, UserPostAdded] on success request',
           setUp: () => when(() => mockPettygramRepo.addPost(
                   const PostBody(text: 'test', images: ['test image']),
                   Token(accessToken: mockStorage.getString('accessToken')!)))
               .thenAnswer(
-            (invocation) async => await Future.value(
-              Post(
-                  text: 'test',
-                  createdBy: const {"test": 'test'},
-                  imageUrl: const ['test image'],
-                  createdAt: 'monday'),
-            ),
+            (_) async => await Future.value(post),
           ),
           build: () => PostBloc(
               pettygramRepository: mockPettygramRepo, storage: mockStorage),
           act: (bloc) => bloc.add(const AddPost(
               userPost: PostBody(text: 'test', images: ['test image']))),
           expect: () => <PostState>[
-            UserPostAdding(),
-            UserPostAdded(
-                userPost: Post(
-                    text: 'test',
-                    createdBy: const {"test": "test"},
-                    imageUrl: const ['test image'],
-                    createdAt: 'monday'))
+            const PostState(
+              addPostStatus: Status.loading,
+            ),
+            const PostState(addPostStatus: Status.success, posts: [])
           ],
         );
       },

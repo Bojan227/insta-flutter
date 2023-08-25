@@ -7,6 +7,8 @@ import 'package:pettygram_flutter/widgets/circle_image.dart';
 import 'package:pettygram_flutter/ui/home/widgets/post_actions.dart';
 import 'package:pettygram_flutter/ui/home/widgets/post_card_info.dart';
 
+import '../../../theme/custom_theme.dart';
+
 class PostItem extends StatelessWidget {
   const PostItem({super.key, required this.post});
 
@@ -15,6 +17,7 @@ class PostItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final User user = User.fromJson(post.createdBy!);
+    final customeTheme = Theme.of(context).extension<CustomTheme>();
 
     return InkWell(
       child: Column(
@@ -59,7 +62,7 @@ class PostItem extends StatelessWidget {
             ],
           ),
           Container(
-            color: Theme.of(context).colorScheme.background,
+            color: customeTheme?.background,
             padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

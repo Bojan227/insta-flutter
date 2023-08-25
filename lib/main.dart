@@ -4,6 +4,7 @@ import 'package:pettygram_flutter/app_config.dart';
 import 'package:pettygram_flutter/blocs/theme/cubit/theme_cubit.dart';
 import 'package:pettygram_flutter/injector/injector.dart';
 import 'package:pettygram_flutter/router.dart';
+import 'package:pettygram_flutter/theme/custom_theme.dart';
 import 'package:pettygram_flutter/theme/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -43,8 +44,14 @@ class _MyAppState extends State<MyApp> {
           : ThemeMode.dark,
       routerConfig: appRouter.onGenerateRouter(),
       title: 'Pettygram',
-      theme: lightTheme,
-      darkTheme: darkTheme,
+      theme: ThemeData.light().copyWith(
+        useMaterial3: true,
+        extensions: <ThemeExtension<dynamic>>[CustomTheme.lightTheme],
+      ),
+      darkTheme: ThemeData.light().copyWith(
+        useMaterial3: true,
+        extensions: <ThemeExtension<dynamic>>[CustomTheme.darkTheme],
+      ),
     );
   }
 

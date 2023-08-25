@@ -6,6 +6,8 @@ import 'package:pettygram_flutter/models/login_body.dart';
 import 'package:pettygram_flutter/utils/dialog_builder.dart';
 import 'package:pettygram_flutter/widgets/input_field.dart';
 
+import '../../theme/custom_theme.dart';
+
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
@@ -28,6 +30,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>();
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -67,8 +71,7 @@ class LoginScreen extends StatelessWidget {
                       },
                       child: Text(
                         state is LoginLoading ? 'Loading..' : 'Login',
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSecondary),
+                        style: TextStyle(color: customTheme?.onSecondary),
                       ),
                     );
                   },

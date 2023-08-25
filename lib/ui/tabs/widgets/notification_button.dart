@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../blocs/notifications/bloc/notifications_bloc.dart';
+import '../../../theme/custom_theme.dart';
 
 class NotificationButton extends StatelessWidget {
   const NotificationButton(
@@ -14,7 +15,10 @@ class NotificationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>()!;
+
     return IconButton(
+      color: customTheme.onSecondary,
       onPressed: () {
         scaffoldKey.currentState!.openEndDrawer();
         if (numberOfUnreadNotifications > 0) {

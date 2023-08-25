@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pettygram_flutter/blocs/comments/comments_bloc.dart';
 
+import '../../../theme/custom_theme.dart';
 import '../../../widgets/input_field.dart';
 
 class EditCommentWidget extends StatefulWidget {
@@ -33,6 +34,8 @@ class _EditCommentWidgetState extends State<EditCommentWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>()!;
+
     return Row(
       children: [
         shouldEdit
@@ -46,21 +49,28 @@ class _EditCommentWidgetState extends State<EditCommentWidget> {
                       label: ''),
                 ),
               )
-            : Text(widget.comment),
+            : Text(
+                widget.comment,
+                style: TextStyle(color: customTheme.onSecondary),
+              ),
         const SizedBox(
           width: 18,
         ),
         IconButton(
-            onPressed: () {
-              if (shouldEdit) {
-                onSubmit(context);
-              }
+          onPressed: () {
+            if (shouldEdit) {
+              onSubmit(context);
+            }
 
-              setState(() {
-                shouldEdit = !shouldEdit;
-              });
-            },
-            icon: Icon(shouldEdit ? Icons.check : Icons.edit))
+            setState(() {
+              shouldEdit = !shouldEdit;
+            });
+          },
+          icon: Icon(
+            shouldEdit ? Icons.check : Icons.edit,
+            color: customTheme.onSecondary,
+          ),
+        )
       ],
     );
   }

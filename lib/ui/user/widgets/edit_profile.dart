@@ -3,11 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pettygram_flutter/blocs/user/cubit/user_cubit.dart';
 
+import '../../../theme/custom_theme.dart';
+
 class EditProfile extends StatelessWidget {
   const EditProfile({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>();
+
     return BlocBuilder<UserCubit, UserStateCubit>(
       builder: (ctx, state) {
         return Padding(
@@ -24,7 +28,7 @@ class EditProfile extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onBackground,
+                      color: customTheme?.onBackground,
                       borderRadius: const BorderRadius.all(
                         Radius.elliptical(10, 10),
                       ),
@@ -32,8 +36,8 @@ class EditProfile extends StatelessWidget {
                     child: Text(
                       'Edit Profile',
                       textAlign: TextAlign.center,
-                      style: const TextStyle().copyWith(
-                          color: Theme.of(context).colorScheme.onSecondary),
+                      style: const TextStyle()
+                          .copyWith(color: customTheme?.onSecondary),
                     ),
                   ),
                 ),

@@ -6,6 +6,8 @@ import 'package:pettygram_flutter/models/comment_body.dart';
 import 'package:pettygram_flutter/utils/enums.dart';
 import 'package:pettygram_flutter/widgets/input_field.dart';
 
+import '../../../theme/custom_theme.dart';
+
 class AddCommentWidget extends StatelessWidget {
   AddCommentWidget({super.key, required this.post});
 
@@ -27,6 +29,8 @@ class AddCommentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>();
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
@@ -83,8 +87,8 @@ class AddCommentWidget extends StatelessWidget {
                       state.newCommentStatus == Status.loading
                           ? "Loading...."
                           : 'Post',
-                      style: const TextStyle().copyWith(
-                          color: Theme.of(context).colorScheme.onSecondary),
+                      style: const TextStyle()
+                          .copyWith(color: customTheme?.onSecondary),
                     ),
                   )
                 ],

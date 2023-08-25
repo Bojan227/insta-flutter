@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/custom_theme.dart';
+
 class InputField extends StatelessWidget {
   InputField(
       {super.key,
@@ -15,20 +17,22 @@ class InputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>()!;
+
     return TextFormField(
+      style: TextStyle(color: customTheme.onSecondary),
       initialValue: defaultValue,
       obscureText: obscureText,
       decoration: InputDecoration(
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(18)),
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(18),
-            borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.onSecondary, width: 1)),
-        fillColor: Colors.grey[100],
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
-        hintText: label,
-      ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(18)),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(18),
+              borderSide: BorderSide(color: customTheme.onSecondary, width: 1)),
+          fillColor: customTheme.onSecondary,
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
+          hintText: label,
+          hintStyle: TextStyle(color: customTheme.onSecondary)),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter some text';

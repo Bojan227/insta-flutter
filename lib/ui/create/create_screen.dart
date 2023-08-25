@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pettygram_flutter/blocs/posts/post_bloc.dart';
 import 'package:pettygram_flutter/models/post_body.dart';
+import 'package:pettygram_flutter/theme/custom_theme.dart';
 import 'package:pettygram_flutter/widgets/image_input.dart';
 import 'package:pettygram_flutter/widgets/textarea.dart';
 
@@ -30,6 +31,8 @@ class CreateScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>()!;
+
     return BlocListener<PostBloc, PostState>(
       listener: (context, state) {
         if (state.addPostStatus == Status.success ||
@@ -42,7 +45,10 @@ class CreateScreen extends StatelessWidget {
         direction: DismissDirection.endToStart,
         onDismissed: (direction) => context.go('/'),
         child: Scaffold(
+          backgroundColor: customTheme.background,
           appBar: AppBar(
+            backgroundColor: customTheme.primary,
+            iconTheme: IconThemeData(color: customTheme.onSecondary),
             actions: [
               TextButton(
                   onPressed: () {
@@ -50,16 +56,18 @@ class CreateScreen extends StatelessWidget {
                   },
                   child: Text(
                     "POST",
-                    style: const TextStyle().copyWith(
-                        fontSize: 20,
-                        color: Theme.of(context).colorScheme.onSecondary),
+                    style: const TextStyle()
+                        .copyWith(fontSize: 20, color: customTheme.onSecondary),
                   ))
             ],
             leading: IconButton(
               icon: const Icon(Icons.close),
               onPressed: () => context.go('/'),
             ),
-            title: const Text('Add Post'),
+            title: Text(
+              'Add Post',
+              style: TextStyle(color: customTheme.onSecondary),
+            ),
           ),
           body: Container(
             padding: const EdgeInsets.all(12),

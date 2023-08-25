@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../blocs/user/cubit/user_cubit.dart';
+import '../../../theme/custom_theme.dart';
 import '../../../widgets/circle_image.dart';
 import '../../../widgets/info_box.dart';
 
@@ -10,6 +11,8 @@ class UserInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>()!;
+
     return BlocBuilder<UserCubit, UserStateCubit>(
       builder: (context, state) {
         return Padding(
@@ -25,9 +28,11 @@ class UserInfo extends StatelessWidget {
                   const SizedBox(
                     height: 12,
                   ),
-                  Text(state is UserLoaded
-                      ? "${state.user.firstName} ${state.user.lastName}"
-                      : "... ...")
+                  Text(
+                      state is UserLoaded
+                          ? "${state.user.firstName} ${state.user.lastName}"
+                          : "... ...",
+                      style: TextStyle(color: customTheme.onSecondary))
                 ],
               ),
               const SizedBox(

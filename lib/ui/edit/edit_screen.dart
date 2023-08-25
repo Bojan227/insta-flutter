@@ -7,6 +7,8 @@ import 'package:pettygram_flutter/ui/edit/widgets/profile_image_input.dart';
 
 import 'package:pettygram_flutter/widgets/input_field.dart';
 
+import '../../theme/custom_theme.dart';
+
 class EditUserScreen extends StatelessWidget {
   EditUserScreen({super.key, required this.user});
 
@@ -33,15 +35,23 @@ class EditUserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>()!;
+
     return Scaffold(
+      backgroundColor: customTheme.background,
       appBar: AppBar(
+        backgroundColor: customTheme.primary,
+        iconTheme: IconThemeData(color: customTheme.onSecondary),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
           icon: const Icon(Icons.close),
         ),
-        title: const Text('Edit Profile'),
+        title: Text(
+          'Edit Profile',
+          style: TextStyle(color: customTheme.onSecondary),
+        ),
         actions: [
           IconButton(
             onPressed: () => onSubmit(context),
@@ -84,9 +94,7 @@ class EditUserScreen extends StatelessWidget {
                         },
                         child: Text(
                           'Edit Picture',
-                          style: TextStyle(
-                              color:
-                                  Theme.of(context).colorScheme.onBackground),
+                          style: TextStyle(color: customTheme.onBackground),
                         ))
                   ],
                 ),

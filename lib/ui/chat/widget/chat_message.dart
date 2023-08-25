@@ -1,6 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../../models/message.dart';
+import '../../../theme/custom_theme.dart';
 
 class ChatMessage extends StatelessWidget {
   const ChatMessage(
@@ -11,6 +11,8 @@ class ChatMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>()!;
+
     return Container(
       padding: const EdgeInsets.all(12),
       alignment: message.senderId == receiverId
@@ -21,12 +23,16 @@ class ChatMessage extends StatelessWidget {
         height: 70,
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18), color: Colors.grey[100]),
+            borderRadius: BorderRadius.circular(18),
+            color: customTheme.onBackground),
         child: Row(
           children: [
             message.senderId != receiverId
-                ? const CircleAvatar(
-                    child: Text('w'),
+                ? CircleAvatar(
+                    child: Text(
+                      'w',
+                      style: TextStyle(color: customTheme.onSecondary),
+                    ),
                   )
                 : Container(),
             const SizedBox(
@@ -35,6 +41,7 @@ class ChatMessage extends StatelessWidget {
             Text(
               message.message,
               textAlign: TextAlign.left,
+              style: TextStyle(color: customTheme.onSecondary),
             )
           ],
         ),

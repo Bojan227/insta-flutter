@@ -9,6 +9,7 @@ import 'package:pettygram_flutter/ui/user/widgets/user_info.dart';
 import '../../blocs/bookmarks/bookmarks_bloc.dart';
 import '../../blocs/posts/post_bloc.dart';
 import '../../blocs/users/users_bloc.dart';
+import '../../theme/custom_theme.dart';
 
 class UserDetails extends StatelessWidget {
   const UserDetails({super.key, required this.bookmarksBloc});
@@ -16,8 +17,12 @@ class UserDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>()!;
     return Scaffold(
+      backgroundColor: customTheme.background,
       appBar: AppBar(
+        backgroundColor: customTheme.primary,
+        iconTheme: IconThemeData(color: customTheme.onSecondary),
         leading: GestureDetector(
           child: const Icon(Icons.arrow_back),
           onTap: () {
@@ -28,7 +33,10 @@ class UserDetails extends StatelessWidget {
         ),
         title: BlocBuilder<UserCubit, UserStateCubit>(
           builder: (context, state) {
-            return Text(state is UserLoaded ? state.user.username! : 'Loading');
+            return Text(
+              state is UserLoaded ? state.user.username! : 'Loading',
+              style: TextStyle(color: customTheme.onSecondary),
+            );
           },
         ),
         actions: [
